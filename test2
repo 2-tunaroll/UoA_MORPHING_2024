@@ -1,0 +1,13 @@
+import time
+from XInputPython.XInput import *
+
+oldState=0
+state=get_state(0)
+time.sleep(0.05)
+
+data=get_button_values(state)
+
+contains_true = lambda s: 'True' in s
+print(contains_true(str(data)))
+print(type(data))
+
