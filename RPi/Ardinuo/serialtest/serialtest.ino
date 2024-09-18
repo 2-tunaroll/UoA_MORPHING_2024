@@ -15,22 +15,15 @@ const uint8_t FRONT_PIVOT = 7;
 const uint8_t REAR_PIVOT = 8;
 const float DXL_PROTOCOL_VERSION = 2.0;
 
-String receivedData = "";
-
 void setup() {
-  Serial.begin(115200);  // Debugging
-  Serial2.begin(57600);  // Use Serial2 for Raspberry Pi communication
+  Serial.begin(115200);  // Start communication with the Raspberry Pi via USB
 }
 
 void loop() {
-  if (Serial2.available()) {
-    receivedData += (char)Serial2.read();  // Store received data
+  if (Serial.available()) {
+    String incomingData = Serial.readString();  // Read data from the Raspberry Pi
+    Serial.print("I received: ");  // Echo the received data back to the Raspberry Pi
+    Serial.println(incomingData);
   }
-  
-  // Every 5 seconds, print the received data and clear the buffer
-  if (millis() % 5000 == 0 && receivedData.length() > 0) {
-    Serial.print("Received data: ");
-    Serial.println(receivedData);
-    receivedData = "";  // Clear the buffer after printing
-  }
+  delay(500);  // Delay to prevent overwhelming the serial buffer
 }
