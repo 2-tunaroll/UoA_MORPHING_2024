@@ -15,19 +15,18 @@ const uint8_t FRONT_PIVOT = 7;
 const uint8_t REAR_PIVOT = 8;
 const float DXL_PROTOCOL_VERSION = 2.0;
 
-// Dynamixel controller instance
-Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
-
 void setup() {
-  Serial.begin(115200); // Debug serial
-  Serial1.begin(57600); // Communication with OpenRB-150
+  Serial.begin(115200);  // For debugging
+  Serial2.begin(57600);  // Use Serial2 for communication with Raspberry Pi
 }
 
 void loop() {
-  if (Serial1.available()) {
-    int incomingByte = Serial1.read();
+  if (Serial2.available()) {
+    int incomingByte = Serial2.read();
     Serial.print("I received: ");
     Serial.println(incomingByte, DEC);
+  } else {
+    Serial.println("DEBUG: No data available on Serial2.");
   }
   delay(500);
 }

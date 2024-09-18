@@ -1,36 +1,15 @@
 import serial
 import time
 
-# Initialize serial connection to Arduino
-try:
-    ser = serial.Serial('/dev/ttyACM0', 57600, timeout=1)
-    print("DEBUG: Successfully opened serial port /dev/ttyACM0.")
-except serial.SerialException as e:
-    print(f"ERROR: Could not open serial port - {e}")
-    exit(1)
+# Open serial communication with the OpenRB-150 via /dev/ttyACM0
+ser = serial.Serial('/dev/ttyACM0', 57600, timeout=1)
+time.sleep(2)  # Wait for the Arduino to initialize
 
-# Function to send motor control commands
-def send_motor_command(motor_id, command_type, value):
-    command = f'{motor_id} {command_type} {value}\n'
-    try:
-        print(f"DEBUG: Sending command: {command.strip()}")
-        ser.write(command.encode())
-        print("DEBUG: Command sent successfully.")
-        time.sleep(0.5)  # Wait a bit to allow Arduino to process the command
-        # Try to read feedback from Arduino
-        response = ser.readline().decode().strip()
-        if response:
-            print(f"DEBUG: Arduino responded: {response}")
-        else:
-            print("DEBUG: No response from Arduino.")
-    except Exception as e:
-        print(f"ERROR: Failed to send command - {e}")
+# Send a test message to the OpenRB-150
+def send_test_data(data):
+    command = f'{data}\n'
+    print(f"DEBUG: Sending data: {command.strip()}")
+    ser.write(command.encode())
 
-# Example: Send motor command
-try:
-    send_motor_command(1, 2, 100)  # Motor 1, Set velocity, 100 RPM
-except KeyboardInterrupt:
-    print("DEBUG: Keyboard interrupt received. Exiting...")
-finally:
-    print("DEBUG: Closing the serial port.")
-    ser.close()
+send_test_data("Hello OpenRB-150")
+ser.close()
