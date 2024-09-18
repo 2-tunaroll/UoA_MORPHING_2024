@@ -12,12 +12,12 @@ class PS4Controller:
         # Get the number of buttons on the controller
         self.num_buttons = self.joystick.get_numbuttons()
 
-        # Define button indices for easy reference
+        # Corrected button indices
         self.buttons = {
             'square': 3,  # Square button
             'x': 0,       # X button
-            'circle': 2,  # Circle button
-            'triangle': 1, # Triangle button
+            'circle': 1,  # Circle button (corrected)
+            'triangle': 2, # Triangle button (corrected)
             'l1': 4,      # L1 button
             'r1': 5,      # R1 button
             'l2': 6,      # L2 trigger (binary)
@@ -42,8 +42,8 @@ class PS4Controller:
         pygame.event.pump()
         x_axis_left = self.joystick.get_axis(0)  # Left joystick X-axis
         y_axis_left = self.joystick.get_axis(1)  # Left joystick Y-axis
-        x_axis_right = self.joystick.get_axis(2)  # Right joystick X-axis
-        y_axis_right = self.joystick.get_axis(5)  # Right joystick Y-axis
+        x_axis_right = self.joystick.get_axis(2)  # Right joystick X-axis (corrected)
+        y_axis_right = self.joystick.get_axis(5)  # Right joystick Y-axis (corrected)
         return x_axis_left, y_axis_left, x_axis_right, y_axis_right
 
     def get_button_input(self):
@@ -65,8 +65,8 @@ class PS4Controller:
         Returns the values of the L2 and R2 triggers (analog values between -1 and 1).
         """
         pygame.event.pump()
-        l2_trigger = self.joystick.get_axis(3)  # L2 trigger (analog)
-        r2_trigger = self.joystick.get_axis(4)  # R2 trigger (analog)
+        l2_trigger = self.joystick.get_axis(3)  # L2 trigger (corrected)
+        r2_trigger = self.joystick.get_axis(4)  # R2 trigger (corrected)
         return l2_trigger, r2_trigger
 
     def get_dpad_input(self):
