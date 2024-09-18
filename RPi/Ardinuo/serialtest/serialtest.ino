@@ -15,18 +15,22 @@ const uint8_t FRONT_PIVOT = 7;
 const uint8_t REAR_PIVOT = 8;
 const float DXL_PROTOCOL_VERSION = 2.0;
 
+String receivedData = "";
+
 void setup() {
-  Serial.begin(115200);  // For debugging
-  Serial2.begin(57600);  // Use Serial2 for communication with Raspberry Pi
+  Serial.begin(115200);  // Debugging
+  Serial2.begin(57600);  // Use Serial2 for Raspberry Pi communication
 }
 
 void loop() {
   if (Serial2.available()) {
-    int incomingByte = Serial2.read();
-    Serial.print("I received: ");
-    Serial.println(incomingByte, DEC);
-  } else {
-    Serial.println("DEBUG: No data available on Serial2.");
+    receivedData += (char)Serial2.read();  // Store received data
   }
-  delay(500);
+  
+  // Every 5 seconds, print the received data and clear the buffer
+  if (millis() % 5000 == 0 && receivedData.length() > 0) {
+    Serial.print("Received data: ");
+    Serial.println(receivedData);
+    receivedData = "";  // Clear the buffer after printing
+  }
 }

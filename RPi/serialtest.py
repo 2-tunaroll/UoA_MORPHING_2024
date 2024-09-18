@@ -1,15 +1,24 @@
 import serial
 import time
 
-# Open serial communication with the OpenRB-150 via /dev/ttyACM0
+# Initialize serial connection to Arduino
 ser = serial.Serial('/dev/ttyACM0', 57600, timeout=1)
-time.sleep(2)  # Wait for the Arduino to initialize
+time.sleep(2)  # Wait for Arduino to initialize
 
-# Send a test message to the OpenRB-150
+# Function to send data and read response
 def send_test_data(data):
     command = f'{data}\n'
-    print(f"DEBUG: Sending data: {command.strip()}")
-    ser.write(command.encode())
+    print(f"Sending: {command.strip()}")
+    ser.write(command.encode())  # Send the command
 
-send_test_data("Hello OpenRB-150")
+    # Wait and read response from Arduino
+    time.sleep(1)  # Give Arduino time to respond
+    response = ser.readline().decode().strip()
+    if response:
+        print(f"Received: {response}")
+    else:
+        print("No response from Arduino.")
+
+send_test_data("Hello from Pi")
+
 ser.close()
