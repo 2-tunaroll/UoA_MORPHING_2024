@@ -4,11 +4,7 @@ from dynamixel_sdk import *  # Uses Dynamixel SDK library
 motor_ids = [1, 2, 3, 4, 5, 6, 7, 8]
 
 # Control table addresses
-ADDR_TORQUE_ENABLE = 64
-ADDR_GOAL_POSITION = 116
-ADDR_PRESENT_POSITION = 132
-ADDR_OPERATING_MODE = 11
-ADDR_GOAL_VELOCITY = 104
+ADDR_MODEL_NUMBER = 0  # Model number is typically at address 0 in the control table
 
 # Protocol version
 PROTOCOL_VERSION = 2.0  # For Dynamixel X-Series motors
@@ -38,9 +34,15 @@ else:
 # Ping each motor and display the result
 for motor_id in motor_ids:
     try:
-        model_number, dxl_comm_result, dxl_error = packetHandler.pingGetModelNum(portHandler, motor_id)
+        dxl_comm_result, dxl_error = packetHandler.ping(portHandler, motor_id)
         if dxl_comm_result == COMM_SUCCESS:
-            print(f"Motor {motor_id} responded successfully. Model Number: {model_number}")
+            print(f"Motor {motor_id} responded successfully.")
+            # Try to read the motor model number
+            model_number, dxl_comm_result, dxl_error = packetHandler.read2ByteTxRx(portHandler, motor_id, ADDR_MODEL_NUMBER)
+            if dxl_comm_result == COMM_SUCCESS:
+                print(f"Motor {motor_id} model number: {model_number}")
+            else:
+                print(f"Failed to read model number for motor {motor_id}: {packetHandler.getTxRxResult(dxl_comm_result)}")
         elif dxl_error != 0:
             print(f"Error pinging motor {motor_id}: {packetHandler.getRxPacketError(dxl_error)}")
         else:
