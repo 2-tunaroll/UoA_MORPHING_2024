@@ -97,7 +97,7 @@ elif MY_DXL == 'XL320':
 PROTOCOL_VERSION            = 2.0
 
 # Factory default ID of all DYNAMIXEL is 1
-DXL_ID                      = 1
+DXL_ID                      = 2
 
 # Use the actual port assigned to the U2D2.
 # ex) Windows: "COM*", Linux: "/dev/ttyUSB*", Mac: "/dev/tty.usbserial-*"
