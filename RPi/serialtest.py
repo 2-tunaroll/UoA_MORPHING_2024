@@ -16,6 +16,13 @@ def send_motor_command(motor_id, command_type, value):
         print(f"DEBUG: Sending command: {command.strip()}")
         ser.write(command.encode())
         print("DEBUG: Command sent successfully.")
+        time.sleep(0.5)  # Wait a bit to allow Arduino to process the command
+        # Try to read feedback from Arduino
+        response = ser.readline().decode().strip()
+        if response:
+            print(f"DEBUG: Arduino responded: {response}")
+        else:
+            print("DEBUG: No response from Arduino.")
     except Exception as e:
         print(f"ERROR: Failed to send command - {e}")
 

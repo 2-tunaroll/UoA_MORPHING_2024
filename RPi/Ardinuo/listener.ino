@@ -53,7 +53,6 @@ void enableAllMotors() {
 }
 
 void loop() {
-  // Check if data is available from the Raspberry Pi
   if (DXL_SERIAL.available()) {
     // Read motor ID, command type, and value from the serial buffer
     uint8_t motor_id = DXL_SERIAL.read();      // Motor ID
@@ -62,14 +61,22 @@ void loop() {
 
     // Perform the appropriate action
     if (command_type == 1) {
-      // Set goal position
       setMotorPosition(motor_id, value);
     } else if (command_type == 2) {
-      // Set goal velocity
       setMotorVelocity(motor_id, value);
     }
+
+    // Send acknowledgment back to Raspberry Pi
+    DEBUG_SERIAL.print("Command received: ");
+    DEBUG_SERIAL.print("Motor ID: ");
+    DEBUG_SERIAL.print(motor_id);
+    DEBUG_SERIAL.print(", Command Type: ");
+    DEBUG_SERIAL.print(command_type);
+    DEBUG_SERIAL.print(", Value: ");
+    DEBUG_SERIAL.println(value);
   }
 }
+
 
 void setMotorPosition(uint8_t motor_id, int position) {
   dxl.setGoalPosition(motor_id, position, UNIT_DEGREE);  // Position in degrees
