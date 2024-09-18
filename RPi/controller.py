@@ -9,6 +9,9 @@ class PS4Controller:
         self.joystick = pygame.joystick.Joystick(0)
         self.joystick.init()
 
+        # Get the number of buttons on the controller
+        self.num_buttons = self.joystick.get_numbuttons()
+
         # Define button indices for easy reference
         self.buttons = {
             'square': 3,  # Square button
@@ -46,9 +49,15 @@ class PS4Controller:
     def get_button_input(self):
         """
         Returns a dictionary with the state (pressed or not) of each button.
+        Only includes buttons that exist on the controller.
         """
         pygame.event.pump()
-        button_states = {button: self.joystick.get_button(index) for button, index in self.buttons.items()}
+        button_states = {}
+        for button, index in self.buttons.items():
+            if index < self.num_buttons:
+                button_states[button] = self.joystick.get_button(index)
+            else:
+                button_states[button] = None  # Button doesn't exist on this controller
         return button_states
 
     def get_trigger_input(self):
