@@ -54,10 +54,19 @@ void enableAllMotors() {
 
 void loop() {
   if (DXL_SERIAL.available()) {
+    DEBUG_SERIAL.println("DEBUG: Serial data received.");
+
     // Read motor ID, command type, and value from the serial buffer
-    uint8_t motor_id = DXL_SERIAL.read();      // Motor ID
-    uint8_t command_type = DXL_SERIAL.read();  // Command type (1: position, 2: velocity)
-    int value = DXL_SERIAL.parseInt();         // Value (e.g., position or velocity)
+    uint8_t motor_id = DXL_SERIAL.read();
+    uint8_t command_type = DXL_SERIAL.read();
+    int value = DXL_SERIAL.parseInt();
+
+    DEBUG_SERIAL.print("Motor ID: ");
+    DEBUG_SERIAL.print(motor_id);
+    DEBUG_SERIAL.print(", Command Type: ");
+    DEBUG_SERIAL.print(command_type);
+    DEBUG_SERIAL.print(", Value: ");
+    DEBUG_SERIAL.println(value);
 
     // Perform the appropriate action
     if (command_type == 1) {
@@ -65,15 +74,8 @@ void loop() {
     } else if (command_type == 2) {
       setMotorVelocity(motor_id, value);
     }
-
-    // Send acknowledgment back to Raspberry Pi
-    DEBUG_SERIAL.print("Command received: ");
-    DEBUG_SERIAL.print("Motor ID: ");
-    DEBUG_SERIAL.print(motor_id);
-    DEBUG_SERIAL.print(", Command Type: ");
-    DEBUG_SERIAL.print(command_type);
-    DEBUG_SERIAL.print(", Value: ");
-    DEBUG_SERIAL.println(value);
+  } else {
+    DEBUG_SERIAL.println("DEBUG: No data available on Serial.");
   }
 }
 
