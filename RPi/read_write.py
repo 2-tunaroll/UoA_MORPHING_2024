@@ -91,7 +91,9 @@ elif MY_DXL == 'XL320':
     DXL_MINIMUM_POSITION_VALUE  = 0         # Refer to the CW Angle Limit of product eManual
     DXL_MAXIMUM_POSITION_VALUE  = 1023      # Refer to the CCW Angle Limit of product eManual
     BAUDRATE                    = 1000000   # Default Baudrate of XL-320 is 1Mbps
-
+else :
+    print("Please select the DYNAMIXEL model")
+    quit()
 # DYNAMIXEL Protocol Version (1.0 / 2.0)
 # https://emanual.robotis.com/docs/en/dxl/protocol2/
 PROTOCOL_VERSION            = 2.0
