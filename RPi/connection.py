@@ -11,13 +11,16 @@ PROTOCOL_VERSION = 2.0  # For Dynamixel X-Series (MX, AX, etc.)
 
 # Default settings
 DXL_ID = 1  # ID of your Dynamixel (update if using a different ID)
-BAUDRATE = 57600  # Baudrate for your motor
+BAUDRATE =  9600  # Baudrate for your motor
 DEVICENAME = '/dev/ttyUSB0'  # Port to which your Open RB 150 is connected (update if different)
 
 TORQUE_ENABLE = 1  # Value for enabling torque
 TORQUE_DISABLE = 0  # Value for disabling torque
-DXL_MIN_POSITION = 1000  # Example minimum position value (adjust based on your motor)
-DXL_MAX_POSITION = 3000  # Example maximum position value (adjust based on your motor)
+XL430_MIN_POSITION = 1024  # 90 degrees for hinge motor
+XL430_MAX_POSITION = 3072  # 270 degrees for hinge motor
+DXL_MIN_POSITION = 0  # 0 degrees for servo motor
+DXL_MAX_POSITION = 4095  # 360 degrees for servo motor
+
 
 # Initialize PortHandler and PacketHandler instances
 portHandler = PortHandler(DEVICENAME)
