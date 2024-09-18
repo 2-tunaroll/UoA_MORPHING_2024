@@ -1,26 +1,23 @@
-import time
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
+import time
 
 # Control table addresses
 ADDR_TORQUE_ENABLE = 64
 ADDR_GOAL_POSITION = 116
 ADDR_PRESENT_POSITION = 132
 
-# Protocol version
-PROTOCOL_VERSION = 2.0  # For Dynamixel X-Series (MX, AX, etc.)
+# Protocol version (2.0 for X-series motors like XL430 and XC330)
+PROTOCOL_VERSION = 2.0
 
 # Default settings
-DXL_ID = 1  # ID of your Dynamixel (update if using a different ID)
-BAUDRATE =  9600  # Baudrate for your motor
-DEVICENAME = '/dev/ttyACM0'  # Port to which your Open RB 150 is connected (update if different)
+DXL_ID = 254  # Broadcast ID to test if communication works
+BAUDRATE = 57600  # Try 57600 or 1000000
+DEVICENAME = '/dev/ttyACM0'  # Adjust if needed, e.g., /dev/ttyUSB0
 
 TORQUE_ENABLE = 1  # Value for enabling torque
 TORQUE_DISABLE = 0  # Value for disabling torque
-XL430_MIN_POSITION = 1024  # 90 degrees for hinge motor
-XL430_MAX_POSITION = 3072  # 270 degrees for hinge motor
-DXL_MIN_POSITION = 0  # 0 degrees for servo motor
-DXL_MAX_POSITION = 4095  # 360 degrees for servo motor
-
+DXL_MIN_POSITION = 0  # Min position value
+DXL_MAX_POSITION = 4095  # Max position value
 
 # Initialize PortHandler and PacketHandler instances
 portHandler = PortHandler(DEVICENAME)
