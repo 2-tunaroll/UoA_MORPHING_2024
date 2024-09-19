@@ -1,4 +1,4 @@
-from dynamixel_sdk import *  # Import Dynamixel SDK library
+from dynamixel_sdk import *  # Uses Dynamixel SDK library
 
 class DynamixelController:
     def __init__(self, device_name, baudrate, protocol_version=2.0):
@@ -80,6 +80,18 @@ class DynamixelController:
             print(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
             print(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+
+    def get_present_position(self, motor_id):
+        """Get the current position of the motor."""
+        PRESENT_POSITION_ADDR = 132  # Present position address in Control Table
+
+        position, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
+        if result != COMM_SUCCESS:
+            print(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            print(f"Error getting position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+
+        return position
 
     def close(self):
         """Close the port and clean up resources."""
