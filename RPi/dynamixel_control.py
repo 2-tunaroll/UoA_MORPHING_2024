@@ -1,81 +1,42 @@
-from controller import PS4Controller
-import os
+from dynamixel_sdk import *  # Import Dynamixel SDK library
 
-if os.name == 'nt':
-    import msvcrt
-    def getch():
-        return msvcrt.getch().decode()
-else:
-    import sys, tty, termios
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    def getch():
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
+class DynamixelController:
+    def __init__(self, device_name, baudrate, protocol_version=2.0):
+        self.port_handler = PortHandler(device_name)
+        self.packet_handler = PacketHandler(protocol_version)
 
-from dynamixel_sdk import * # Uses Dynamixel SDK library
-import time
+        if not self.port_handler.openPort():
+            raise Exception("Failed to open the port")
 
-def main():
-    try:
-        # Initialize PS4 controller and Dynamixel controller
-        ps4_controller = PS4Controller()
-        dynamixel = DynamixelController(device_name='/dev/ttyACM0', baudrate=57600)
+        if not self.port_handler.setBaudRate(baudrate):
+            raise Exception("Failed to change the baudrate")
 
-        emergency_stop = False  # Track emergency stop state
+        self.dxl_id1 = 1  # First motor ID
+        self.dxl_id2 = 2  # Second motor ID
+        self.ADDR_TORQUE_ENABLE = 64
+        self.ADDR_GOAL_POSITION = 116
+        self.ADDR_PRESENT_POSITION = 132
+        self.TORQUE_ENABLE = 1
+        self.TORQUE_DISABLE = 0
 
-        while True:
-            # Get joystick inputs
-            x_axis_left, y_axis_left, x_axis_right, y_axis_right = ps4_controller.get_joystick_input()
+        # Enable torque on both motors
+        self._enable_torque(self.dxl_id1)
+        self._enable_torque(self.dxl_id2)
 
-            # Get button inputs
-            button_states = ps4_controller.get_button_input()
+    def _enable_torque(self, dxl_id):
+        self.packet_handler.write1ByteTxRx(self.port_handler, dxl_id, self.ADDR_TORQUE_ENABLE, self.TORQUE_ENABLE)
 
-            # Convert joystick y-axis input into Dynamixel goal positions
-            goal_position1 = convert_joystick_to_position(y_axis_left)
-            goal_position2 = convert_joystick_to_position(y_axis_left)
+    def disable_torque(self):
+        self.packet_handler.write1ByteTxRx(self.port_handler, self.dxl_id1, self.ADDR_TORQUE_ENABLE, self.TORQUE_DISABLE)
+        self.packet_handler.write1ByteTxRx(self.port_handler, self.dxl_id2, self.ADDR_TORQUE_ENABLE, self.TORQUE_DISABLE)
 
-            # Send goal position to the Dynamixel motors only if emergency stop is NOT activated
-            if not emergency_stop:
-                dynamixel.set_goal_position(dynamixel.dxl_id1, goal_position1)
-                dynamixel.set_goal_position(dynamixel.dxl_id2, goal_position2)
+    def set_goal_position(self, motor_id, position):
+        self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, self.ADDR_GOAL_POSITION, position)
 
-            # Print present positions for debugging
-            present_position1 = dynamixel.get_present_position(dynamixel.dxl_id1)
-            present_position2 = dynamixel.get_present_position(dynamixel.dxl_id2)
-            print(f"Motor1 - GoalPos: {goal_position1}, PresentPos: {present_position1}")
-            print(f"Motor2 - GoalPos: {goal_position2}, PresentPos: {present_position2}")
+    def get_present_position(self, motor_id):
+        present_position, _, _ = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, self.ADDR_PRESENT_POSITION)
+        return present_position
 
-            # Emergency stop using Circle button
-            if button_states['circle']:  # Circle button
-                print("Emergency Stop Activated! Disabling motors.")
-                emergency_stop = True
-                dynamixel.set_goal_position(dynamixel.dxl_id1, 0)
-                dynamixel.set_goal_position(dynamixel.dxl_id2, 0)
-                dynamixel.disable_torque()
-
-            # Reactivate motors after emergency stop if Circle button is released
-            if not button_states['circle'] and emergency_stop:
-                print("Emergency Stop Deactivated! Re-enabling motors.")
-                dynamixel._enable_torque(dynamixel.dxl_id1)
-                dynamixel._enable_torque(dynamixel.dxl_id2)
-                emergency_stop = False
-
-            time.sleep(0.1)  # Small delay to reduce CPU usage
-
-    except KeyboardInterrupt:
-        print("\nTerminating program...")
-
-    finally:
-        # Safely close the controller and Dynamixel connections
-        ps4_controller.close()
-        dynamixel.close()
-        print("Shutdown complete.")
-
-if __name__ == "__main__":
-    main()
-
+    def close(self):
+        self.disable_torque()
+        self.port_handler.closePort()
