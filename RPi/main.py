@@ -14,7 +14,8 @@ REAR_PIVOT = 8
 MAX_RPM = 100  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
 SMOOTHNESS = 0.5  # Controls how smoothly the speed increases
-MAX_PIVOT_ANGLE = 90  # Limit the pivot range to 90 degrees in each direction
+START_POSITION = 180  # Start position of the pivots (180 degrees)
+MAX_PIVOT_RANGE = 90  # Limit the pivot movement to a maximum of 90 degrees from the starting position
 
 # Adjust the velocity based on the right trigger input
 def adjust_wheg_speed(trigger_value, current_rpm):
@@ -35,9 +36,12 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
         dynamixel.set_goal_velocity(wheg_id, rpm)
 
 # Set pivots to specific positions while ensuring safety limits
-def set_pivot_positions(dynamixel, front_angle, rear_angle):
-    front_angle = max(min(front_angle, MAX_PIVOT_ANGLE), -MAX_PIVOT_ANGLE)
-    rear_angle = max(min(rear_angle, MAX_PIVOT_ANGLE), -MAX_PIVOT_ANGLE)
+def set_pivot_positions(dynamixel, front_offset, rear_offset):
+    # The pivots will be set relative to the START_POSITION (180 degrees)
+    front_angle = max(min(START_POSITION + front_offset, START_POSITION + MAX_PIVOT_RANGE), START_POSITION - MAX_PIVOT_RANGE)
+    rear_angle = max(min(START_POSITION + rear_offset, START_POSITION + MAX_PIVOT_RANGE), START_POSITION - MAX_PIVOT_RANGE)
+    
+    # Set the pivot positions ensuring they stay within limits
     dynamixel.set_goal_position(FRONT_PIVOT, front_angle)
     dynamixel.set_goal_position(REAR_PIVOT, rear_angle)
 
@@ -45,28 +49,28 @@ def set_pivot_positions(dynamixel, front_angle, rear_angle):
 def gait_1(dynamixel, wheg_rpm):
     print("Executing Gait 1")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
-    set_pivot_positions(dynamixel, 90, 90)  # Pivots move to the 90 degree position
+    set_pivot_positions(dynamixel, 0, 0)  # Pivots stay in the starting position (180 degrees)
 
 def gait_2(dynamixel, wheg_rpm):
     print("Executing Gait 2")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm / 2)  # Slower whegs
-    set_pivot_positions(dynamixel, 45, 45)  # Pivots move to the 45 degree position
+    set_pivot_positions(dynamixel, -45, 45)  # Pivots move to 135 (front) and 225 (rear) degrees
 
 def gait_3(dynamixel, wheg_rpm):
     print("Executing Gait 3")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
-    set_pivot_positions(dynamixel, -45, -45)  # Pivots move to -45 degrees
+    set_pivot_positions(dynamixel, 45, -45)  # Pivots move to 225 (front) and 135 (rear) degrees
 
 def gait_4(dynamixel, wheg_rpm):
     print("Executing Gait 4")
-    set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction
-    set_pivot_positions(dynamixel, 90, 90)  # Pivots move to the 90 degree position
+    set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
+    set_pivot_positions(dynamixel, 0, 0)  # Pivots remain at the start position (180 degrees)
 
 # Emergency stop function
 def emergency_stop(dynamixel):
     print("Emergency Stop Activated! Stopping all motors.")
     set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
-    set_pivot_positions(dynamixel, 0, 0)  # Set pivots to neutral (0 degrees)
+    set_pivot_positions(dynamixel, 0, 0)  # Set pivots back to the neutral start position (180 degrees)
 
 # Main function integrating the PS4 controller and Dynamixel SDK
 def main():
