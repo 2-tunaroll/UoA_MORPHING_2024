@@ -1,0 +1,1655 @@
+2024-09-19 12:03:53,290 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:53,291 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:53,326 Motor Positions:
+LR_WHEG: 3311 degrees
+LM_WHEG: 1341 degrees
+LF_WHEG: 1556 degrees
+RR_WHEG: 3903 degrees
+RM_WHEG: 3811 degrees
+RF_WHEG: 3784 degrees
+2024-09-19 12:03:53,459 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:53,460 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:53,593 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:53,593 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:53,726 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:53,727 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:53,860 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:53,860 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:53,993 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:53,993 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:54,126 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:54,127 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:54,260 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:54,260 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:54,393 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:54,393 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:54,428 Motor Positions:
+LR_WHEG: 3311 degrees
+LM_WHEG: 1341 degrees
+LF_WHEG: 1556 degrees
+RR_WHEG: 3903 degrees
+RM_WHEG: 3811 degrees
+RF_WHEG: 3784 degrees
+2024-09-19 12:03:54,562 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:54,562 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:54,695 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:54,695 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:54,829 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:54,829 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:54,962 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:54,962 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:55,095 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:55,095 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:55,228 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:55,229 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:55,362 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:55,362 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:55,495 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:55,495 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:55,530 Motor Positions:
+LR_WHEG: 3311 degrees
+LM_WHEG: 1341 degrees
+LF_WHEG: 1556 degrees
+RR_WHEG: 3903 degrees
+RM_WHEG: 3811 degrees
+RF_WHEG: 3784 degrees
+2024-09-19 12:03:55,664 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:55,664 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:55,797 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:55,797 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:55,930 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:55,931 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:56,064 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:56,064 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:56,197 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:56,197 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:56,330 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:56,330 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:56,464 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:56,464 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:56,597 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:56,597 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:56,632 Motor Positions:
+LR_WHEG: 3311 degrees
+LM_WHEG: 1341 degrees
+LF_WHEG: 1556 degrees
+RR_WHEG: 3903 degrees
+RM_WHEG: 3811 degrees
+RF_WHEG: 3784 degrees
+2024-09-19 12:03:56,765 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:56,766 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:56,899 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:56,899 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:57,032 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:57,032 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:57,165 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:57,165 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:57,298 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:57,299 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:57,432 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:57,432 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:57,566 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:57,567 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:57,701 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:57,701 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:57,737 Motor Positions:
+LR_WHEG: 3353 degrees
+LM_WHEG: 1383 degrees
+LF_WHEG: 1599 degrees
+RR_WHEG: 3945 degrees
+RM_WHEG: 3852 degrees
+RF_WHEG: 3827 degrees
+2024-09-19 12:03:57,870 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:57,871 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,004 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:58,004 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,137 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:58,137 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,271 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:03:58,271 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,404 L2 Trigger: -1.0, R2 Trigger: -0.2784423828125
+2024-09-19 12:03:58,405 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,538 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:58,538 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,671 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:58,671 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,804 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:58,805 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:58,840 Motor Positions:
+LR_WHEG: 3458 degrees
+LM_WHEG: 1491 degrees
+LF_WHEG: 1704 degrees
+RR_WHEG: 4052 degrees
+RM_WHEG: 3959 degrees
+RF_WHEG: 3932 degrees
+2024-09-19 12:03:58,973 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:58,974 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,107 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:59,107 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,240 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:59,240 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,373 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:59,374 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,507 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:59,507 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,640 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:59,640 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,773 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:59,773 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,907 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:03:59,907 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:03:59,942 Motor Positions:
+LR_WHEG: 3526 degrees
+LM_WHEG: 1557 degrees
+LF_WHEG: 1773 degrees
+RR_WHEG: 4125 degrees
+RM_WHEG: 4028 degrees
+RF_WHEG: 4001 degrees
+2024-09-19 12:04:00,075 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:00,076 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:00,209 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:00,209 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:00,342 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:00,343 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:00,476 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:00,476 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:00,609 L2 Trigger: -1.0, R2 Trigger: 0.043121337890625
+2024-09-19 12:04:00,609 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:00,742 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:00,743 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:00,876 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:00,876 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,010 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,010 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,045 Motor Positions:
+LR_WHEG: 3540 degrees
+LM_WHEG: 1571 degrees
+LF_WHEG: 1787 degrees
+RR_WHEG: 4137 degrees
+RM_WHEG: 4041 degrees
+RF_WHEG: 4014 degrees
+2024-09-19 12:04:01,178 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,178 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,311 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,312 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,445 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,445 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,578 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,578 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,712 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,712 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,845 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,845 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:01,979 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:01,979 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:02,112 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:02,112 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:02,147 Motor Positions:
+LR_WHEG: 3601 degrees
+LM_WHEG: 1632 degrees
+LF_WHEG: 1847 degrees
+RR_WHEG: 4198 degrees
+RM_WHEG: 4108 degrees
+RF_WHEG: 4080 degrees
+2024-09-19 12:04:02,280 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:02,281 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:02,414 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:02,414 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:02,547 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:02,548 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:02,681 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:02,681 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:02,815 L2 Trigger: -1.0, R2 Trigger: 0.27056884765625
+2024-09-19 12:04:02,815 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:02,949 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:02,949 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:03,084 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:03,084 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:03,218 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:03,218 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:03,254 Motor Positions:
+LR_WHEG: 3725 degrees
+LM_WHEG: 1757 degrees
+LF_WHEG: 1970 degrees
+RR_WHEG: 4321 degrees
+RM_WHEG: 4231 degrees
+RF_WHEG: 4206 degrees
+2024-09-19 12:04:03,388 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:03,388 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:03,521 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:03,521 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:03,654 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:03,654 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:03,788 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:03,788 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:03,921 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:03,921 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:04,055 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:04,055 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:04,188 L2 Trigger: -1.0, R2 Trigger: -0.60784912109375
+2024-09-19 12:04:04,188 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:04,321 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:04,321 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:04,356 Motor Positions:
+LR_WHEG: 3812 degrees
+LM_WHEG: 1845 degrees
+LF_WHEG: 2060 degrees
+RR_WHEG: 4408 degrees
+RM_WHEG: 4318 degrees
+RF_WHEG: 4295 degrees
+2024-09-19 12:04:04,490 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:04,490 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:04,623 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:04,623 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:04,756 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:04,757 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:04,890 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:04,890 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,023 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:05,024 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,157 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:05,157 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,290 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:05,290 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,424 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:05,424 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,459 Motor Positions:
+LR_WHEG: 3925 degrees
+LM_WHEG: 1958 degrees
+LF_WHEG: 2171 degrees
+RR_WHEG: 4518 degrees
+RM_WHEG: 4431 degrees
+RF_WHEG: 4408 degrees
+2024-09-19 12:04:05,592 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:05,592 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,726 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:05,726 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,859 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:05,859 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:05,993 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:05,993 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:06,126 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:06,127 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:06,260 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:06,260 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:06,393 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:06,394 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:06,527 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:06,527 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:06,562 Motor Positions:
+LR_WHEG: 4045 degrees
+LM_WHEG: 2077 degrees
+LF_WHEG: 2292 degrees
+RR_WHEG: 4639 degrees
+RM_WHEG: 4550 degrees
+RF_WHEG: 4527 degrees
+2024-09-19 12:04:06,695 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:06,695 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:06,829 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:06,829 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:06,962 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:06,962 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:07,096 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:07,096 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:07,229 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:07,229 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:07,362 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:07,363 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:07,496 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:07,496 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:07,629 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:07,630 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:07,664 Motor Positions:
+LR_WHEG: 4097 degrees
+LM_WHEG: 2129 degrees
+LF_WHEG: 2344 degrees
+RR_WHEG: 4691 degrees
+RM_WHEG: 4600 degrees
+RF_WHEG: 4576 degrees
+2024-09-19 12:04:08,670 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4602 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:09,710 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4602 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:10,751 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4603 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:11,792 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4603 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:12,833 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4603 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:13,874 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4603 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:14,916 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4603 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:15,855 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:15,855 Button States: {'square': 0, 'x': 1, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:15,990 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:15,990 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:16,025 Motor Positions:
+LR_WHEG: 4100 degrees
+LM_WHEG: 2131 degrees
+LF_WHEG: 2346 degrees
+RR_WHEG: 4694 degrees
+RM_WHEG: 4602 degrees
+RF_WHEG: 4578 degrees
+2024-09-19 12:04:16,160 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:16,160 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:16,294 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:16,294 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:16,429 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:16,429 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:16,564 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:16,564 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:16,698 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:16,699 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:16,833 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:16,834 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:16,968 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:16,969 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:17,103 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:17,103 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:17,138 Motor Positions:
+LR_WHEG: 4114 degrees
+LM_WHEG: 2145 degrees
+LF_WHEG: 2360 degrees
+RR_WHEG: 4707 degrees
+RM_WHEG: 4616 degrees
+RF_WHEG: 4593 degrees
+2024-09-19 12:04:17,273 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:17,273 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:17,407 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:17,408 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:17,543 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:17,543 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:17,677 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:17,678 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:17,812 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:17,812 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:17,947 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:17,947 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:18,082 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:18,082 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:18,216 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:18,216 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:18,252 Motor Positions:
+LR_WHEG: 4193 degrees
+LM_WHEG: 2226 degrees
+LF_WHEG: 2437 degrees
+RR_WHEG: 4786 degrees
+RM_WHEG: 4695 degrees
+RF_WHEG: 4671 degrees
+2024-09-19 12:04:18,386 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:18,387 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:18,521 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:18,521 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:18,656 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:18,657 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:19,330 Motor Positions:
+LR_WHEG: 4256 degrees
+LM_WHEG: 2287 degrees
+LF_WHEG: 2502 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4760 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:20,372 Motor Positions:
+LR_WHEG: 4257 degrees
+LM_WHEG: 2288 degrees
+LF_WHEG: 2501 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4760 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:21,415 Motor Positions:
+LR_WHEG: 4257 degrees
+LM_WHEG: 2288 degrees
+LF_WHEG: 2501 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4759 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:22,458 Motor Positions:
+LR_WHEG: 4256 degrees
+LM_WHEG: 2288 degrees
+LF_WHEG: 2501 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4760 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:23,501 Motor Positions:
+LR_WHEG: 4256 degrees
+LM_WHEG: 2288 degrees
+LF_WHEG: 2501 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4760 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:24,545 Motor Positions:
+LR_WHEG: 4256 degrees
+LM_WHEG: 2287 degrees
+LF_WHEG: 2501 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4759 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:25,589 Motor Positions:
+LR_WHEG: 4257 degrees
+LM_WHEG: 2288 degrees
+LF_WHEG: 2501 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4759 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:26,633 Motor Positions:
+LR_WHEG: 4257 degrees
+LM_WHEG: 2288 degrees
+LF_WHEG: 2501 degrees
+RR_WHEG: 4848 degrees
+RM_WHEG: 4760 degrees
+RF_WHEG: 4734 degrees
+2024-09-19 12:04:26,768 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:26,768 Button States: {'square': 0, 'x': 1, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:26,903 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:26,904 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:27,038 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:27,039 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:27,173 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:27,174 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:27,308 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:27,309 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:27,444 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:27,444 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:27,579 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:27,579 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:27,715 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:27,715 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:27,751 Motor Positions:
+LR_WHEG: 4366 degrees
+LM_WHEG: 2402 degrees
+LF_WHEG: 2612 degrees
+RR_WHEG: 4959 degrees
+RM_WHEG: 4873 degrees
+RF_WHEG: 4845 degrees
+2024-09-19 12:04:27,886 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:27,886 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,020 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:28,020 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,154 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:28,154 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,288 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:28,288 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,422 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:28,422 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,556 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:28,556 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,690 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:28,690 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,824 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:28,824 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:28,859 Motor Positions:
+LR_WHEG: 4529 degrees
+LM_WHEG: 2567 degrees
+LF_WHEG: 2775 degrees
+RR_WHEG: 5125 degrees
+RM_WHEG: 5048 degrees
+RF_WHEG: 5014 degrees
+2024-09-19 12:04:28,993 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:28,994 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,127 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:29,128 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,262 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:29,262 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,396 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:29,396 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,530 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:29,530 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,664 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:29,664 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,798 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:29,798 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,932 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:29,932 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:29,967 Motor Positions:
+LR_WHEG: 4749 degrees
+LM_WHEG: 2793 degrees
+LF_WHEG: 3001 degrees
+RR_WHEG: 5351 degrees
+RM_WHEG: 5260 degrees
+RF_WHEG: 5231 degrees
+2024-09-19 12:04:30,101 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:30,101 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:30,235 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:30,235 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:30,369 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:30,369 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:30,503 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:30,503 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:30,637 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:30,637 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:30,771 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:30,771 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:30,905 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:30,905 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:31,039 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:31,039 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:31,074 Motor Positions:
+LR_WHEG: 5037 degrees
+LM_WHEG: 3082 degrees
+LF_WHEG: 3288 degrees
+RR_WHEG: 5642 degrees
+RM_WHEG: 5548 degrees
+RF_WHEG: 5517 degrees
+2024-09-19 12:04:31,208 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:31,208 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:31,342 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:31,342 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:31,476 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:31,476 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:31,610 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:31,610 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:31,744 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:31,744 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:31,877 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:31,878 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,012 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,012 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,146 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,146 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,181 Motor Positions:
+LR_WHEG: 5398 degrees
+LM_WHEG: 3440 degrees
+LF_WHEG: 3644 degrees
+RR_WHEG: 6003 degrees
+RM_WHEG: 5906 degrees
+RF_WHEG: 5872 degrees
+2024-09-19 12:04:32,315 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,315 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,449 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,449 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,583 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,583 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,717 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,717 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,852 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,852 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:32,987 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:32,988 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:33,123 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:33,123 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:33,258 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:33,258 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:33,294 Motor Positions:
+LR_WHEG: 5831 degrees
+LM_WHEG: 3870 degrees
+LF_WHEG: 4078 degrees
+RR_WHEG: 6433 degrees
+RM_WHEG: 6338 degrees
+RF_WHEG: 6300 degrees
+2024-09-19 12:04:33,428 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:33,428 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:33,562 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:33,562 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:33,696 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:33,696 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:33,830 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:33,830 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:33,964 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:33,964 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:34,098 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:34,098 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:34,232 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:34,232 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:34,366 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:34,367 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:34,401 Motor Positions:
+LR_WHEG: 6331 degrees
+LM_WHEG: 4369 degrees
+LF_WHEG: 4579 degrees
+RR_WHEG: 6928 degrees
+RM_WHEG: 6835 degrees
+RF_WHEG: 6798 degrees
+2024-09-19 12:04:34,535 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:34,536 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:34,669 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:34,670 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:34,804 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:34,804 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:34,938 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:34,938 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:35,072 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:35,072 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:35,206 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:35,206 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:35,340 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:35,340 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:35,474 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:35,475 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:35,509 Motor Positions:
+LR_WHEG: 6900 degrees
+LM_WHEG: 4932 degrees
+LF_WHEG: 5146 degrees
+RR_WHEG: 7493 degrees
+RM_WHEG: 7405 degrees
+RF_WHEG: 7369 degrees
+2024-09-19 12:04:35,643 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:35,643 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:35,777 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:35,778 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:35,912 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:35,912 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:36,046 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:36,046 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:36,180 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:36,180 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:36,314 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:36,314 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:36,448 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:36,448 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:36,582 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:36,583 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:36,617 Motor Positions:
+LR_WHEG: 7539 degrees
+LM_WHEG: 5565 degrees
+LF_WHEG: 5784 degrees
+RR_WHEG: 8123 degrees
+RM_WHEG: 8039 degrees
+RF_WHEG: 8006 degrees
+2024-09-19 12:04:36,751 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:36,752 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:36,886 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:36,886 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,020 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,020 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,154 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,154 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,288 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,289 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,423 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,423 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,557 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,557 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,691 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,691 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,726 Motor Positions:
+LR_WHEG: 8247 degrees
+LM_WHEG: 6270 degrees
+LF_WHEG: 6489 degrees
+RR_WHEG: 8829 degrees
+RM_WHEG: 8746 degrees
+RF_WHEG: 8717 degrees
+2024-09-19 12:04:37,860 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,860 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:37,994 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:37,994 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:38,128 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:38,129 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:38,263 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:38,263 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:38,398 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:38,398 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:38,534 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:38,534 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:38,669 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:38,669 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:38,804 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:38,804 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:38,840 Motor Positions:
+LR_WHEG: 9015 degrees
+LM_WHEG: 7051 degrees
+LF_WHEG: 7263 degrees
+RR_WHEG: 9611 degrees
+RM_WHEG: 9522 degrees
+RF_WHEG: 9487 degrees
+2024-09-19 12:04:38,975 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:38,975 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,109 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:39,109 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,243 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:39,243 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,377 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:39,378 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,511 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:39,512 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,646 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:39,646 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,780 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:39,780 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,915 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:39,915 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:39,950 Motor Positions:
+LR_WHEG: 9859 degrees
+LM_WHEG: 7889 degrees
+LF_WHEG: 8098 degrees
+RR_WHEG: 10452 degrees
+RM_WHEG: 10361 degrees
+RF_WHEG: 10319 degrees
+2024-09-19 12:04:40,084 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:40,084 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:40,218 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:40,218 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:40,352 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:40,353 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:40,487 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:40,487 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:40,621 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:40,621 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:40,755 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:40,755 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:40,889 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:40,890 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,024 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,024 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,059 Motor Positions:
+LR_WHEG: 10715 degrees
+LM_WHEG: 8740 degrees
+LF_WHEG: 8957 degrees
+RR_WHEG: 11298 degrees
+RM_WHEG: 11215 degrees
+RF_WHEG: 11170 degrees
+2024-09-19 12:04:41,193 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,193 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,327 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,327 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,462 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,462 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,596 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,596 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,730 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,731 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,864 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,865 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:41,999 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:41,999 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:42,133 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:42,134 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:42,168 Motor Positions:
+LR_WHEG: 11571 degrees
+LM_WHEG: 9584 degrees
+LF_WHEG: 9811 degrees
+RR_WHEG: 12143 degrees
+RM_WHEG: 12064 degrees
+RF_WHEG: 12027 degrees
+2024-09-19 12:04:42,303 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:42,303 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:42,437 L2 Trigger: -1.0, R2 Trigger: -0.60784912109375
+2024-09-19 12:04:42,437 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:42,571 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:42,572 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:42,706 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:42,706 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:42,840 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:42,840 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:42,974 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:42,974 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:43,108 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:43,108 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:43,243 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:43,243 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:43,278 Motor Positions:
+LR_WHEG: 12406 degrees
+LM_WHEG: 10420 degrees
+LF_WHEG: 10646 degrees
+RR_WHEG: 12979 degrees
+RM_WHEG: 12901 degrees
+RF_WHEG: 12866 degrees
+2024-09-19 12:04:43,412 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:43,412 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:43,546 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:43,547 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:43,681 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:43,681 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:43,815 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:43,815 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:43,950 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:43,950 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:44,085 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:44,086 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:44,221 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:44,222 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:44,357 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:44,357 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:44,392 Motor Positions:
+LR_WHEG: 13169 degrees
+LM_WHEG: 11195 degrees
+LF_WHEG: 11414 degrees
+RR_WHEG: 13755 degrees
+RM_WHEG: 13669 degrees
+RF_WHEG: 13630 degrees
+2024-09-19 12:04:44,526 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:44,527 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:44,661 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:44,661 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:44,795 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:44,795 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:44,929 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:44,930 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:45,064 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:45,064 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:45,198 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:45,198 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:45,332 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:45,333 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:45,467 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:45,467 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:45,502 Motor Positions:
+LR_WHEG: 13872 degrees
+LM_WHEG: 11895 degrees
+LF_WHEG: 12109 degrees
+RR_WHEG: 14458 degrees
+RM_WHEG: 14369 degrees
+RF_WHEG: 14324 degrees
+2024-09-19 12:04:45,636 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:45,636 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:45,770 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:45,771 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:45,905 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:45,905 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:46,039 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:46,039 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:46,174 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:46,174 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:46,308 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:46,308 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:46,443 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:46,443 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:46,577 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:46,577 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:46,612 Motor Positions:
+LR_WHEG: 14508 degrees
+LM_WHEG: 12527 degrees
+LF_WHEG: 12750 degrees
+RR_WHEG: 15086 degrees
+RM_WHEG: 15001 degrees
+RF_WHEG: 14955 degrees
+2024-09-19 12:04:46,746 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:46,747 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:46,881 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:46,881 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,016 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,016 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,150 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,150 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,285 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,285 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,419 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,419 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,554 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,554 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,688 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,688 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,723 Motor Positions:
+LR_WHEG: 15072 degrees
+LM_WHEG: 13086 degrees
+LF_WHEG: 13312 degrees
+RR_WHEG: 15646 degrees
+RM_WHEG: 15566 degrees
+RF_WHEG: 15522 degrees
+2024-09-19 12:04:47,858 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,858 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:47,992 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:47,992 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:48,126 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:48,127 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:48,261 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:48,261 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:48,396 L2 Trigger: -1.0, R2 Trigger: -0.85882568359375
+2024-09-19 12:04:48,396 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:48,530 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:48,530 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:48,665 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:48,665 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:48,799 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:48,799 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:48,834 Motor Positions:
+LR_WHEG: 15569 degrees
+LM_WHEG: 13573 degrees
+LF_WHEG: 13807 degrees
+RR_WHEG: 16134 degrees
+RM_WHEG: 16059 degrees
+RF_WHEG: 16017 degrees
+2024-09-19 12:04:48,969 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:48,969 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,103 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:49,104 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,238 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:49,238 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,372 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:49,372 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,508 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:49,508 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,644 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:49,644 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,779 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:49,780 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,915 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:49,916 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:49,952 Motor Positions:
+LR_WHEG: 16045 degrees
+LM_WHEG: 14051 degrees
+LF_WHEG: 14284 degrees
+RR_WHEG: 16614 degrees
+RM_WHEG: 16540 degrees
+RF_WHEG: 16502 degrees
+2024-09-19 12:04:50,086 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:50,086 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:50,221 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:50,221 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:50,355 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:50,355 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:50,490 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:50,490 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:50,625 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:50,625 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:50,759 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:50,760 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:50,894 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:50,894 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:51,028 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:51,029 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:51,063 Motor Positions:
+LR_WHEG: 16588 degrees
+LM_WHEG: 14594 degrees
+LF_WHEG: 14826 degrees
+RR_WHEG: 17153 degrees
+RM_WHEG: 17080 degrees
+RF_WHEG: 17040 degrees
+2024-09-19 12:04:51,198 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:51,198 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:51,332 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:51,332 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:51,467 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:51,467 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:51,601 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:51,601 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:51,736 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:51,736 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:51,870 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:51,870 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,005 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,005 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,139 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,139 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,174 Motor Positions:
+LR_WHEG: 17191 degrees
+LM_WHEG: 15208 degrees
+LF_WHEG: 15433 degrees
+RR_WHEG: 17767 degrees
+RM_WHEG: 17688 degrees
+RF_WHEG: 17644 degrees
+2024-09-19 12:04:52,309 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,309 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,443 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,443 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,578 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,578 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,712 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,713 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,847 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,847 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:52,981 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:52,982 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:53,116 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:53,116 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:53,250 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:53,251 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:53,285 Motor Positions:
+LR_WHEG: 17876 degrees
+LM_WHEG: 15889 degrees
+LF_WHEG: 16112 degrees
+RR_WHEG: 18453 degrees
+RM_WHEG: 18368 degrees
+RF_WHEG: 18319 degrees
+2024-09-19 12:04:53,420 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:53,420 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:53,555 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:53,555 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:53,689 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:53,689 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:53,824 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:53,824 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:53,958 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:53,959 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:54,093 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:54,093 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:54,228 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:54,228 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:54,362 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:54,362 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:54,397 Motor Positions:
+LR_WHEG: 18632 degrees
+LM_WHEG: 16642 degrees
+LF_WHEG: 16871 degrees
+RR_WHEG: 19201 degrees
+RM_WHEG: 19121 degrees
+RF_WHEG: 19069 degrees
+2024-09-19 12:04:54,532 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:54,532 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:54,666 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:54,666 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:54,801 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:54,801 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:54,935 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:54,935 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:55,071 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:55,071 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:55,207 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:55,207 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:55,343 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:55,344 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:55,479 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:55,479 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:55,514 Motor Positions:
+LR_WHEG: 19461 degrees
+LM_WHEG: 17461 degrees
+LF_WHEG: 17697 degrees
+RR_WHEG: 20024 degrees
+RM_WHEG: 19949 degrees
+RF_WHEG: 19901 degrees
+2024-09-19 12:04:55,650 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:55,651 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:55,786 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:55,786 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:55,922 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:55,922 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:56,058 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:56,058 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:56,193 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:56,194 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:56,330 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:56,330 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:56,466 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:56,466 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:56,601 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:56,602 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:56,637 Motor Positions:
+LR_WHEG: 20322 degrees
+LM_WHEG: 18319 degrees
+LF_WHEG: 18558 degrees
+RR_WHEG: 20881 degrees
+RM_WHEG: 20812 degrees
+RF_WHEG: 20769 degrees
+2024-09-19 12:04:56,772 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:56,773 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:56,908 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:56,908 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:57,044 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:57,045 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:57,180 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:57,181 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:57,316 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:57,316 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:57,453 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:57,453 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:57,588 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:57,589 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:57,724 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:57,725 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:57,760 Motor Positions:
+LR_WHEG: 21175 degrees
+LM_WHEG: 19183 degrees
+LF_WHEG: 19416 degrees
+RR_WHEG: 21742 degrees
+RM_WHEG: 21668 degrees
+RF_WHEG: 21619 degrees
+2024-09-19 12:04:57,895 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:57,896 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,031 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:58,032 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,168 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:58,168 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,303 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:58,304 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,439 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:58,440 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,575 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:58,576 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,711 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:04:58,712 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,848 L2 Trigger: -1.0, R2 Trigger: 0.294097900390625
+2024-09-19 12:04:58,848 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:58,884 Motor Positions:
+LR_WHEG: 22040 degrees
+LM_WHEG: 20043 degrees
+LF_WHEG: 20273 degrees
+RR_WHEG: 22609 degrees
+RM_WHEG: 22527 degrees
+RF_WHEG: 22473 degrees
+2024-09-19 12:04:59,019 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,019 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,153 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,154 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,288 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,288 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,423 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,423 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,558 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,558 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,692 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,693 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,827 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,827 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,962 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:04:59,962 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:04:59,997 Motor Positions:
+LR_WHEG: 22869 degrees
+LM_WHEG: 20871 degrees
+LF_WHEG: 21105 degrees
+RR_WHEG: 23429 degrees
+RM_WHEG: 23354 degrees
+RF_WHEG: 23297 degrees
+2024-09-19 12:05:00,132 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:00,132 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:00,266 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:00,267 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:00,401 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:00,401 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:00,536 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:00,536 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:01,007 Motor Positions:
+LR_WHEG: 23417 degrees
+LM_WHEG: 21409 degrees
+LF_WHEG: 21651 degrees
+RR_WHEG: 23971 degrees
+RM_WHEG: 23897 degrees
+RF_WHEG: 23845 degrees
+2024-09-19 12:05:02,051 Motor Positions:
+LR_WHEG: 23417 degrees
+LM_WHEG: 21409 degrees
+LF_WHEG: 21651 degrees
+RR_WHEG: 23971 degrees
+RM_WHEG: 23897 degrees
+RF_WHEG: 23845 degrees
+2024-09-19 12:05:02,590 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:02,590 Button States: {'square': 0, 'x': 1, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:02,725 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:02,725 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:02,860 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:02,860 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:02,994 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:02,995 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:03,129 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:03,129 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:03,164 Motor Positions:
+LR_WHEG: 23717 degrees
+LM_WHEG: 21704 degrees
+LF_WHEG: 21949 degrees
+RR_WHEG: 24264 degrees
+RM_WHEG: 24197 degrees
+RF_WHEG: 24146 degrees
+2024-09-19 12:05:03,299 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:03,299 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:03,434 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:03,434 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:03,569 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:03,569 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:03,703 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:03,704 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:03,838 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:03,838 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:03,974 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:03,975 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:04,110 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:04,110 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:04,247 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:04,247 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:04,283 Motor Positions:
+LR_WHEG: 24393 degrees
+LM_WHEG: 22383 degrees
+LF_WHEG: 22627 degrees
+RR_WHEG: 24946 degrees
+RM_WHEG: 24879 degrees
+RF_WHEG: 24831 degrees
+2024-09-19 12:05:04,418 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:04,418 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:04,552 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:04,553 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:04,687 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:04,687 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:04,822 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:04,822 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:04,957 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:04,957 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:05,092 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:05,092 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:05,227 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:05,227 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:05,395 Motor Positions:
+LR_WHEG: 24996 degrees
+LM_WHEG: 22989 degrees
+LF_WHEG: 23231 degrees
+RR_WHEG: 25548 degrees
+RM_WHEG: 25481 degrees
+RF_WHEG: 25428 degrees
+2024-09-19 12:05:06,440 Motor Positions:
+LR_WHEG: 25040 degrees
+LM_WHEG: 23034 degrees
+LF_WHEG: 23275 degrees
+RR_WHEG: 25594 degrees
+RM_WHEG: 25523 degrees
+RF_WHEG: 25471 degrees
+2024-09-19 12:05:06,777 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:06,777 Button States: {'square': 0, 'x': 1, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:06,911 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:06,912 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:07,046 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:07,046 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:07,181 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:07,181 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:07,316 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:07,316 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:07,451 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:07,451 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:07,486 Motor Positions:
+LR_WHEG: 25324 degrees
+LM_WHEG: 23324 degrees
+LF_WHEG: 23561 degrees
+RR_WHEG: 25884 degrees
+RM_WHEG: 25812 degrees
+RF_WHEG: 25760 degrees
+2024-09-19 12:05:07,621 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:07,621 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:07,756 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:07,756 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:07,890 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:07,891 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:08,025 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:08,025 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:08,160 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:08,161 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:08,295 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:08,295 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:08,430 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:08,430 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:08,565 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:08,565 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:08,600 Motor Positions:
+LR_WHEG: 25820 degrees
+LM_WHEG: 23817 degrees
+LF_WHEG: 24055 degrees
+RR_WHEG: 26381 degrees
+RM_WHEG: 26304 degrees
+RF_WHEG: 26249 degrees
+2024-09-19 12:05:08,735 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:08,735 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:08,869 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:08,870 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:09,005 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:09,005 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:09,140 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:09,140 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:09,275 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:09,275 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:09,411 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:09,411 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:09,547 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:09,547 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:09,718 Motor Positions:
+LR_WHEG: 26245 degrees
+LM_WHEG: 24240 degrees
+LF_WHEG: 24474 degrees
+RR_WHEG: 26805 degrees
+RM_WHEG: 26728 degrees
+RF_WHEG: 26667 degrees
+2024-09-19 12:05:10,763 Motor Positions:
+LR_WHEG: 26279 degrees
+LM_WHEG: 24273 degrees
+LF_WHEG: 24508 degrees
+RR_WHEG: 26839 degrees
+RM_WHEG: 26759 degrees
+RF_WHEG: 26700 degrees
+2024-09-19 12:05:11,605 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:11,605 Button States: {'square': 0, 'x': 1, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:11,740 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:11,740 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:11,775 Motor Positions:
+LR_WHEG: 26303 degrees
+LM_WHEG: 24297 degrees
+LF_WHEG: 24535 degrees
+RR_WHEG: 26862 degrees
+RM_WHEG: 26785 degrees
+RF_WHEG: 26726 degrees
+2024-09-19 12:05:11,910 L2 Trigger: -1.0, R2 Trigger: 0.49017333984375
+2024-09-19 12:05:11,910 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,045 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:12,045 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,180 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:12,180 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,315 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:12,315 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,450 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:12,450 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,585 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:12,585 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,720 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:12,720 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,855 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:12,855 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:12,890 Motor Positions:
+LR_WHEG: 26695 degrees
+LM_WHEG: 24689 degrees
+LF_WHEG: 24929 degrees
+RR_WHEG: 27248 degrees
+RM_WHEG: 27175 degrees
+RF_WHEG: 27115 degrees
+2024-09-19 12:05:13,025 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,025 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:13,160 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,160 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:13,295 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,295 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:13,430 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,430 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:13,564 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,565 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:13,700 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,700 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:13,834 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,835 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:13,969 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:13,970 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:14,005 Motor Positions:
+LR_WHEG: 27162 degrees
+LM_WHEG: 25151 degrees
+LF_WHEG: 25392 degrees
+RR_WHEG: 27711 degrees
+RM_WHEG: 27643 degrees
+RF_WHEG: 27581 degrees
+2024-09-19 12:05:14,139 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:14,140 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:14,275 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:14,275 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:14,410 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:14,410 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:14,545 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:14,545 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:14,679 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:14,680 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:14,816 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:14,817 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:14,953 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:14,953 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:15,089 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:15,090 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:15,125 Motor Positions:
+LR_WHEG: 27703 degrees
+LM_WHEG: 25685 degrees
+LF_WHEG: 25935 degrees
+RR_WHEG: 28247 degrees
+RM_WHEG: 28181 degrees
+RF_WHEG: 28125 degrees
+2024-09-19 12:05:15,260 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:15,261 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:15,395 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:15,396 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:15,530 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:15,531 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:15,666 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:15,666 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:15,801 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:15,801 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:15,936 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:15,936 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:16,071 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:16,071 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:16,206 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:16,206 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:16,241 Motor Positions:
+LR_WHEG: 28310 degrees
+LM_WHEG: 26289 degrees
+LF_WHEG: 26541 degrees
+RR_WHEG: 28854 degrees
+RM_WHEG: 28792 degrees
+RF_WHEG: 28739 degrees
+2024-09-19 12:05:16,376 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:16,376 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:16,511 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:16,511 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:16,646 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:16,646 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:16,781 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:16,781 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:16,916 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:16,916 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:17,051 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:17,051 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:17,186 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:17,186 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:17,321 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:17,321 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:17,356 Motor Positions:
+LR_WHEG: 28984 degrees
+LM_WHEG: 26966 degrees
+LF_WHEG: 27215 degrees
+RR_WHEG: 29524 degrees
+RM_WHEG: 29463 degrees
+RF_WHEG: 29407 degrees
+2024-09-19 12:05:17,491 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:17,491 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:17,626 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:17,626 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:17,761 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:17,761 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:17,896 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:17,896 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:18,031 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:18,031 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:18,166 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:18,166 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:18,301 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:18,301 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:18,436 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:18,436 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:18,471 Motor Positions:
+LR_WHEG: 29721 degrees
+LM_WHEG: 27712 degrees
+LF_WHEG: 27956 degrees
+RR_WHEG: 30274 degrees
+RM_WHEG: 30203 degrees
+RF_WHEG: 30144 degrees
+2024-09-19 12:05:18,606 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:18,607 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:18,742 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:18,742 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:18,877 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:18,877 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,012 L2 Trigger: -1.0, R2 Trigger: -0.098052978515625
+2024-09-19 12:05:19,012 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,147 L2 Trigger: -1.0, R2 Trigger: 0.192138671875
+2024-09-19 12:05:19,147 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,282 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:19,283 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,417 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:19,418 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,552 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:19,553 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,587 Motor Positions:
+LR_WHEG: 30530 degrees
+LM_WHEG: 28513 degrees
+LF_WHEG: 28761 degrees
+RR_WHEG: 31078 degrees
+RM_WHEG: 31006 degrees
+RF_WHEG: 30942 degrees
+2024-09-19 12:05:19,723 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:19,723 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,858 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:19,858 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:19,993 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:19,993 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:20,128 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:20,128 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:20,266 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:20,266 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:20,402 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:20,402 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:20,539 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:20,539 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:20,676 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:20,676 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:20,712 Motor Positions:
+LR_WHEG: 31382 degrees
+LM_WHEG: 29363 degrees
+LF_WHEG: 29612 degrees
+RR_WHEG: 31922 degrees
+RM_WHEG: 31859 degrees
+RF_WHEG: 31794 degrees
+2024-09-19 12:05:20,847 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:20,847 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:20,982 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:20,982 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:21,117 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:21,118 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:21,252 L2 Trigger: -1.0, R2 Trigger: 0.30194091796875
+2024-09-19 12:05:21,253 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:21,388 L2 Trigger: -1.0, R2 Trigger: 0.545074462890625
+2024-09-19 12:05:21,388 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:21,523 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:21,523 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:21,658 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:21,658 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:21,793 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:21,793 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:21,828 Motor Positions:
+LR_WHEG: 32241 degrees
+LM_WHEG: 30207 degrees
+LF_WHEG: 30469 degrees
+RR_WHEG: 32779 degrees
+RM_WHEG: 32713 degrees
+RF_WHEG: 32653 degrees
+2024-09-19 12:05:21,963 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:21,963 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,098 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:22,098 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,233 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:22,234 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,369 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:22,369 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,504 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:22,504 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,639 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:22,639 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,774 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:22,774 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,909 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:22,910 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:22,944 Motor Positions:
+LR_WHEG: 33095 degrees
+LM_WHEG: 31058 degrees
+LF_WHEG: 31325 degrees
+RR_WHEG: 33627 degrees
+RM_WHEG: 33570 degrees
+RF_WHEG: 33511 degrees
+2024-09-19 12:05:23,079 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:23,080 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:23,215 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:23,215 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:23,350 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:23,350 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:23,485 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:23,485 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:23,620 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:23,620 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:23,755 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:23,755 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:23,890 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:23,891 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:24,025 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:24,026 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:24,061 Motor Positions:
+LR_WHEG: 33946 degrees
+LM_WHEG: 31922 degrees
+LF_WHEG: 32176 degrees
+RR_WHEG: 34489 degrees
+RM_WHEG: 34422 degrees
+RF_WHEG: 34358 degrees
+2024-09-19 12:05:24,196 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:24,196 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:24,331 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:24,331 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:24,466 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-19 12:05:24,466 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:24,601 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:24,601 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:24,737 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:24,737 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:24,872 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:24,872 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,007 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,007 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,142 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,142 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,177 Motor Positions:
+LR_WHEG: 34800 degrees
+LM_WHEG: 32779 degrees
+LF_WHEG: 33030 degrees
+RR_WHEG: 35339 degrees
+RM_WHEG: 35273 degrees
+RF_WHEG: 35203 degrees
+2024-09-19 12:05:25,312 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,313 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,448 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,448 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,583 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,583 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,718 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,718 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,855 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,855 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:25,992 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:25,992 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:26,129 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-19 12:05:26,129 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-19 12:05:26,300 Motor Positions:
+LR_WHEG: 35599 degrees
+LM_WHEG: 33568 degrees
+LF_WHEG: 33824 degrees
+RR_WHEG: 36129 degrees
+RM_WHEG: 36069 degrees
+RF_WHEG: 36002 degrees
+2024-09-19 12:05:27,346 Motor Positions:
+LR_WHEG: 35656 degrees
+LM_WHEG: 33624 degrees
+LF_WHEG: 33883 degrees
+RR_WHEG: 36186 degrees
+RM_WHEG: 36124 degrees
+RF_WHEG: 36058 degrees
+2024-09-19 12:05:28,393 Motor Positions:
+LR_WHEG: 35656 degrees
+LM_WHEG: 33624 degrees
+LF_WHEG: 33883 degrees
+RR_WHEG: 36186 degrees
+RM_WHEG: 36124 degrees
+RF_WHEG: 36058 degrees
+2024-09-19 12:05:29,440 Motor Positions:
+LR_WHEG: 35656 degrees
+LM_WHEG: 33624 degrees
+LF_WHEG: 33883 degrees
+RR_WHEG: 36186 degrees
+RM_WHEG: 36124 degrees
+RF_WHEG: 36058 degrees
