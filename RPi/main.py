@@ -1,6 +1,6 @@
 import time
 from controller import PS4Controller
-from dynamixel_control import DynamixelController
+from dynamixel_control import *
 
 # Motor IDs for the whegs and pivots
 WHEGS = {
