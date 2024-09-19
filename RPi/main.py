@@ -15,7 +15,7 @@ PIVOTS = {
 # Velocity control limits for whegs
 MAX_RPM = 200  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
-SMOOTHNESS = 0.25  # Controls how smoothly the speed increases
+SMOOTHNESS = 10  # Controls how smoothly the speed increases
 
 # Set up logging to log motor positions and controller inputs
 logging.basicConfig(filename='robot_log.txt', level=logging.INFO, format='%(asctime)s %(message)s')
