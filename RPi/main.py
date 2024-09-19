@@ -9,7 +9,7 @@ WHEGS = {
 }
 
 # Velocity control limits for whegs
-MAX_RPM = 100  # Max RPM for wheg motors
+MAX_RPM = 20  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
 SMOOTHNESS = 0.5  # Controls how smoothly the speed increases
 
@@ -122,7 +122,7 @@ def main():
 
             # Report motor positions every second
             current_time = time.time()
-            if current_time - report_timer >= 1:  # Report every 1 second
+            if current_time - report_timer >= 2:  # Report every 1 second
                 report_motor_positions(dynamixel)
                 report_timer = current_time  # Reset the timer
 
