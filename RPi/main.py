@@ -3,16 +3,19 @@ import logging
 from controller import PS4Controller
 from dynamixel_control import DynamixelController
 
-# Motor IDs for the whegs (wheeled legs)
+# Motor IDs for the whegs (wheeled legs) and pivots
 WHEGS = {
     'LR_WHEG': 1, 'LM_WHEG': 2, 'LF_WHEG': 3,
     'RR_WHEG': 4, 'RM_WHEG': 5, 'RF_WHEG': 6
 }
+PIVOTS = {
+    'FRONT_PIVOT': 7, 'REAR_PIVOT': 8
+}
 
 # Velocity control limits for whegs
-MAX_RPM = 50  # Max RPM for wheg motors
+MAX_RPM = 200  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
-SMOOTHNESS = 0.5  # Controls how smoothly the speed increases
+SMOOTHNESS = 0.25  # Controls how smoothly the speed increases
 
 # Set up logging to log motor positions and controller inputs
 logging.basicConfig(filename='robot_log.txt', level=logging.INFO, format='%(asctime)s %(message)s')
@@ -35,16 +38,20 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
     for wheg_id in wheg_ids:
         dynamixel.set_goal_velocity(wheg_id, rpm)
 
-# Function to get and report the positions of all whegs
-def report_motor_positions(dynamixel):
-    motor_positions = []
+# Function to get and store positions of all whegs and pivots
+def get_motor_positions(dynamixel):
+    motor_positions = {}
     for wheg_name, wheg_id in WHEGS.items():
         position = dynamixel.get_present_position(wheg_id)
-        motor_positions.append(f"{wheg_name}: {position} degrees")
+        motor_positions[wheg_name] = position
+    for pivot_name, pivot_id in PIVOTS.items():
+        position = dynamixel.get_present_position(pivot_id)
+        motor_positions[pivot_name] = position
     return motor_positions
 
-# Function to log controller inputs
-def log_controller_inputs(l2_trigger, r2_trigger, button_states):
+# Function to log motor positions and controller inputs at the same time
+def log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states):
+    logging.info(f"Motor Positions: {motor_positions}")
     logging.info(f"L2 Trigger: {l2_trigger}, R2 Trigger: {r2_trigger}")
     logging.info(f"Button States: {button_states}")
 
@@ -83,6 +90,11 @@ def main():
         for wheg_id in WHEGS.values():
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             dynamixel.torque_on(wheg_id)
+        
+        # # Turn on torque for pivots (although they are disabled in gaits)
+        # for pivot_id in PIVOTS.values():
+        #     dynamixel.set_operating_mode(pivot_id, 'position')
+        #     dynamixel.torque_on(pivot_id)
 
         # Main loop
         while True:
@@ -124,15 +136,11 @@ def main():
                 # Execute the currently selected gait (whegs only)
                 current_gait(dynamixel, wheg_rpm)
 
-                # Log controller inputs
-                log_controller_inputs(l2_trigger, r2_trigger, button_states)
-
-            # Report motor positions every second
+            # Report motor positions and log controller inputs every second
             current_time = time.time()
             if current_time - report_timer >= 1:  # Report every 1 second
-                motor_positions = report_motor_positions(dynamixel)
-                # Log motor positions
-                logging.info("Motor Positions:\n" + "\n".join(motor_positions))
+                motor_positions = get_motor_positions(dynamixel)
+                log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states)
                 report_timer = current_time  # Reset the timer
 
             time.sleep(0.1)
@@ -141,9 +149,11 @@ def main():
         print("\nTerminating program...")
 
     finally:
-        # Safely turn off wheg motors and close the controller
+        # Safely turn off wheg and pivot motors and close the controller
         for wheg_id in WHEGS.values():
             dynamixel.torque_off(wheg_id)
+        # for pivot_id in PIVOTS.values():
+        #     dynamixel.torque_off(pivot_id)
 
         ps4_controller.close()
         dynamixel.close()
