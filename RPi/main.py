@@ -49,28 +49,28 @@ def set_pivot_positions(dynamixel, front_offset, rear_offset):
 def gait_1(dynamixel, wheg_rpm):
     print("Executing Gait 1")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
-    set_pivot_positions(dynamixel, 0, 0)  # Pivots stay in the starting position (180 degrees)
+    set_pivot_positions(dynamixel, 180, 180)  # Pivots stay in the starting position (180 degrees)
 
 def gait_2(dynamixel, wheg_rpm):
     print("Executing Gait 2")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm / 2)  # Slower whegs
-    set_pivot_positions(dynamixel, -45, 45)  # Pivots move to 135 (front) and 225 (rear) degrees
+    set_pivot_positions(dynamixel, 90 , 270)  # Pivots move to 135 (front) and 225 (rear) degrees
 
 def gait_3(dynamixel, wheg_rpm):
     print("Executing Gait 3")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
-    set_pivot_positions(dynamixel, 45, -45)  # Pivots move to 225 (front) and 135 (rear) degrees
+    set_pivot_positions(dynamixel, 145, 225)  # Pivots move to 225 (front) and 135 (rear) degrees
 
 def gait_4(dynamixel, wheg_rpm):
     print("Executing Gait 4")
     set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
-    set_pivot_positions(dynamixel, 0, 0)  # Pivots remain at the start position (180 degrees)
+    set_pivot_positions(dynamixel, 190, 170)  # Pivots remain at the start position (180 degrees)
 
 # Emergency stop function
 def emergency_stop(dynamixel):
     print("Emergency Stop Activated! Stopping all motors.")
     set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
-    set_pivot_positions(dynamixel, 0, 0)  # Set pivots back to the neutral start position (180 degrees)
+    set_pivot_positions(dynamixel, 180, 180)  # Set pivots back to the neutral start position (180 degrees)
 
 # Main function integrating the PS4 controller and Dynamixel SDK
 def main():
