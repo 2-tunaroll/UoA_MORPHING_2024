@@ -33,6 +33,9 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
 
 # Function to get and report the positions of all whegs
 def report_motor_positions(dynamixel):
+    print("Current piviots positions (in degrees):")
+    print(f"Front Pivot: {dynamixel.get_present_position(7)} degrees")
+    print(f"Rear Pivot: {dynamixel.get_present_position(8)} degrees")
     print("Current motor positions (in degrees):")
     for wheg_name, wheg_id in WHEGS.items():
         position = dynamixel.get_present_position(wheg_id)
