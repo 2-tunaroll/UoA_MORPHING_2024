@@ -33,6 +33,7 @@ class DynamixelController:
             print(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
             print(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        print("Operating mode set to", mode, "for motor", motor_id)
 
     def torque_on(self, motor_id):
         """Enable the torque on a motor."""
