@@ -19,6 +19,19 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s'
 )
 
+# Create handlers
+file_handler = logging.FileHandler(log_filename)
+console_handler = logging.StreamHandler()
+
+# Set log format
+formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+# Add handlers to the logger
+logging.addHandler(file_handler)
+logging.addHandler(console_handler)
+
 # Motor IDs for wheeled legs, front on the robot is defined by arrow on body
 WHEGS = {
     'LR_WHEG': 1, 'LM_WHEG': 2, 'LF_WHEG': 3,
