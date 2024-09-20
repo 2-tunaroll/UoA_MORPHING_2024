@@ -64,6 +64,12 @@ def adjust_wheg_speed(trigger_value, current_rpm):
 
 # Function to control whegs velocity
 def set_wheg_velocity(dynamixel, wheg_ids, rpm):
+    # Check the mode of the whegs
+    for wheg_id in wheg_ids:
+        mode = dynamixel.check_operating_mode(wheg_id)
+        if mode != 'velocity':
+            dynamixel.set_operating_mode(wheg_id, 'velocity')
+            logging.info(f"Operating mode set to 'velocity' for wheg_id={wheg_id}")
     logging.debug(f"Setting wheg velocity: wheg_ids={list(wheg_ids)}, rpm={rpm}")
     for wheg_id in wheg_ids:
         dynamixel.set_goal_velocity(wheg_id, rpm)
@@ -71,6 +77,12 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
 
 # Function to set wheg position
 def set_wheg_position(dynamixel, wheg_ids, position):
+    # Check the mode of the whegs
+    for wheg_id in wheg_ids:
+        mode = dynamixel.check_operating_mode(wheg_id)
+        if mode != 'position':
+            dynamixel.set_operating_mode(wheg_id, 'position')
+            logging.info(f"Operating mode set to 'position' for wheg_id={wheg_id}")
     logging.debug(f"Setting wheg position: wheg_ids={list(wheg_ids)}, position={position}")
     for wheg_id in wheg_ids:
         dynamixel.set_goal_position(wheg_id, position)

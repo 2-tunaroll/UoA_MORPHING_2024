@@ -40,7 +40,22 @@ class DynamixelController:
         if error != 0:
             logging.error(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         logging.info(f"Operating mode set to {mode} for motor {motor_id}")
-
+    
+    def check_operating_mode(self, motor_id):
+        """
+        Check the operating mode of the motor.
+        Returns the operating mode as a string.
+        Available modes: 'position', 'velocity'
+        """
+        OPERATING_MODE_ADDR = 11
+        result, error = self.packet_handler.read1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR)
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to get operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            logging.error(f"Error getting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        logging.info(f"Operating mode for motor {motor_id} is {result}")
+        return result
+    
     def torque_on(self, motor_id):
         """Enable the torque on a motor."""
         TORQUE_ENABLE_ADDR = 64  # Torque enable address in the Control Table
@@ -67,11 +82,6 @@ class DynamixelController:
 
     def set_goal_velocity(self, motor_id, velocity):
         """Set the velocity goal for a motor."""
-        """Ensure motors are set to velocity control mode before using this function."""
-        self.torque_off(motor_id) #Disable torque
-        self.set_operating_mode(motor_id, 'velocity')
-        self.torque_on(motor_id) #Enable torque
-        
         VELOCITY_GOAL_ADDR = 104  # Velocity goal address in Control Table
 
         # Convert velocity to the appropriate value (sign handling for forward/reverse)
@@ -86,11 +96,6 @@ class DynamixelController:
 
     def set_goal_position(self, motor_id, position):
         """Set the goal position for a motor."""
-        """Ensure motors are set to position control mode before using this function."""
-        self.torque_off(motor_id) #Disable torque
-        self.set_operating_mode(motor_id, 'position') #Change to position control mode
-        self.torque_on(motor_id) #Enable torque
-
         POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
 
         position_value = int(position)  # Ensure the position value is an integer
