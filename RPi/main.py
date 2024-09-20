@@ -135,10 +135,13 @@ def main():
                 # Gait selection using buttons (Triangle, Square, X)
                 if button_states['triangle']:
                     current_gait = gait_1
+                    logging.info("Triangle button pressed: Gait 1 Selected")
                 elif button_states['square']:
                     current_gait = gait_2
+                    logging.info("Square button pressed: Gait 2 Selected")
                 elif button_states['x']:
                     current_gait = gait_3
+                    logging.info("X button pressed: Gait 3 Selected")
 
                 # Print gait change only when it occurs
                 if current_gait != previous_gait:
@@ -150,7 +153,7 @@ def main():
 
             # Report motor positions and log controller inputs every second
             current_time = time.time()
-            if current_time - report_timer >= 1:  # Report every 1 second
+            if current_time - report_timer >= 5:  # Report every 5 second
                 motor_positions = get_motor_positions(dynamixel)
                 log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states)
                 report_timer = current_time  # Reset the timer

@@ -74,14 +74,15 @@ class DynamixelController:
         POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
 
         position_value = int(position)  # Ensure the position value is an integer
-        position_value = int((position_value / 4096) * 360)   # Convert position value from encoder tickets to degrees
-        position_value = position_value % 360 # Ensure the position value is within 0-359 degrees
+        position_value = int((position_value / 360) * 4096)   # Convert position value from degrees to encoder ticks
+        position_value = position_value % 4096 # Ensure the position value is within 0-4095 ticks
 
         result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, position_value)
         if result != COMM_SUCCESS:
             print(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
             print(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        print("Goal position", position, "position set for motor", motor_id)
 
     def get_present_position(self, motor_id):
         """Get the current position of the motor."""
