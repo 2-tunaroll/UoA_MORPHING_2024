@@ -1,0 +1,69 @@
+2024-09-20 15:34:33,985 INFO: Initializing PS4Controller
+2024-09-20 15:34:34,272 DEBUG: Pygame initialized
+2024-09-20 15:34:34,273 DEBUG: Joystick initialized
+2024-09-20 15:34:34,273 DEBUG: Number of buttons on the controller: 13
+2024-09-20 15:34:34,280 INFO: Port /dev/ttyACM0 opened successfully
+2024-09-20 15:34:34,294 INFO: Baudrate set to 57600
+2024-09-20 15:34:34,294 INFO: Initialized PS4 controller and Dynamixel
+2024-09-20 15:34:34,300 INFO: Operating mode set to velocity for motor 1
+2024-09-20 15:34:34,305 INFO: Torque enabled for motor 1
+2024-09-20 15:34:34,306 INFO: Torque on for wheg_id=1
+2024-09-20 15:34:34,311 INFO: Operating mode set to velocity for motor 2
+2024-09-20 15:34:34,316 INFO: Torque enabled for motor 2
+2024-09-20 15:34:34,316 INFO: Torque on for wheg_id=2
+2024-09-20 15:34:34,321 INFO: Operating mode set to velocity for motor 3
+2024-09-20 15:34:34,327 INFO: Torque enabled for motor 3
+2024-09-20 15:34:34,327 INFO: Torque on for wheg_id=3
+2024-09-20 15:34:34,332 INFO: Operating mode set to velocity for motor 4
+2024-09-20 15:34:34,337 INFO: Torque enabled for motor 4
+2024-09-20 15:34:34,338 INFO: Torque on for wheg_id=4
+2024-09-20 15:34:34,343 INFO: Operating mode set to velocity for motor 5
+2024-09-20 15:34:34,348 INFO: Torque enabled for motor 5
+2024-09-20 15:34:34,348 INFO: Torque on for wheg_id=5
+2024-09-20 15:34:34,353 INFO: Operating mode set to velocity for motor 6
+2024-09-20 15:34:34,358 INFO: Torque enabled for motor 6
+2024-09-20 15:34:34,359 INFO: Torque on for wheg_id=6
+2024-09-20 15:34:34,364 ERROR: Error setting operating mode for motor 7: [RxPacketError] Writing or Reading is not available to target address!
+2024-09-20 15:34:34,364 INFO: Operating mode set to position for motor 7
+2024-09-20 15:34:34,370 INFO: Torque enabled for motor 7
+2024-09-20 15:34:34,375 ERROR: Error setting operating mode for motor 8: [RxPacketError] Writing or Reading is not available to target address!
+2024-09-20 15:34:34,376 INFO: Operating mode set to position for motor 8
+2024-09-20 15:34:34,381 INFO: Torque enabled for motor 8
+2024-09-20 15:34:34,381 INFO: Getting button input
+2024-09-20 15:34:34,382 DEBUG: Button square (index 3) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button x (index 0) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button circle (index 1) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button triangle (index 2) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button l1 (index 4) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button r1 (index 5) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button l2 (index 6) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button r2 (index 7) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button share (index 8) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button options (index 9) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button l3 (index 10) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button r3 (index 11) state: 0
+2024-09-20 15:34:34,382 DEBUG: Button ps (index 12) state: 0
+2024-09-20 15:34:34,383 DEBUG: D-pad state: False, False, False, False
+2024-09-20 15:34:34,383 DEBUG: Button states: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'dpad_up': False, 'dpad_down': False, 'dpad_left': False, 'dpad_right': False}
+2024-09-20 15:34:34,383 INFO: Getting trigger input
+2024-09-20 15:34:34,383 DEBUG: Trigger values - L2: -1.0, R2: -1.0
+2024-09-20 15:34:34,383 DEBUG: Trigger inputs: L2=-1.0, R2=-1.0
+2024-09-20 15:34:34,383 DEBUG: Adjusting wheg speed: trigger_value=-1.0, current_rpm=0
+2024-09-20 15:34:34,383 DEBUG: Adjusted wheg speed: target_rpm=0.0, current_rpm=0.0
+2024-09-20 15:34:34,383 INFO: Changing to new gait: gait_1
+2024-09-20 15:34:34,383 INFO: Executing Gait 1
+2024-09-20 15:34:34,388 INFO: Torque disabled for motor 1
+2024-09-20 15:34:34,388 INFO: Torque off for wheg_id=1
+2024-09-20 15:34:34,393 INFO: Torque disabled for motor 2
+2024-09-20 15:34:34,394 INFO: Torque off for wheg_id=2
+2024-09-20 15:34:34,399 INFO: Torque disabled for motor 3
+2024-09-20 15:34:34,399 INFO: Torque off for wheg_id=3
+2024-09-20 15:34:34,404 INFO: Torque disabled for motor 4
+2024-09-20 15:34:34,404 INFO: Torque off for wheg_id=4
+2024-09-20 15:34:34,409 INFO: Torque disabled for motor 5
+2024-09-20 15:34:34,409 INFO: Torque off for wheg_id=5
+2024-09-20 15:34:34,414 INFO: Torque disabled for motor 6
+2024-09-20 15:34:34,414 INFO: Torque off for wheg_id=6
+2024-09-20 15:34:34,414 INFO: Closing PS4Controller and quitting pygame
+2024-09-20 15:34:34,495 INFO: Port closed
+2024-09-20 15:34:34,496 INFO: Shutdown complete.
