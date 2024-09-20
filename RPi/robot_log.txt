@@ -2217,3 +2217,71 @@ RF_WHEG: 36058 degrees
 2024-09-20 12:01:31,889 Motor Positions: {'LR_WHEG': 229, 'LM_WHEG': 222, 'LF_WHEG': 228, 'RR_WHEG': 222, 'RM_WHEG': 221, 'RF_WHEG': 221, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
 2024-09-20 12:01:31,889 L2 Trigger: -1.0, R2 Trigger: -1.0
 2024-09-20 12:01:31,889 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:13:27,040 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 222, 'LF_WHEG': 228, 'RR_WHEG': 222, 'RM_WHEG': 212, 'RF_WHEG': 221, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:13:27,040 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:13:27,041 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:13:32,114 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 222, 'LF_WHEG': 228, 'RR_WHEG': 222, 'RM_WHEG': 212, 'RF_WHEG': 221, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:13:32,114 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:13:32,114 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:21:37,691 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0, 'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:21:37,691 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:21:37,692 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:29:45,510 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0, 'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:29:45,511 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:29:45,511 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:52:23,996 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0, 'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:52:23,998 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:52:23,998 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:52:33,958 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0, 'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:52:33,958 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:52:33,959 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:52:35,028 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:35,346 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:35,981 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:39,031 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0, 'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:52:39,031 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:52:39,032 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:52:39,132 Triangle button pressed: Gait 1 Selected
+2024-09-20 12:52:43,006 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:43,324 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:43,641 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:44,154 Motor Positions: {'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0, 'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0, 'FRONT_PIVOT': 0, 'REAR_PIVOT': 0}
+2024-09-20 12:52:44,154 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 12:52:44,154 Button States: {'square': 1, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 12:52:44,254 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:44,572 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:44,890 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:45,207 Square button pressed: Gait 2 Selected
+2024-09-20 12:52:46,159 Square button pressed: Gait 2 Selected
+2024-09-20 14:51:59,666 Motor Positions: {'LR_WHEG': 184, 'LM_WHEG': 183, 'LF_WHEG': 195, 'RR_WHEG': 197, 'RM_WHEG': 187, 'RF_WHEG': 214, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:51:59,667 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 14:51:59,668 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:04,834 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 180, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:04,834 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 14:52:04,834 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:20,050 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 180, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:20,050 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 14:52:20,050 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:22,372 Square button pressed: Gait 2 Selected
+2024-09-20 14:52:25,116 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 180, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:25,116 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-20 14:52:25,117 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:30,215 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 180, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:30,216 L2 Trigger: -1.0, R2 Trigger: 0.999969482421875
+2024-09-20 14:52:30,216 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 1, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:35,315 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 180, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:35,315 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 14:52:35,315 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:38,075 Triangle button pressed: Gait 1 Selected
+2024-09-20 14:52:40,465 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 180, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:40,466 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 14:52:40,466 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:40,788 Square button pressed: Gait 2 Selected
+2024-09-20 14:52:41,719 X button pressed: Gait 3 Selected
+2024-09-20 14:52:44,113 Triangle button pressed: Gait 1 Selected
+2024-09-20 14:52:45,616 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 180, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:45,616 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 14:52:45,616 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
+2024-09-20 14:52:50,640 Motor Positions: {'LR_WHEG': 180, 'LM_WHEG': 180, 'LF_WHEG': 179, 'RR_WHEG': 180, 'RM_WHEG': 180, 'RF_WHEG': 180, 'FRONT_PIVOT': 180, 'REAR_PIVOT': 179}
+2024-09-20 14:52:50,640 L2 Trigger: -1.0, R2 Trigger: -1.0
+2024-09-20 14:52:50,641 Button States: {'square': 0, 'x': 0, 'circle': 0, 'triangle': 0, 'l1': 0, 'r1': 0, 'l2': 0, 'r2': 0, 'share': 0, 'options': 0, 'l3': 0, 'r3': 0, 'ps': 0, 'touchpad': None}
