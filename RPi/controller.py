@@ -59,6 +59,16 @@ class PS4Controller:
             else:
                 button_states[button] = None  # Button doesn't exist on this controller
                 logging.warning(f"Button {button} (index {index}) does not exist on this controller")
+        
+        # Add D-pad states to button_states
+        dpad_state = self.joystick.get_hat(self.dpad_index)
+        button_states['dpad_up'] = dpad_state[1] == 1   # Y-axis positive
+        button_states['dpad_down'] = dpad_state[1] == -1  # Y-axis negative
+        button_states['dpad_left'] = dpad_state[0] == -1  # X-axis negative
+        button_states['dpad_right'] = dpad_state[0] == 1   # X-axis positive
+        
+        logging.debug(f"D-pad state: {button_states['dpad_up']}, {button_states['dpad_down']}, {button_states['dpad_left']}, {button_states['dpad_right']}")
+        
         return button_states
 
     def get_trigger_input(self):
@@ -70,11 +80,20 @@ class PS4Controller:
         return l2_trigger, r2_trigger
 
     def get_dpad_input(self):
-        logging.info("Getting D-pad input")
         pygame.event.pump()
         dpad_state = self.joystick.get_hat(self.dpad_index)
-        logging.debug(f"D-pad state: {dpad_state}")
-        return dpad_state
+        
+        # Create a dictionary mapping for D-pad directions
+        dpad_input = {
+            'dpad_up': dpad_state[1] == 1,   # Y-axis positive
+            'dpad_down': dpad_state[1] == -1,  # Y-axis negative
+            'dpad_left': dpad_state[0] == -1,  # X-axis negative
+            'dpad_right': dpad_state[0] == 1   # X-axis positive
+        }
+        
+        logging.debug(f"D-pad state: {dpad_input}")
+        return dpad_input
+
 
     def close(self):
         logging.info("Closing PS4Controller and quitting pygame")
