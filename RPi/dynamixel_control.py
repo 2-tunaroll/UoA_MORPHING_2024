@@ -48,13 +48,17 @@ class DynamixelController:
         Available modes: 'position', 'velocity'
         """
         OPERATING_MODE_ADDR = 11
-        result, error = self.packet_handler.read1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR)
+        operating_mode, result, error = dynamixel.packet_handler.read1ByteTxRx(dynamixel.port_handler, motor_id, ADDR_OPERATING_MODE)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to get operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
             logging.error(f"Error getting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        logging.info(f"Operating mode for motor {motor_id} is {result}")
-        return result
+        if operating_mode == 3:
+            operating_mode = 'position'
+        elif operating_mode == 1:
+            operating_mode = 'velocity'
+        logging.info(f"Operating mode for motor {motor_id} is {operating_mode}")
+        return operating_mode
     
     def torque_on(self, motor_id):
         """Enable the torque on a motor."""
