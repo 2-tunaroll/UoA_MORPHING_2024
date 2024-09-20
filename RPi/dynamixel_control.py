@@ -1,4 +1,5 @@
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
+import logging
 
 class DynamixelController:
     def __init__(self, device_name, baudrate, protocol_version=2.0):
@@ -7,11 +8,15 @@ class DynamixelController:
 
         # Open the port
         if not self.port_handler.openPort():
+            logging.error("Failed to open the port")
             raise Exception("Failed to open the port")
+        logging.info(f"Port {device_name} opened successfully")
 
         # Set baudrate
         if not self.port_handler.setBaudRate(baudrate):
+            logging.error("Failed to set baudrate")
             raise Exception("Failed to set baudrate")
+        logging.info(f"Baudrate set to {baudrate}")
 
     def set_operating_mode(self, motor_id, mode):
         """
@@ -25,15 +30,16 @@ class DynamixelController:
         }
 
         if mode not in OPERATING_MODES:
+            logging.error(f"Invalid operating mode: {mode}")
             raise ValueError(f"Invalid operating mode: {mode}")
 
         mode_value = OPERATING_MODES[mode]
         result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR, mode_value)
         if result != COMM_SUCCESS:
-            print(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
-            print(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        print("Operating mode set to", mode, "for motor", motor_id)
+            logging.error(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        logging.info(f"Operating mode set to {mode} for motor {motor_id}")
 
     def torque_on(self, motor_id):
         """Enable the torque on a motor."""
@@ -42,9 +48,10 @@ class DynamixelController:
 
         result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, TORQUE_ENABLE_ADDR, TORQUE_ENABLE)
         if result != COMM_SUCCESS:
-            print(f"Failed to enable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to enable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
-            print(f"Error enabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            logging.error(f"Error enabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        logging.info(f"Torque enabled for motor {motor_id}")
 
     def torque_off(self, motor_id):
         """Disable the torque on a motor."""
@@ -53,9 +60,10 @@ class DynamixelController:
 
         result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, TORQUE_ENABLE_ADDR, TORQUE_DISABLE)
         if result != COMM_SUCCESS:
-            print(f"Failed to disable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to disable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
-            print(f"Error disabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            logging.error(f"Error disabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        logging.info(f"Torque disabled for motor {motor_id}")
 
     def set_goal_velocity(self, motor_id, velocity):
         """Set the velocity goal for a motor."""
@@ -66,9 +74,10 @@ class DynamixelController:
 
         result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, VELOCITY_GOAL_ADDR, velocity_value)
         if result != COMM_SUCCESS:
-            print(f"Failed to set goal velocity for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to set goal velocity for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
-            print(f"Error setting goal velocity for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            logging.error(f"Error setting goal velocity for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        logging.info(f"Goal velocity set to {velocity} for motor {motor_id}")
 
     def set_goal_position(self, motor_id, position):
         """Set the goal position for a motor."""
@@ -85,10 +94,10 @@ class DynamixelController:
 
         result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, position_value)
         if result != COMM_SUCCESS:
-            print(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
-            print(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        print("Goal position", position, "position set for motor", motor_id)
+            logging.error(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        logging.info(f"Goal position {position} set for motor {motor_id}")
 
     def get_present_position(self, motor_id):
         """Get the current position of the motor."""
@@ -96,15 +105,17 @@ class DynamixelController:
 
         position, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
         if result != COMM_SUCCESS:
-            print(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
-            print(f"Error getting position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            logging.error(f"Error getting position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
 
         position = int((position / 4096) * 360) # Convert from encoder ticks to degrees
         position = position % 360 # Ensure the position is within 0-359 degrees
 
+        logging.info(f"Current position for motor {motor_id} is {position} degrees")
         return position
 
     def close(self):
         """Close the port and clean up resources."""
         self.port_handler.closePort()
+        logging.info("Port closed")
