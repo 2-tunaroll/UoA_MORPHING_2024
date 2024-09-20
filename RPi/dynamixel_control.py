@@ -73,7 +73,9 @@ class DynamixelController:
     def set_goal_position(self, motor_id, position):
         """Set the goal position for a motor."""
         """Ensure motors are set to position control mode before using this function."""
+        self.torque_off(motor_id) #Disable torque
         self.set_operating_mode(motor_id, 'position') #Change to position control mode
+        self.torque_on(motor_id) #Enable torque
 
         POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
 
