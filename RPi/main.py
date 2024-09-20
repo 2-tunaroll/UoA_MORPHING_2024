@@ -29,10 +29,21 @@ PIVOTS = {
     'FRONT_PIVOT': 7, 'REAR_PIVOT': 8
 }
 
-# Velocity control limits for whegs
+# Velocity control limits for whegs and pivots
 MAX_RPM = 200  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
 SMOOTHNESS = 10  # Controls how smoothly the speed increases
+PIVOT_STEP = 1  # Step size in degrees for each D-pad press
+
+# Track the current pivot positions
+front_pivot_angle = 180  # Start position for front pivot
+rear_pivot_angle = 180   # Start position for rear pivot
+
+# Track the current wheg positions
+wheg_positions = {
+    'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0,
+    'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0
+}
 
 # Adjust the velocity based on the right trigger input
 def adjust_wheg_speed(trigger_value, current_rpm):
@@ -87,6 +98,29 @@ def log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_sta
     logging.info(f"Motor Positions: {motor_positions}")
     logging.info(f"L2 Trigger: {l2_trigger}, R2 Trigger: {r2_trigger}")
     logging.info(f"Button States: {button_states}")
+
+# Function to control pivot movement using the D-pad
+def control_pivots_with_dpad(dynamixel, button_states):
+    global front_pivot_angle, rear_pivot_angle
+
+    # Front pivot control (D-pad up/down)
+    if button_states['dpad_up']:
+        front_pivot_angle = min(front_pivot_angle + PIVOT_STEP, PIVOT_MAX_ANGLE)
+    elif button_states['dpad_down']:
+        front_pivot_angle = max(front_pivot_angle - PIVOT_STEP, PIVOT_MIN_ANGLE)
+    
+    # Rear pivot control (D-pad left/right)
+    if button_states['dpad_right']:
+        rear_pivot_angle = min(rear_pivot_angle + PIVOT_STEP, PIVOT_MAX_ANGLE)
+    elif button_states['dpad_left']:
+        rear_pivot_angle = max(rear_pivot_angle - PIVOT_STEP, PIVOT_MIN_ANGLE)
+
+    # Set the new goal positions for the pivots
+    dynamixel.set_goal_position(PIVOTS['FRONT_PIVOT'], front_pivot_angle)
+    dynamixel.set_goal_position(PIVOTS['REAR_PIVOT'], rear_pivot_angle)
+
+    logging.info(f"Front pivot angle set to {front_pivot_angle}")
+    logging.info(f"Rear pivot angle set to {rear_pivot_angle}")
 
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm):
@@ -180,7 +214,10 @@ def main():
                 if current_gait != previous_gait:
                     logging.info(f"Changing to new gait: {current_gait.__name__}")
                     previous_gait = current_gait
+                # Execute the current gate
                 current_gait(dynamixel, wheg_rpm)
+                # Control pivots using the D-pad
+                control_pivots_with_dpad(dynamixel, button_states)
 
             # Report motor positions and log controller inputs every second
             current_time = time.time()
