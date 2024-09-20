@@ -74,6 +74,8 @@ class DynamixelController:
         POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
 
         position_value = int(position)  # Ensure the position value is an integer
+        position_value = int((position_value / 4096) * 360)   # Convert position value from encoder tickets to degrees
+        position_value = position_value % 360 # Ensure the position value is within 0-359 degrees
 
         result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, position_value)
         if result != COMM_SUCCESS:
@@ -90,6 +92,9 @@ class DynamixelController:
             print(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
             print(f"Error getting position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+
+        position = int((position / 4096) * 360) # Convert from encoder ticks to degrees
+        position = position % 360 # Ensure the position is within 0-359 degrees
 
         return position
 

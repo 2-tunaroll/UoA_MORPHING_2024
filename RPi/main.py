@@ -38,6 +38,15 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
     for wheg_id in wheg_ids:
         dynamixel.set_goal_velocity(wheg_id, rpm)
 
+# Function to set wheg position
+def set_wheg_position(dynamixel, wheg_ids, position):
+    for wheg_id in wheg_ids:
+        dynamixel.set_goal_position(wheg_id, position)
+
+# Function to control pivot position
+def set_pivot_position(dynamixel, pivot_id, position):
+    dynamixel.set_goal_position(pivot_id, position)
+
 # Function to get and store positions of all whegs and pivots
 def get_motor_positions(dynamixel):
     motor_positions = {}
@@ -57,7 +66,10 @@ def log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_sta
 
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm):
-    set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
+    # Set all motors to position 180 degrees at a slow speed
+    # set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
+    # set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
+    set_wheg_position(dynamixel, WHEGS.values(), 180)
 
 def gait_2(dynamixel, wheg_rpm):
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm / 2)  # Slower whegs
