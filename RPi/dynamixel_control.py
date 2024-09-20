@@ -67,6 +67,11 @@ class DynamixelController:
 
     def set_goal_velocity(self, motor_id, velocity):
         """Set the velocity goal for a motor."""
+        """Ensure motors are set to velocity control mode before using this function."""
+        self.torque_off(motor_id) #Disable torque
+        self.set_operating_mode(motor_id, 'velocity')
+        self.torque_on(motor_id) #Enable torque
+        
         VELOCITY_GOAL_ADDR = 104  # Velocity goal address in Control Table
 
         # Convert velocity to the appropriate value (sign handling for forward/reverse)

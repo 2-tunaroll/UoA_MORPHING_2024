@@ -33,7 +33,6 @@ class PS4Controller:
             'l3': 10,     # Left joystick button
             'r3': 11,     # Right joystick button
             'ps': 12,     # PS button
-            'touchpad': 13 # Touchpad button
         }
 
         # D-Pad (Hat switch) index

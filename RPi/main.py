@@ -126,6 +126,8 @@ def control_pivots_with_dpad(dynamixel, button_states):
 def gait_1(dynamixel, wheg_rpm):
     logging.info("Executing Gait 1")
     set_wheg_position(dynamixel, WHEGS.values(), 180)
+    set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
+    set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
 
 def gait_2(dynamixel, wheg_rpm):
     logging.info("Executing Gait 2")
@@ -165,10 +167,10 @@ def main():
             dynamixel.torque_on(wheg_id)
             logging.info(f"Torque on for wheg_id={wheg_id}")
 
-        # # Turn on torque for pivots (although they are disabled in gaits)
-        # for pivot_id in PIVOTS.values():
-        #     dynamixel.set_operating_mode(pivot_id, 'position')
-        #     dynamixel.torque_on(pivot_id)
+        # Turn on torque for pivots (although they are disabled in gaits)
+        for pivot_id in PIVOTS.values():
+            dynamixel.set_operating_mode(pivot_id, 'position')
+            dynamixel.torque_on(pivot_id)
 
         # Main loop
         while True:
