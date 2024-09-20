@@ -1,20 +1,24 @@
 import time
+import logging
 from controller import PS4Controller
 from dynamixel_control import DynamixelController
 
-# Motor IDs for the whegs and pivots
+# Motor IDs for the whegs (wheeled legs) and pivots
 WHEGS = {
     'LR_WHEG': 1, 'LM_WHEG': 2, 'LF_WHEG': 3,
     'RR_WHEG': 4, 'RM_WHEG': 5, 'RF_WHEG': 6
 }
-FRONT_PIVOT = 7
-REAR_PIVOT = 8
+PIVOTS = {
+    'FRONT_PIVOT': 7, 'REAR_PIVOT': 8
+}
 
-# Velocity and position control limits
-MAX_RPM = 100  # Max RPM for wheg motors
+# Velocity control limits for whegs
+MAX_RPM = 200  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
-SMOOTHNESS = 0.5  # Controls how smoothly the speed increases
-MAX_PIVOT_ANGLE = 90  # Limit the pivot range to 90 degrees in each direction
+SMOOTHNESS = 10  # Controls how smoothly the speed increases
+
+# Set up logging to log motor positions and controller inputs
+logging.basicConfig(filename='robot_log.txt', level=logging.INFO, format='%(asctime)s %(message)s')
 
 # Adjust the velocity based on the right trigger input
 def adjust_wheg_speed(trigger_value, current_rpm):
@@ -34,39 +38,39 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
     for wheg_id in wheg_ids:
         dynamixel.set_goal_velocity(wheg_id, rpm)
 
-# Set pivots to specific positions while ensuring safety limits
-def set_pivot_positions(dynamixel, front_angle, rear_angle):
-    front_angle = max(min(front_angle, MAX_PIVOT_ANGLE), -MAX_PIVOT_ANGLE)
-    rear_angle = max(min(rear_angle, MAX_PIVOT_ANGLE), -MAX_PIVOT_ANGLE)
-    dynamixel.set_goal_position(FRONT_PIVOT, front_angle)
-    dynamixel.set_goal_position(REAR_PIVOT, rear_angle)
+# Function to get and store positions of all whegs and pivots
+def get_motor_positions(dynamixel):
+    motor_positions = {}
+    for wheg_name, wheg_id in WHEGS.items():
+        position = dynamixel.get_present_position(wheg_id)
+        motor_positions[wheg_name] = position
+    for pivot_name, pivot_id in PIVOTS.items():
+        position = dynamixel.get_present_position(pivot_id)
+        motor_positions[pivot_name] = position
+    return motor_positions
 
-# Define multiple gaits
+# Function to log motor positions and controller inputs at the same time
+def log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states):
+    logging.info(f"Motor Positions: {motor_positions}")
+    logging.info(f"L2 Trigger: {l2_trigger}, R2 Trigger: {r2_trigger}")
+    logging.info(f"Button States: {button_states}")
+
+# Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm):
-    print("Executing Gait 1")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
-    set_pivot_positions(dynamixel, 90, 90)  # Pivots move to the 90 degree position
 
 def gait_2(dynamixel, wheg_rpm):
-    print("Executing Gait 2")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm / 2)  # Slower whegs
-    set_pivot_positions(dynamixel, 45, 45)  # Pivots move to the 45 degree position
 
 def gait_3(dynamixel, wheg_rpm):
-    print("Executing Gait 3")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
-    set_pivot_positions(dynamixel, -45, -45)  # Pivots move to -45 degrees
 
 def gait_4(dynamixel, wheg_rpm):
-    print("Executing Gait 4")
-    set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction
-    set_pivot_positions(dynamixel, 90, 90)  # Pivots move to the 90 degree position
+    set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
 
-# Emergency stop function
+# Emergency stop function (whegs only)
 def emergency_stop(dynamixel):
-    print("Emergency Stop Activated! Stopping all motors.")
     set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
-    set_pivot_positions(dynamixel, 0, 0)  # Set pivots to neutral (0 degrees)
 
 # Main function integrating the PS4 controller and Dynamixel SDK
 def main():
@@ -78,20 +82,24 @@ def main():
         # Initial motor states
         wheg_rpm = 0  # Start with no motion
         current_gait = gait_1  # Start with Gait 1
+        previous_gait = None  # Keep track of the previous gait to detect changes
         emergency_stop_activated = False  # Track emergency stop state
+        report_timer = 0  # Timer to report motor positions every second
 
-        # Turn on torque and set operating modes
+        # Turn on torque and set operating modes for whegs only
         for wheg_id in WHEGS.values():
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             dynamixel.torque_on(wheg_id)
         
-        dynamixel.set_operating_mode(FRONT_PIVOT, 'position')
-        dynamixel.set_operating_mode(REAR_PIVOT, 'position')
-        dynamixel.torque_on(FRONT_PIVOT)
-        dynamixel.torque_on(REAR_PIVOT)
+        # # Turn on torque for pivots (although they are disabled in gaits)
+        # for pivot_id in PIVOTS.values():
+        #     dynamixel.set_operating_mode(pivot_id, 'position')
+        #     dynamixel.torque_on(pivot_id)
 
         # Main loop
         while True:
+            start_time = time.time()  # Track time for position reporting
+            
             # Get button states for emergency stop and gait selection
             button_states = ps4_controller.get_button_input()
 
@@ -115,16 +123,25 @@ def main():
                 # Gait selection using buttons (Triangle, Square, X)
                 if button_states['triangle']:
                     current_gait = gait_1
-                    print("Gait 1 selected")
                 elif button_states['square']:
                     current_gait = gait_2
-                    print("Gait 2 selected")
                 elif button_states['x']:
                     current_gait = gait_3
-                    print("Gait 3 selected")
 
-                # Execute the currently selected gait
+                # Print gait change only when it occurs
+                if current_gait != previous_gait:
+                    print(f"Gait changed to {current_gait.__name__}")
+                    previous_gait = current_gait
+
+                # Execute the currently selected gait (whegs only)
                 current_gait(dynamixel, wheg_rpm)
+
+            # Report motor positions and log controller inputs every second
+            current_time = time.time()
+            if current_time - report_timer >= 1:  # Report every 1 second
+                motor_positions = get_motor_positions(dynamixel)
+                log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states)
+                report_timer = current_time  # Reset the timer
 
             time.sleep(0.1)
 
@@ -132,11 +149,11 @@ def main():
         print("\nTerminating program...")
 
     finally:
-        # Safely turn off motors and close the controller
+        # Safely turn off wheg and pivot motors and close the controller
         for wheg_id in WHEGS.values():
             dynamixel.torque_off(wheg_id)
-        dynamixel.torque_off(FRONT_PIVOT)
-        dynamixel.torque_off(REAR_PIVOT)
+        # for pivot_id in PIVOTS.values():
+        #     dynamixel.torque_off(pivot_id)
 
         ps4_controller.close()
         dynamixel.close()

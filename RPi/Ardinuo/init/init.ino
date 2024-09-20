@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// EXECUTION IN PI
+// arduino-cli compile --fqbn OpenRB-150:samd:OpenRB-150 /home/flik/Documents/Repos/Bio-Inspired-Shape-Shifting-Robot/RPi/Ardinuo/init
+// arduino-cli upload -p /dev/ttyACM0 --fqbn OpenRB-150:samd:OpenRB-150 /home/flik/Documents/Repos/Bio-Inspired-Shape-Shifting-Robot/RPi/Ardinuo/init/
 #include <Dynamixel2Arduino.h>
 
 #define DXL_BUS Serial1

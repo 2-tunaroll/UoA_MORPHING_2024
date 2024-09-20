@@ -1,63 +1,98 @@
-from controller import PS4Controller
-from dynamixel_control import DynamixelController
-import time
+from dynamixel_sdk import *  # Uses Dynamixel SDK library
 
-def main():
-    try:
-        # Initialize PS4 controller and Dynamixel controller
-        ps4_controller = PS4Controller()
-        dynamixel = DynamixelController(device_name='/dev/ttyACM0', baudrate=57600)
+class DynamixelController:
+    def __init__(self, device_name, baudrate, protocol_version=2.0):
+        self.port_handler = PortHandler(device_name)
+        self.packet_handler = PacketHandler(protocol_version)
 
-        emergency_stop = False  # Track emergency stop state
+        # Open the port
+        if not self.port_handler.openPort():
+            raise Exception("Failed to open the port")
 
-        while True:
-            # Get joystick inputs
-            x_axis_left, y_axis_left, x_axis_right, y_axis_right = ps4_controller.get_joystick_input()
+        # Set baudrate
+        if not self.port_handler.setBaudRate(baudrate):
+            raise Exception("Failed to set baudrate")
 
-            # Get button inputs
-            button_states = ps4_controller.get_button_input()
+    def set_operating_mode(self, motor_id, mode):
+        """
+        Set the operating mode of the motor. 
+        Available modes: 'position', 'velocity'
+        """
+        OPERATING_MODE_ADDR = 11  # Address for operating mode in Control Table
+        OPERATING_MODES = {
+            'position': 3,  # Operating mode value for position control
+            'velocity': 1   # Operating mode value for velocity control
+        }
 
-            # Convert joystick y-axis input into Dynamixel goal positions
-            goal_position1 = convert_joystick_to_position(y_axis_left)
-            goal_position2 = convert_joystick_to_position(y_axis_left)
+        if mode not in OPERATING_MODES:
+            raise ValueError(f"Invalid operating mode: {mode}")
 
-            # Send goal position to the Dynamixel motors only if emergency stop is NOT activated
-            if not emergency_stop:
-                dynamixel.set_goal_position(dynamixel.dxl_id1, goal_position1)
-                dynamixel.set_goal_position(dynamixel.dxl_id2, goal_position2)
+        mode_value = OPERATING_MODES[mode]
+        result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR, mode_value)
+        if result != COMM_SUCCESS:
+            print(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            print(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
 
-            # Print present positions for debugging
-            present_position1 = dynamixel.get_present_position(dynamixel.dxl_id1)
-            present_position2 = dynamixel.get_present_position(dynamixel.dxl_id2)
-            print(f"Motor1 - GoalPos: {goal_position1}, PresentPos: {present_position1}")
-            print(f"Motor2 - GoalPos: {goal_position2}, PresentPos: {present_position2}")
+    def torque_on(self, motor_id):
+        """Enable the torque on a motor."""
+        TORQUE_ENABLE_ADDR = 64  # Torque enable address in the Control Table
+        TORQUE_ENABLE = 1
 
-            # Emergency stop using Circle button
-            if button_states['circle']:  # Circle button
-                print("Emergency Stop Activated! Disabling motors.")
-                emergency_stop = True
-                dynamixel.set_goal_position(dynamixel.dxl_id1, 0)
-                dynamixel.set_goal_position(dynamixel.dxl_id2, 0)
-                dynamixel.disable_torque()
+        result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, TORQUE_ENABLE_ADDR, TORQUE_ENABLE)
+        if result != COMM_SUCCESS:
+            print(f"Failed to enable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            print(f"Error enabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
 
-            # Reactivate motors after emergency stop if Circle button is released
-            if not button_states['circle'] and emergency_stop:
-                print("Emergency Stop Deactivated! Re-enabling motors.")
-                dynamixel._enable_torque(dynamixel.dxl_id1)
-                dynamixel._enable_torque(dynamixel.dxl_id2)
-                emergency_stop = False
+    def torque_off(self, motor_id):
+        """Disable the torque on a motor."""
+        TORQUE_ENABLE_ADDR = 64  # Torque enable address in the Control Table
+        TORQUE_DISABLE = 0
 
-            time.sleep(0.1)  # Small delay to reduce CPU usage
+        result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, TORQUE_ENABLE_ADDR, TORQUE_DISABLE)
+        if result != COMM_SUCCESS:
+            print(f"Failed to disable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            print(f"Error disabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
 
-    except KeyboardInterrupt:
-        print("\nTerminating program...")
+    def set_goal_velocity(self, motor_id, velocity):
+        """Set the velocity goal for a motor."""
+        VELOCITY_GOAL_ADDR = 104  # Velocity goal address in Control Table
 
-    finally:
-        # Safely close the controller and Dynamixel connections
-        ps4_controller.close()
-        dynamixel.close()
-        print("Shutdown complete.")
+        # Convert velocity to the appropriate value (sign handling for forward/reverse)
+        velocity_value = int(velocity)  # Ensure the value is an integer
 
-if __name__ == "__main__":
-    main()
+        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, VELOCITY_GOAL_ADDR, velocity_value)
+        if result != COMM_SUCCESS:
+            print(f"Failed to set goal velocity for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            print(f"Error setting goal velocity for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
 
+    def set_goal_position(self, motor_id, position):
+        """Set the goal position for a motor."""
+        POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
+
+        position_value = int(position)  # Ensure the position value is an integer
+
+        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, position_value)
+        if result != COMM_SUCCESS:
+            print(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            print(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+
+    def get_present_position(self, motor_id):
+        """Get the current position of the motor."""
+        PRESENT_POSITION_ADDR = 132  # Present position address in Control Table
+
+        position, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
+        if result != COMM_SUCCESS:
+            print(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        if error != 0:
+            print(f"Error getting position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+
+        return position
+
+    def close(self):
+        """Close the port and clean up resources."""
+        self.port_handler.closePort()
