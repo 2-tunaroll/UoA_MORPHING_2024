@@ -48,7 +48,7 @@ class DynamixelController:
         Available modes: 'position', 'velocity'
         """
         OPERATING_MODE_ADDR = 11
-        operating_mode, result, error = self.packet_handler.read1ByteTxRx(dynamixel.port_handler, motor_id, ADDR_OPERATING_MODE)
+        operating_mode, result, error = self.packet_handler.read1ByteTxRx(self.port_handler, motor_id, ADDR_OPERATING_MODE)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to get operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
