@@ -34,6 +34,8 @@ MAX_RPM = 200  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
 SMOOTHNESS = 10  # Controls how smoothly the speed increases
 PIVOT_STEP = 1  # Step size in degrees for each D-pad press
+PIVOT_MAX_ANGLE = 270  # Max angle for pivots
+PIVOT_MIN_ANGLE = 90   # Min angle for pivots
 
 # Track the current pivot positions
 front_pivot_angle = 180  # Start position for front pivot
