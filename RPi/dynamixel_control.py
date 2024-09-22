@@ -406,7 +406,8 @@ class DynamixelController:
 
     def increment_group_position(self, group_name, degrees):
         """
-        Increment the position of all motors in a group by a specified number of degrees.
+        Increment the position of all motors in a group by a specified number of degrees, 
+        adding the increment to their current position.
         """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group '{group_name}' not found")
@@ -415,15 +416,15 @@ class DynamixelController:
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
 
         for motor_id in self.motor_groups[group_name]:
-            # Get current position of the motor in degrees
+            # Get current position of the motor in encoder ticks
             current_position_degrees = self.get_present_position(motor_id)
             
             # Calculate new position by adding the increment
             new_position_degrees = current_position_degrees + degrees
 
-            # Convert to encoder units
+            # Convert new position to encoder units
             new_position_value = int((new_position_degrees / 360) * 4096)  # Convert degrees to encoder ticks
-            new_position_value = new_position_value % 4096  # Ensure the value is within 0-4095 ticks
+            new_position_value = new_position_value % 4096  # Ensure the value is within 0-4095 ticks (wrap-around)
 
             # Prepare parameters for sync write
             param_goal_position = [
