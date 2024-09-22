@@ -1,3 +1,3 @@
-/RPi/Logs/
-/RPi/*.pyc
-/RPi/__pycache__/
+RPi/Logs/
+RPi/*.pyc
+RPi/__pycache__/
