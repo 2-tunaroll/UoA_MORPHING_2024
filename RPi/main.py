@@ -148,6 +148,8 @@ def control_pivots_with_dpad(dynamixel, button_states):
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 1")
+    # Set the velocity limit for all whegs based on controller input
+    dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity based on input
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
