@@ -249,7 +249,7 @@ class DynamixelController:
         else:
             logging.info(f"Profile acceleration set to {acceleration_rpmps} RPM/s for motor {motor_id}")
 
-    def rotate_by_degrees(self, motor_id, degrees, tolerance=5):
+    def rotate_by_degrees(self, motor_id, degrees, tolerance=0):
         """
         Rotate the motor by a specified number of degrees relative to its current position,
         and wait until the motor reaches the target position before continuing.
@@ -268,7 +268,6 @@ class DynamixelController:
 
         # Convert the new position to encoder units
         new_position_value = int((new_position_degrees / 360) * 4096)  # Convert degrees to encoder ticks
-        new_position_value = new_position_value % 4096  # Ensure the position value is within 0-4095 ticks
 
         # Send the new goal position to the motor
         result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, new_position_value)
