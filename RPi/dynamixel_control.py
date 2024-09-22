@@ -462,7 +462,7 @@ class DynamixelController:
 
         groupBulkWrite.clearParam()
 
-    def increment_group_position(self, group_name, degrees, profile_velocity, tolerance=5):
+    def increment_group_position(self, group_name, degrees, profile_velocity, tolerance=5, timeout=10):
         """
         Increment the position of all motors in a group by a specified number of degrees, 
         adding the increment to their current position and setting a velocity limit (Profile Velocity).
@@ -471,10 +471,16 @@ class DynamixelController:
         :param degrees: Degrees to increment
         :param profile_velocity: Profile velocity in RPM (this will be set for each motor in the group)
         :param tolerance: Degrees of tolerance for position checking
+        :param timeout: Maximum time (in seconds) to wait for motors to reach the target position
         """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group '{group_name}' not found")
             return
+
+        # Ensure the profile velocity is sufficient for the motors to move
+        if profile_velocity < 10:  # A very low RPM may cause the motors to not move at all
+            logging.warning(f"Profile velocity {profile_velocity} too low. Setting to minimum 10 RPM.")
+            profile_velocity = 10
 
         # Set profile velocity for all motors in the group
         self.set_group_profile_velocity(group_name, profile_velocity)
@@ -522,7 +528,8 @@ class DynamixelController:
         # Clear the parameters for the next bulk write
         groupSyncWrite.clearParam()
 
-        # Wait for all motors to reach their target positions
+        # Wait for all motors to reach their target positions or timeout
+        start_time = time.time()
         while True:
             all_motors_at_target = True
             for motor_id, target_position in target_positions.items():
@@ -546,6 +553,11 @@ class DynamixelController:
             # If all motors have reached their target positions, exit the loop
             if all_motors_at_target:
                 logging.info(f"All motors in group '{group_name}' reached their target positions")
+                break
+
+            # Check if we've exceeded the timeout
+            if time.time() - start_time > timeout:
+                logging.warning(f"Timeout reached while waiting for motors in group '{group_name}' to reach target positions")
                 break
 
             # Optional: add a short delay to prevent busy-waiting
