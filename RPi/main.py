@@ -118,9 +118,9 @@ def control_pivots_with_dpad(dynamixel, button_states):
     global front_pivot_angle, rear_pivot_angle
 
     # Front pivot control (D-pad up/down)
-    if button_states['dpad_up']:
+    if button_states['dpad_down']:
         front_pivot_angle = min(front_pivot_angle + PIVOT_STEP, PIVOT_MAX_ANGLE)
-    elif button_states['dpad_down']:
+    elif button_states['dpad_up']:
         front_pivot_angle = max(front_pivot_angle - PIVOT_STEP, PIVOT_MIN_ANGLE)
     
     # Rear pivot control (D-pad left/right)
@@ -137,21 +137,34 @@ def control_pivots_with_dpad(dynamixel, button_states):
     logging.info(f"Rear pivot angle set to {rear_pivot_angle}")
 
 # Define multiple gaits (for whegs only, pivots are disabled)
-def gait_1(dynamixel, wheg_rpm):
+def gait_1(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 1")
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
 
-def gait_2(dynamixel, wheg_rpm):
+def gait_2(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 2")
-    set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm / 2)  # Slower whegs
 
-def gait_3(dynamixel, wheg_rpm):
+    # Set the velocity limit for all whegs based on controller input
+    dynamixel.set_group_velocity_limit('whegs', wheg_rpm)  # Set velocity based on input
+
+    # Rotate the whegs in position mode by setting incremental goal positions
+    left_wheg_positions = [360, 360, 360]  # Example goal positions for left side whegs
+    right_wheg_positions = [360, 360, 360]  # Example goal positions for right side whegs
+
+    # Sync write positions for both left and right whegs
+    dynamixel.sync_write_position('left_whegs', left_wheg_positions)
+    dynamixel.sync_write_position('right_whegs', right_wheg_positions)
+
+    # Control pivots using the D-pad (if implemented in your system)
+    control_pivots_with_dpad(dynamixel, button_states)
+
+def gait_3(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 3")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
 
-def gait_4(dynamixel, wheg_rpm):
+def gait_4(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 4")
     set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
 
@@ -160,6 +173,19 @@ def emergency_stop(dynamixel):
     logging.warning("Emergency stop activated")
     set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
 
+def create_groups():
+    # Create groups of motors for different gaits
+    dynamixel.create_motor_group('Pivot_Group', PIVOTS.values()) # Group for all pivot motors
+    dynamixel.create_motor_group('Wheg_Group', WHEGS.values()) # Group for all wheg motors
+    dynamixel.create_motor_group('All_Motors', list(WHEGS.values()) + list(PIVOTS.values())) # Group for all motors
+    dynamixel.create_motor_group('Left_Whegs', [WHEGS['LR_WHEG'], WHEGS['LM_WHEG'], WHEGS['LF_WHEG']]) # Group for left whegs
+    dynamixel.create_motor_group('Right_Whegs', [WHEGS['RR_WHEG'], WHEGS['RM_WHEG'], WHEGS['RF_WHEG']]) # Group for right whegs
+    dynamixel.create_motor_group('Front_Whegs', [WHEGS['LF_WHEG'], WHEGS['RF_WHEG']]) # Group for front whegs
+    dynamixel.create_motor_group('Rear_Whegs', [WHEGS['LR_WHEG'], WHEGS['RR_WHEG']]) # Group for rear whegs
+    dynamixel.create_motor_group('Middle_Whegs', [WHEGS['LM_WHEG'], WHEGS['RM_WHEG']]) # Group for middle whegs
+    dynamixel.create_motor_group('Two_Right_One_Left', [WHEGS['LM_WHEG'], WHEGS['RR_WHEG'], WHEGS['RF_WHEG']]) # Group for two right and one left whegs
+    dynamixel.create_motor_group('Two_Left_One_Right', [WHEGS['RM_WHEG'], WHEGS['LR_WHEG'], WHEGS['LF_WHEG']]) # Group for two left and one right whegs
+
 # Main function integrating the PS4 controller and Dynamixel SDK
 def main():
     try:
@@ -167,6 +193,14 @@ def main():
         ps4_controller = PS4Controller()
         dynamixel = DynamixelController(device_name='/dev/ttyACM0', baudrate=57600)
         logging.info("Initialized PS4 controller and Dynamixel")
+
+        # Setup motor groups
+        create_groups()
+        # List of gaits available for selection
+        gait_list = [gait_1, gait_2, gait_3, gait_4]
+        # Track the current gait
+        current_gait_index = 0
+        total_gaits = len(gait_list)
 
         # Initial motor states
         wheg_rpm = 0  # Start with no motion
@@ -186,6 +220,11 @@ def main():
             dynamixel.set_operating_mode(pivot_id, 'position')
             dynamixel.torque_on(pivot_id)
 
+        # Set initial velocity limits for pivots to 2 RPM
+        dynamixel.set_group_velocity_limit('pivots', 2)
+        # Set initial velocity limit for whegs to 10 RPM
+        dynamixel.set_group_velocity_limit('whegs', 10)
+        
         # Main loop
         while True:
             start_time = time.time()  # Track time for position reporting
@@ -193,6 +232,12 @@ def main():
             # Get button states for emergency stop and gait selection
             button_states = ps4_controller.get_button_input()
             logging.debug(f"Button states: {button_states}")
+
+            # Check if controller is disconnected
+            if button_states is None:
+                logging.error("Controller is disconnected. Stopping robot.")
+                emergency_stop()
+                break
 
             # Emergency Stop using Circle button
             if button_states['circle']:
@@ -212,28 +257,26 @@ def main():
                 # Adjust the speed of the whegs based on the right trigger
                 wheg_rpm = adjust_wheg_speed(r2_trigger, wheg_rpm)
 
-                # Gait selection using buttons (Triangle, Square, X)
+                # Triangle button: Move to the next gait
                 if button_states['triangle']:
-                    current_gait = gait_1
-                    logging.info("Triangle button pressed: Gait 1 Selected")
+                    current_gait_index = (current_gait_index + 1) % total_gaits
+                    print(f"Switching to Gait {current_gait_index + 1}")
+                    gait_list[current_gait_index](dynamixel)
+                    time.sleep(0.2)  # Debounce delay
+                
+                # Square button: Move to the previous gait
                 elif button_states['square']:
-                    current_gait = gait_2
-                    logging.info("Square button pressed: Gait 2 Selected")
-                elif button_states['x']:
-                    current_gait = gait_3
-                    logging.info("X button pressed: Gait 3 Selected")
-                elif button_states['circle']:
-                    current_gait = gait_4
-                    logging.info("Circle button pressed: Gait 4 Selected")
+                    current_gait_index = (current_gait_index - 1) % total_gaits
+                    print(f"Switching to Gait {current_gait_index + 1}")
+                    gait_list[current_gait_index](dynamixel)
+                    time.sleep(0.2)  # Debounce delay
 
                 # Execute the current gait
                 if current_gait != previous_gait:
                     logging.info(f"Changing to new gait: {current_gait.__name__}")
                     previous_gait = current_gait
                 # Execute the current gate
-                current_gait(dynamixel, wheg_rpm)
-                # Control pivots using the D-pad
-                control_pivots_with_dpad(dynamixel, button_states)
+                current_gait(dynamixel, wheg_rpm, button_states)
 
             # Report motor positions and log controller inputs every second
             current_time = time.time()

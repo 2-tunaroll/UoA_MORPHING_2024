@@ -18,6 +18,8 @@ class DynamixelController:
             raise Exception("Failed to set baudrate")
         logging.info(f"Baudrate set to {baudrate}")
 
+        self.motor_groups = {}  # Dictionary to store motor groups
+
     def set_operating_mode(self, motor_id, mode):
         """
         Set the operating mode of the motor. 
@@ -129,7 +131,110 @@ class DynamixelController:
         logging.info(f"Current position for motor {motor_id} is {position} degrees")
         return position
 
+    def set_velocity_limit(self, motor_id, velocity_rpm):
+        # Set the velocity limit for an individual motor
+        # Convert RPM to encoder units (based on 0.229 factor for XM and XL motors)
+        velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)
+        # Set the velocity limit for the motor
+        ADDR_VELOCITY_LIMIT = 44
+        self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, ADDR_VELOCITY_LIMIT, velocity_limit_in_encoder_units)
+
     def close(self):
         """Close the port and clean up resources."""
         self.port_handler.closePort()
         logging.info("Port closed")
+
+    """ Functionality for group control of motors"""
+    def create_motor_group(self, group_name, motor_ids):
+        # Create a group of motors for easier control
+        self.motor_groups[group_name] = motor_ids
+        
+    def sync_write_position(self, group_name, positions):
+        # Sync write goal positions for a group of motors
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+        
+        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
+        
+        for i, motor_id in enumerate(self.motor_groups[group_name]):
+            pos = positions[i]
+            param_goal_position = [DXL_LOBYTE(DXL_LOWORD(pos)),
+                                   DXL_HIBYTE(DXL_LOWORD(pos)),
+                                   DXL_LOBYTE(DXL_HIWORD(pos)),
+                                   DXL_HIBYTE(DXL_HIWORD(pos))]
+            groupSyncWrite.addParam(motor_id, param_goal_position)
+
+        groupSyncWrite.txPacket()
+        groupSyncWrite.clearParam()
+
+    def bulk_write_velocity(self, group_name, velocities):
+        # Bulk write velocities for a group of motors
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+        
+        groupBulkWrite = GroupBulkWrite(self.port_handler, self.packet_handler)
+        
+        for i, motor_id in enumerate(self.motor_groups[group_name]):
+            vel = velocities[i]
+            param_goal_velocity = [DXL_LOBYTE(DXL_LOWORD(vel)),
+                                   DXL_HIBYTE(DXL_LOWORD(vel)),
+                                   DXL_LOBYTE(DXL_HIWORD(vel)),
+                                   DXL_HIBYTE(DXL_HIWORD(vel))]
+            groupBulkWrite.addParam(motor_id, 104, 4, param_goal_velocity)  # Velocity address
+        
+        groupBulkWrite.txPacket()
+        groupBulkWrite.clearParam()
+
+    def torque_on_group(self, group_name):
+        # Enable torque for all motors in a group
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+
+        for motor_id in self.motor_groups[group_name]:
+            self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, 64, 1)  # Torque enable address
+
+    def torque_off_group(self, group_name):
+        # Disable torque for all motors in a group
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+        
+        for motor_id in self.motor_groups[group_name]:
+            self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, 64, 0)  # Torque disable
+
+def set_group_velocity_limit(self, group_name, velocity_rpm):
+    # Set the velocity limit for all motors in a group using bulk write
+    if group_name not in self.motor_groups:
+        logging.error(f"Motor group '{group_name}' not found")
+        return
+
+    groupBulkWrite = GroupBulkWrite(self.port_handler, self.packet_handler)
+
+    # Convert the desired velocity limit in RPM to encoder units
+    velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)
+
+    # Prepare velocity data for each motor in the group
+    param_goal_velocity = [
+        DXL_LOBYTE(DXL_LOWORD(velocity_limit_in_encoder_units)),
+        DXL_HIBYTE(DXL_LOWORD(velocity_limit_in_encoder_units)),
+        DXL_LOBYTE(DXL_HIWORD(velocity_limit_in_encoder_units)),
+        DXL_HIBYTE(DXL_HIWORD(velocity_limit_in_encoder_units))
+    ]
+
+    for motor_id in self.motor_groups[group_name]:
+        # Add velocity limit for each motor to bulk write
+        result = groupBulkWrite.addParam(motor_id, 44, 4, param_goal_velocity)  # Velocity limit register address 44
+        if not result:
+            logging.error(f"Failed to add motor {motor_id} to bulk write")
+    
+    # Execute the bulk write
+    result = groupBulkWrite.txPacket()
+    if result != COMM_SUCCESS:
+        logging.error(f"Failed to bulk write velocity limit for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
+    else:
+        logging.info(f"Velocity limit of {velocity_rpm} RPM set for all motors in group '{group_name}'")
+
+    groupBulkWrite.clearParam()

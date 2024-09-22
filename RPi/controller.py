@@ -1,18 +1,23 @@
 import pygame
 import logging
+import time
 
 class PS4Controller:
-    def __init__(self):
+    def __init__(self, debounce_time=0.2):
         logging.info("Initializing PS4Controller")
-        
+
         # Initialize pygame
         pygame.init()
         logging.debug("Pygame initialized")
 
-        # Initialize the joystick (assuming it's the first one connected)
-        self.joystick = pygame.joystick.Joystick(0)
-        self.joystick.init()
-        logging.debug("Joystick initialized")
+        try:
+            # Initialize the joystick (assuming it's the first one connected)
+            self.joystick = pygame.joystick.Joystick(0)
+            self.joystick.init()
+            logging.debug("Joystick initialized")
+        except pygame.error as e:
+            logging.error("PS4 Controller not detected! Please connect the controller.")
+            raise e
 
         # Get the number of buttons on the controller
         self.num_buttons = self.joystick.get_numbuttons()
@@ -38,7 +43,27 @@ class PS4Controller:
         # D-Pad (Hat switch) index
         self.dpad_index = 0
 
+        # Debounce time in seconds
+        self.debounce_time = debounce_time
+        self.last_button_press_time = {}
+
+    def check_controller_connected(self):
+        # Checks if the PS4 controller is still connected.
+        try:
+            pygame.event.pump()  # Refresh events to check connection
+            if not self.joystick.get_init():
+                logging.warning("Controller disconnected!")
+                return False
+            return True
+        except pygame.error:
+            logging.error("Controller connection lost!")
+            return False
+
     def get_joystick_input(self):
+        if not self.check_controller_connected():
+            logging.error("Controller is disconnected.")
+            return None  # Signal that no input is available
+
         logging.info("Getting joystick input")
         pygame.event.pump()
         x_axis_left = self.joystick.get_axis(0)  # Left joystick X-axis
@@ -49,29 +74,48 @@ class PS4Controller:
         return x_axis_left, y_axis_left, x_axis_right, y_axis_right
 
     def get_button_input(self):
+        if not self.check_controller_connected():
+            logging.error("Controller is disconnected.")
+            return None  # Signal that no input is available
+
         logging.info("Getting button input")
         pygame.event.pump()
         button_states = {}
+        current_time = time.time()
         for button, index in self.buttons.items():
             if index < self.num_buttons:
-                button_states[button] = self.joystick.get_button(index)
-                logging.debug(f"Button {button} (index {index}) state: {button_states[button]}")
+                is_pressed = self.joystick.get_button(index)
+                # Debounce logic: Ignore rapid sequential presses within debounce time
+                if is_pressed:
+                    if button not in self.last_button_press_time or \
+                            (current_time - self.last_button_press_time[button]) > self.debounce_time:
+                        self.last_button_press_time[button] = current_time
+                        button_states[button] = True
+                        logging.debug(f"Button {button} (index {index}) pressed.")
+                    else:
+                        button_states[button] = False  # Ignore press (debounced)
+                else:
+                    button_states[button] = False
             else:
                 button_states[button] = None  # Button doesn't exist on this controller
                 logging.warning(f"Button {button} (index {index}) does not exist on this controller")
-        
+
         # Add D-pad states to button_states
         dpad_state = self.joystick.get_hat(self.dpad_index)
         button_states['dpad_up'] = dpad_state[1] == 1   # Y-axis positive
         button_states['dpad_down'] = dpad_state[1] == -1  # Y-axis negative
         button_states['dpad_left'] = dpad_state[0] == -1  # X-axis negative
         button_states['dpad_right'] = dpad_state[0] == 1   # X-axis positive
-        
+
         logging.debug(f"D-pad state: {button_states['dpad_up']}, {button_states['dpad_down']}, {button_states['dpad_left']}, {button_states['dpad_right']}")
         
         return button_states
 
     def get_trigger_input(self):
+        if not self.check_controller_connected():
+            logging.error("Controller is disconnected.")
+            return None  # Signal that no input is available
+
         logging.info("Getting trigger input")
         pygame.event.pump()
         l2_trigger = self.joystick.get_axis(2)  # L2 trigger (corrected)
@@ -80,6 +124,10 @@ class PS4Controller:
         return l2_trigger, r2_trigger
 
     def get_dpad_input(self):
+        if not self.check_controller_connected():
+            logging.error("Controller is disconnected.")
+            return None  # Signal that no input is available
+
         pygame.event.pump()
         dpad_state = self.joystick.get_hat(self.dpad_index)
         
@@ -93,7 +141,6 @@ class PS4Controller:
         
         logging.debug(f"D-pad state: {dpad_input}")
         return dpad_input
-
 
     def close(self):
         logging.info("Closing PS4Controller and quitting pygame")
