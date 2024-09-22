@@ -88,14 +88,14 @@ class PS4Controller:
                 is_pressed = self.joystick.get_button(index)
                 # Debounce logic: Ignore rapid sequential presses within debounce time
                 if is_pressed:
-                    if button not in self.last_button_press_time or \
-                            (current_time - self.last_button_press_time[button]) > self.debounce_time:
-                        self.last_button_press_time[button] = current_time
-                        if button_states.get(button) != True:
-                            logging.info(f"Button {button} pressed.")
-                        button_states[button] = True
-                    else:
-                        button_states[button] = False  # Ignore press (debounced)
+                    # if button not in self.last_button_press_time or \
+                    #         (current_time - self.last_button_press_time[button]) > self.debounce_time:
+                    #     self.last_button_press_time[button] = current_time
+                    if button_states.get(button) != True:
+                        logging.info(f"Button {button} pressed.")
+                    button_states[button] = True
+                    # else:
+                    #     button_states[button] = False  # Ignore press (debounced)
                 else:
                     button_states[button] = False
             else:

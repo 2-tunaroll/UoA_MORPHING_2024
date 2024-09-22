@@ -163,8 +163,6 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     dynamixel.increment_group_position('Left_Whegs', increment)
     dynamixel.increment_group_position('Right_Whegs', increment) # Reverse direction for right whegs to move in the same direction (because of mounting)
 
-    # Pause for 1 second to allow the whegs to move
-    time.sleep(1)
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, button_states)
 
@@ -235,8 +233,8 @@ def main():
             if wheg_id in [WHEGS['RM_WHEG'], WHEGS['RF_WHEG'], WHEGS['RR_WHEG']]:
                 offset = dynamixel.get_homing_offset(wheg_id)  # Get homing offset for whegs
                 logging.info(f"Homing offset for wheg_id={wheg_id} is {offset}")
-                if offset != 4096:
-                    dynamixel.set_homing_offset(wheg_id, 4096)
+                if offset != 0:
+                    dynamixel.set_homing_offset(wheg_id, 0)
                     logging.info(f"Set homing offset to 4096 for wheg_id={wheg_id}")
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             dynamixel.torque_on(wheg_id)
@@ -293,13 +291,11 @@ def main():
                 if button_states['triangle']:
                     current_gait_index = (current_gait_index + 1) % total_gaits
                     current_gait = gait_list[current_gait_index]
-                    time.sleep(0.2)  # Debounce delay
                 
                 # Square button: Move to the previous gait
                 elif button_states['square']:
                     current_gait_index = (current_gait_index - 1) % total_gaits
                     current_gait = gait_list[current_gait_index]
-                    time.sleep(0.2)  # Debounce delay
 
                 # Execute the current gait
                 current_gait(dynamixel, wheg_rpm, button_states, motor_positions)
