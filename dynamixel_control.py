@@ -3,31 +3,64 @@ from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import logging
 import yaml
 
-# Load the full configuration from YAML
-with open('config.yaml', 'r') as file:
-    config = yaml.safe_load(file)
-
-# Access the control table from the config
-control_table = config['control_table']
 class DynamixelController:
-    def __init__(self, device_name, baudrate, protocol_version=2.0):
-        self.port_handler = PortHandler(device_name)
+    def __init__(self, config_path='config.yaml', device_name=None, baudrate=None, protocol_version=2.0):
+        # Load configuration from the YAML file
+        with open(config_path, 'r') as file:
+            self.config = yaml.safe_load(file)
+
+        # Dynamically set the device_name and baudrate from config or passed arguments
+        self.device_name = device_name or self.config['controller']['device_name']
+        self.baudrate = baudrate or self.config['controller']['baudrate']
+        
+        # Set up motor groups and control table from config
+        self.motor_groups = self.config['motor_groups']
+        self.control_table = self.config['control_table']
+        self.motor_ids = self.config['motor_ids']
+
+        self.port_handler = PortHandler(self.device_name)
         self.packet_handler = PacketHandler(protocol_version)
 
         # Open the port
         if not self.port_handler.openPort():
             logging.error("Failed to open the port")
             raise Exception("Failed to open the port")
-        logging.info(f"Port {device_name} opened successfully")
+        logging.info(f"Port {self.device_name} opened successfully")
 
         # Set baudrate
-        if not self.port_handler.setBaudRate(baudrate):
+        if not self.port_handler.setBaudRate(self.baudrate):
             logging.error("Failed to set baudrate")
             raise Exception("Failed to set baudrate")
-        logging.info(f"Baudrate set to {baudrate}")
+        logging.info(f"Baudrate set to {self.baudrate}")
 
-        self.motor_groups = {}  # Dictionary to store motor groups
+        # Automatically set up motor groups
+        self.setup_motor_groups()
 
+    def create_motor_group(self, group_name, motor_ids):
+        """Create a group of motors for easier control."""
+        self.motor_groups[group_name] = motor_ids
+        logging.info(f"Motor group '{group_name}' created with motors: {motor_ids}")
+
+    def setup_motor_groups(self):
+        """Setup all motor groups from the YAML config."""
+        motor_groups = config['motor_groups']  # Access motor groups from config
+        motor_ids = config['motor_ids']  # Access motor IDs from config
+
+        for group_name, motor_names in motor_groups.items():
+            # Get motor IDs by looking up motor names in motor_ids (whegs and pivots)
+            motor_ids_list = [
+                motor_ids['whegs'].get(name, motor_ids['pivots'].get(name)) for name in motor_names
+            ]
+            self.create_motor_group(group_name, motor_ids_list)
+
+    def get_control_table_address(self, key):
+        """Get the address for a control table key."""
+        if key in self.control_table:
+            return self.control_table[key]
+        else:
+            logging.error(f"Control table key '{key}' not found")
+            raise ValueError(f"Control table key '{key}' not found")
+         
     def get_homing_offset(self, motor_id):
         """
         Get the current homing offset for the motor.
@@ -323,12 +356,6 @@ class DynamixelController:
         """Close the port and clean up resources."""
         self.port_handler.closePort()
         logging.info("Port closed")
-
-    """ Functionality for group control of motors """
-    def create_motor_group(self, group_name, motor_ids):
-        """Create a group of motors for easier control."""
-        self.motor_groups[group_name] = motor_ids
-        logging.info(f"Motor group '{group_name}' created with motors: {motor_ids}")
 
     def sync_write_position(self, group_name, positions):
         """Sync write goal positions for a group of motors."""

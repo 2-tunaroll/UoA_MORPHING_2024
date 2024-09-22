@@ -54,3 +54,49 @@ control_table: # Control table values for XC330 and XL430 from https://emanual.r
   velocity_limit: 44
   profile_velocity: 112
   profile_acceleration: 108
+
+motor_groups: # Motor groups that can be controlled with sync and bulk write
+  Pivot_Group: 
+    - FRONT_PIVOT
+    - REAR_PIVOT
+  Wheg_Group:
+    - LR_WHEG
+    - LM_WHEG
+    - LF_WHEG
+    - RR_WHEG
+    - RM_WHEG
+    - RF_WHEG
+  All_Motors:
+    - LR_WHEG
+    - LM_WHEG
+    - LF_WHEG
+    - RR_WHEG
+    - RM_WHEG
+    - RF_WHEG
+    - FRONT_PIVOT
+    - REAR_PIVOT
+  Left_Whegs:
+    - LR_WHEG
+    - LM_WHEG
+    - LF_WHEG
+  Right_Whegs:
+    - RR_WHEG
+    - RM_WHEG
+    - RF_WHEG
+  Front_Whegs:
+    - LF_WHEG
+    - RF_WHEG
+  Rear_Whegs:
+    - LR_WHEG
+    - RR_WHEG
+  Middle_Whegs:
+    - LM_WHEG
+    - RM_WHEG
+  Two_Right_One_Left:
+    - LM_WHEG
+    - RR_WHEG
+    - RF_WHEG
+  Two_Left_One_Right:
+    - RM_WHEG
+    - LR_WHEG
+    - LF_WHEG
