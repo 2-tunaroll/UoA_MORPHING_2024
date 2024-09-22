@@ -149,22 +149,22 @@ def control_pivots_with_dpad(dynamixel, button_states):
     print(f"Pivot angles updated: Front={front_pivot_angle}, Rear={rear_pivot_angle}")
 
 # Define multiple gaits (for whegs only, pivots are disabled)
-def gait_1(dynamixel, wheg_rpm, button_states):
+def gait_1(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 1")
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
     print("Executing Gait 1")
 
-def gait_2(dynamixel, wheg_rpm, button_states):
+def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 2")
 
     # Set the velocity limit for all whegs based on controller input
     dynamixel.set_group_velocity_limit('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
     # Increment the wheg positions by 180 degrees
-    left_wheg_positions = [wheg_positions[wheg] + 180 for wheg in ['LR_WHEG', 'LM_WHEG', 'LF_WHEG']]
-    right_wheg_positions = [wheg_positions[wheg] + 180 for wheg in ['RR_WHEG', 'RM_WHEG', 'RF_WHEG']]
+    left_wheg_positions = motor_positions['LR_WHEG'] + 180, motor_positions['LM_WHEG'] + 180, motor_positions['LF_WHEG'] + 180
+    right_wheg_positions = motor_positions['RR_WHEG'] + 180, motor_positions['RM_WHEG'] + 180, motor_positions['RF_WHEG'] + 180
 
     # Sync write positions for both left and right whegs
     dynamixel.sync_write_position('Left_Whegs', left_wheg_positions)
@@ -174,12 +174,12 @@ def gait_2(dynamixel, wheg_rpm, button_states):
     control_pivots_with_dpad(dynamixel, button_states)
     print("Executing Gait 2")
 
-def gait_3(dynamixel, wheg_rpm, button_states):
+def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 3")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
     print("Executing Gait 3")
 
-def gait_4(dynamixel, wheg_rpm, button_states):
+def gait_4(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 4")
     set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
     print("Executing Gait 4")
@@ -290,13 +290,13 @@ def main():
                     current_gait = gait_list[current_gait_index]
                     time.sleep(0.2)  # Debounce delay
 
+                motor_positions = get_motor_positions(dynamixel)
                 # Execute the current gait
                 current_gait(dynamixel, wheg_rpm, button_states)
 
             # Report motor positions and log controller inputs every 5 seconds
             current_time = time.time()
             if current_time - report_timer >= 5:  # Report every 5 seconds
-                motor_positions = get_motor_positions(dynamixel)
                 log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states)
                 report_timer = current_time  # Reset the timer
 
