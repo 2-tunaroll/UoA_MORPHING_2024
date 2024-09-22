@@ -226,6 +226,12 @@ def main():
         previous_gait = None  # Keep track of the previous gait to detect changes
         emergency_stop_activated = False  # Track emergency stop state
         report_timer = 0  # Timer to report motor positions every second
+        
+        # Start in position control mode for all motors
+        for motor_id in WHEGS.values():
+            dynamixel.set_operating_mode(motor_id, 'position')
+        for motor_id in PIVOTS.values():
+            dynamixel.set_operating_mode(motor_id, 'position')
 
         # Turn on torque and set operating modes for whegs only
         for wheg_id in WHEGS.values():
