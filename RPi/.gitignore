@@ -1,1 +1,3 @@
 Logs/
+*.pyc
+__pycache__/
