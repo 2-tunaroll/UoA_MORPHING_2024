@@ -176,8 +176,8 @@ def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     increment = 360  # Increment by 360 degrees
     
     # Set the goal positions for the groups of 0 and 180 degrees
-    dynamixel.set_group_position('Two_Right_One_Left', 0)
-    dynamixel.set_group_position('Two_Left_One_Right', 180)
+    dynamixel.sync_write_position('Two_Right_One_Left', 0)
+    dynamixel.sync_write_position('Two_Left_One_Right', 180)
 
     # Rotate all whegs by 360 degrees
     dynamixel.increment_group_position('All_Motors', increment)
