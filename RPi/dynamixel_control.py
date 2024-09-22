@@ -1,5 +1,5 @@
-from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import logging
+from dynamixel_sdk import *  # Uses Dynamixel SDK library
 
 class DynamixelController:
     def __init__(self, device_name, baudrate, protocol_version=2.0):
@@ -22,114 +22,101 @@ class DynamixelController:
 
     def set_operating_mode(self, motor_id, mode):
         """
-        Set the operating mode of the motor. 
-        Available modes: 'position', 'velocity'
+        Set the operating mode of the motor. Available modes: 'position', 'velocity'
+        Only log if the mode is actually changed.
         """
-        OPERATING_MODE_ADDR = 11  # Address for operating mode in Control Table
+        OPERATING_MODE_ADDR = 11
         OPERATING_MODES = {
-            'position': 3,  # Operating mode value for position control
-            'velocity': 1   # Operating mode value for velocity control
+            'position': 3,
+            'velocity': 1
         }
+
+        current_mode = self.check_operating_mode(motor_id)
+        if current_mode == mode:
+            # No need to log if the mode is already set
+            return
+
+        self.torque_off(motor_id)
 
         if mode not in OPERATING_MODES:
             logging.error(f"Invalid operating mode: {mode}")
-            raise ValueError(f"Invalid operating mode: {mode}")
+            return
 
         mode_value = OPERATING_MODES[mode]
         result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR, mode_value)
+
         if result != COMM_SUCCESS:
             logging.error(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
-        if error != 0:
+        elif error != 0:
             logging.error(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        logging.info(f"Operating mode set to {mode} for motor {motor_id}")
-    
+        else:
+            logging.info(f"Operating mode set to {mode} for motor {motor_id}")
+
+        self.torque_on(motor_id)
+
     def check_operating_mode(self, motor_id):
-        """
-        Check the operating mode of the motor.
-        Returns the operating mode as a string.
-        Available modes: 'position', 'velocity'
-        """
+        """ Check the current operating mode and return it only if it differs. """
         OPERATING_MODE_ADDR = 11
         operating_mode, result, error = self.packet_handler.read1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to get operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
             logging.error(f"Error getting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+
         if operating_mode == 3:
-            operating_mode = 'position'
+            return 'position'
         elif operating_mode == 1:
-            operating_mode = 'velocity'
-        logging.info(f"Operating mode for motor {motor_id} is {operating_mode}")
-        return operating_mode
-    
+            return 'velocity'
+
     def torque_on(self, motor_id):
-        """Enable the torque on a motor."""
-        TORQUE_ENABLE_ADDR = 64  # Torque enable address in the Control Table
+        """ Enable the torque on a motor, log only if torque state changes. """
+        TORQUE_ENABLE_ADDR = 64
         TORQUE_ENABLE = 1
 
         result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, TORQUE_ENABLE_ADDR, TORQUE_ENABLE)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to enable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
-        if error != 0:
+        elif error != 0:
             logging.error(f"Error enabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        logging.info(f"Torque enabled for motor {motor_id}")
 
     def torque_off(self, motor_id):
-        """Disable the torque on a motor."""
-        TORQUE_ENABLE_ADDR = 64  # Torque enable address in the Control Table
+        """ Disable the torque on a motor, log only if torque state changes. """
+        TORQUE_ENABLE_ADDR = 64
         TORQUE_DISABLE = 0
 
         result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, TORQUE_ENABLE_ADDR, TORQUE_DISABLE)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to disable torque for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
-        if error != 0:
+        elif error != 0:
             logging.error(f"Error disabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        logging.info(f"Torque disabled for motor {motor_id}")
-
-    def set_goal_velocity(self, motor_id, velocity):
-        """Set the velocity goal for a motor."""
-        VELOCITY_GOAL_ADDR = 104  # Velocity goal address in Control Table
-
-        # Convert velocity to the appropriate value (sign handling for forward/reverse)
-        velocity_value = int(velocity)  # Ensure the value is an integer
-
-        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, VELOCITY_GOAL_ADDR, velocity_value)
-        if result != COMM_SUCCESS:
-            logging.error(f"Failed to set goal velocity for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
-        if error != 0:
-            logging.error(f"Error setting goal velocity for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        logging.info(f"Goal velocity set to {velocity} for motor {motor_id}")
 
     def set_goal_position(self, motor_id, position):
-        """Set the goal position for a motor."""
-        POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
+        """ Set the goal position for a motor, log only on change. """
+        POSITION_GOAL_ADDR = 116
+        position_value = int((position / 360) * 4096)
+        position_value = position_value % 4096  # Convert degrees to ticks and ensure within 0-4096
 
-        position_value = int(position)  # Ensure the position value is an integer
-        position_value = int((position_value / 360) * 4096)   # Convert position value from degrees to encoder ticks
-        position_value = position_value % 4096 # Ensure the position value is within 0-4095 ticks
+        current_position = self.get_present_position(motor_id)
+        if abs(current_position - position) < 1:  # Only log if the position changes by more than 1 degree
+            return
 
         result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, position_value)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
-        if error != 0:
+        elif error != 0:
             logging.error(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        logging.info(f"Goal position {position} set for motor {motor_id}")
 
     def get_present_position(self, motor_id):
-        """Get the current position of the motor."""
-        PRESENT_POSITION_ADDR = 132  # Present position address in Control Table
-
+        """ Get the current position of the motor and convert it to degrees. """
+        PRESENT_POSITION_ADDR = 132
         position, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
             logging.error(f"Error getting position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
 
-        position = int((position / 4096) * 360) # Convert from encoder ticks to degrees
-        position = position % 360 # Ensure the position is within 0-359 degrees
-
-        logging.info(f"Current position for motor {motor_id} is {position} degrees")
-        return position
+        position = int((position / 4096) * 360)  # Convert from ticks to degrees
+        return position % 360  # Ensure the position is within 0-359 degrees
 
     def set_velocity_limit(self, motor_id, velocity_rpm):
         # Set the velocity limit for an individual motor

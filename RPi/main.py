@@ -14,16 +14,25 @@ log_filename = f"Logs/robot_log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.l
 
 # Set up logging to log motor positions and controller inputs
 logging.basicConfig(
-    filename=log_filename, 
-    level=logging.DEBUG,  # Changed to DEBUG to capture more detailed logs
+    filename=log_filename,
+    level=logging.DEBUG,  # Set to DEBUG to capture detailed logs, while important changes will be printed
     format='%(asctime)s %(levelname)s: %(message)s'
 )
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # Set console output to INFO level
+console_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+console_handler.setFormatter(console_formatter)
+
+# Add the handler to the logger
+logging.getLogger().addHandler(console_handler)
 
 # Motor IDs for wheeled legs, front on the robot is defined by arrow on body
 WHEGS = {
     'LR_WHEG': 1, 'LM_WHEG': 2, 'LF_WHEG': 3,
     'RR_WHEG': 4, 'RM_WHEG': 5, 'RF_WHEG': 6
 }
+
 # Motor IDs for pivots, front pivot is defined by the arrow on the body
 PIVOTS = {
     'FRONT_PIVOT': 7, 'REAR_PIVOT': 8
@@ -70,6 +79,7 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
         if mode != 'velocity':
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             logging.info(f"Operating mode set to 'velocity' for wheg_id={wheg_id}")
+            print(f"Set wheg_id={wheg_id} to velocity mode.")
     logging.debug(f"Setting wheg velocity: wheg_ids={list(wheg_ids)}, rpm={rpm}")
     for wheg_id in wheg_ids:
         dynamixel.set_goal_velocity(wheg_id, rpm)
@@ -83,6 +93,7 @@ def set_wheg_position(dynamixel, wheg_ids, position):
         if mode != 'position':
             dynamixel.set_operating_mode(wheg_id, 'position')
             logging.info(f"Operating mode set to 'position' for wheg_id={wheg_id}")
+            print(f"Set wheg_id={wheg_id} to position mode.")
     logging.debug(f"Setting wheg position: wheg_ids={list(wheg_ids)}, position={position}")
     for wheg_id in wheg_ids:
         dynamixel.set_goal_position(wheg_id, position)
@@ -135,6 +146,7 @@ def control_pivots_with_dpad(dynamixel, button_states):
 
     logging.info(f"Front pivot angle set to {front_pivot_angle}")
     logging.info(f"Rear pivot angle set to {rear_pivot_angle}")
+    print(f"Pivot angles updated: Front={front_pivot_angle}, Rear={rear_pivot_angle}")
 
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm, button_states):
@@ -142,6 +154,7 @@ def gait_1(dynamixel, wheg_rpm, button_states):
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
+    print("Executing Gait 1")
 
 def gait_2(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 2")
@@ -159,32 +172,36 @@ def gait_2(dynamixel, wheg_rpm, button_states):
 
     # Control pivots using the D-pad (if implemented in your system)
     control_pivots_with_dpad(dynamixel, button_states)
+    print("Executing Gait 2")
 
 def gait_3(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 3")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
+    print("Executing Gait 3")
 
 def gait_4(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 4")
     set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
+    print("Executing Gait 4")
 
 # Emergency stop function (whegs only)
 def emergency_stop(dynamixel):
     logging.warning("Emergency stop activated")
     set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
+    print("Emergency stop activated!")
 
 def create_groups(dynamixel):
     # Create groups of motors for different gaits
-    dynamixel.create_motor_group('Pivot_Group', PIVOTS.values()) # Group for all pivot motors
-    dynamixel.create_motor_group('Wheg_Group', WHEGS.values()) # Group for all wheg motors
-    dynamixel.create_motor_group('All_Motors', list(WHEGS.values()) + list(PIVOTS.values())) # Group for all motors
-    dynamixel.create_motor_group('Left_Whegs', [WHEGS['LR_WHEG'], WHEGS['LM_WHEG'], WHEGS['LF_WHEG']]) # Group for left whegs
-    dynamixel.create_motor_group('Right_Whegs', [WHEGS['RR_WHEG'], WHEGS['RM_WHEG'], WHEGS['RF_WHEG']]) # Group for right whegs
-    dynamixel.create_motor_group('Front_Whegs', [WHEGS['LF_WHEG'], WHEGS['RF_WHEG']]) # Group for front whegs
-    dynamixel.create_motor_group('Rear_Whegs', [WHEGS['LR_WHEG'], WHEGS['RR_WHEG']]) # Group for rear whegs
-    dynamixel.create_motor_group('Middle_Whegs', [WHEGS['LM_WHEG'], WHEGS['RM_WHEG']]) # Group for middle whegs
-    dynamixel.create_motor_group('Two_Right_One_Left', [WHEGS['LM_WHEG'], WHEGS['RR_WHEG'], WHEGS['RF_WHEG']]) # Group for two right and one left whegs
-    dynamixel.create_motor_group('Two_Left_One_Right', [WHEGS['RM_WHEG'], WHEGS['LR_WHEG'], WHEGS['LF_WHEG']]) # Group for two left and one right whegs
+    dynamixel.create_motor_group('Pivot_Group', PIVOTS.values())  # Group for all pivot motors
+    dynamixel.create_motor_group('Wheg_Group', WHEGS.values())  # Group for all wheg motors
+    dynamixel.create_motor_group('All_Motors', list(WHEGS.values()) + list(PIVOTS.values()))  # Group for all motors
+    dynamixel.create_motor_group('Left_Whegs', [WHEGS['LR_WHEG'], WHEGS['LM_WHEG'], WHEGS['LF_WHEG']])  # Group for left whegs
+    dynamixel.create_motor_group('Right_Whegs', [WHEGS['RR_WHEG'], WHEGS['RM_WHEG'], WHEGS['RF_WHEG']])  # Group for right whegs
+    dynamixel.create_motor_group('Front_Whegs', [WHEGS['LF_WHEG'], WHEGS['RF_WHEG']])  # Group for front whegs
+    dynamixel.create_motor_group('Rear_Whegs', [WHEGS['LR_WHEG'], WHEGS['RR_WHEG']])  # Group for rear whegs
+    dynamixel.create_motor_group('Middle_Whegs', [WHEGS['LM_WHEG'], WHEGS['RM_WHEG']])  # Group for middle whegs
+    dynamixel.create_motor_group('Two_Right_One_Left', [WHEGS['LM_WHEG'], WHEGS['RR_WHEG'], WHEGS['RF_WHEG']])  # Group for two right and one left whegs
+    dynamixel.create_motor_group('Two_Left_One_Right', [WHEGS['RM_WHEG'], WHEGS['LR_WHEG'], WHEGS['LF_WHEG']])  # Group for two left and one right whegs
 
 # Main function integrating the PS4 controller and Dynamixel SDK
 def main():
@@ -193,12 +210,13 @@ def main():
         ps4_controller = PS4Controller()
         dynamixel = DynamixelController(device_name='/dev/ttyACM0', baudrate=57600)
         logging.info("Initialized PS4 controller and Dynamixel")
+        print("Initialized PS4 controller and Dynamixel")
 
         # Setup motor groups
         create_groups(dynamixel)
+
         # List of gaits available for selection
         gait_list = [gait_1, gait_2, gait_3, gait_4]
-        # Track the current gait
         current_gait_index = 0
         total_gaits = len(gait_list)
 
@@ -214,6 +232,7 @@ def main():
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             dynamixel.torque_on(wheg_id)
             logging.info(f"Torque on for wheg_id={wheg_id}")
+            print(f"Torque enabled for wheg_id={wheg_id}")
 
         # Turn on torque for pivots (although they are disabled in gaits)
         for pivot_id in PIVOTS.values():
@@ -224,7 +243,7 @@ def main():
         dynamixel.set_group_velocity_limit('Pivot_Group', 2)
         # Set initial velocity limit for whegs to 10 RPM
         dynamixel.set_group_velocity_limit('Wheg_Group', 10)
-        
+
         # Main loop
         while True:
             start_time = time.time()  # Track time for position reporting
@@ -248,6 +267,7 @@ def main():
             if button_states['x'] and emergency_stop_activated:
                 emergency_stop_activated = False
                 logging.info("Emergency Stop Deactivated. Resuming control...")
+                print("Emergency stop deactivated, resuming control")
 
             if not emergency_stop_activated:
                 # Get trigger input (R2) for speed adjustment
@@ -275,10 +295,11 @@ def main():
                 if current_gait != previous_gait:
                     logging.info(f"Changing to new gait: {current_gait.__name__}")
                     previous_gait = current_gait
-                # Execute the current gate
+
+                # Execute the current gait
                 current_gait(dynamixel, wheg_rpm, button_states)
 
-            # Report motor positions and log controller inputs every second
+            # Report motor positions and log controller inputs every 5 seconds
             current_time = time.time()
             if current_time - report_timer >= 5:  # Report every 5 seconds
                 motor_positions = get_motor_positions(dynamixel)
@@ -289,18 +310,19 @@ def main():
 
     except KeyboardInterrupt:
         logging.info("Terminating program...")
+        print("Terminating program...")
 
     finally:
         # Safely turn off wheg and pivot motors and close the controller
         for wheg_id in WHEGS.values():
             dynamixel.torque_off(wheg_id)
             logging.info(f"Torque off for wheg_id={wheg_id}")
-        # for pivot_id in PIVOTS.values():
-        #     dynamixel.torque_off(pivot_id)
+            print(f"Torque off for wheg_id={wheg_id}")
 
         ps4_controller.close()
         dynamixel.close()
         logging.info("Shutdown complete.")
+        print("Shutdown complete.")
 
 if __name__ == "__main__":
     main()
