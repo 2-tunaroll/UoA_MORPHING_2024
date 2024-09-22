@@ -153,18 +153,28 @@ def gait_1(dynamixel, wheg_rpm, button_states, motor_positions):
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
 
 def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
-    logging.info("Executing Gait 2")
+    # logging.info("Executing Gait 2")
 
-    # Set the velocity limit for all whegs based on controller input
-    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+    # # Set the velocity limit for all whegs based on controller input
+    # dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
-    # Increase the position of the whegs in groups
-    increment = 180 # Increment by 180 degrees
-    dynamixel.increment_group_position('Left_Whegs', increment, wheg_rpm)
-    dynamixel.increment_group_position('Right_Whegs', increment, wheg_rpm) # Reverse direction for right whegs to move in the same direction (because of mounting)
+    # # Increase the position of the whegs in groups
+    # increment = 180 # Increment by 180 degrees
+    # dynamixel.increment_group_position('Left_Whegs', increment, wheg_rpm)
+    # dynamixel.increment_group_position('Right_Whegs', increment, wheg_rpm) # Reverse direction for right whegs to move in the same direction (because of mounting)
 
-    # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, button_states)
+    # # Control pivots using the D-pad
+    # control_pivots_with_dpad(dynamixel, button_states)
+    # Code to test the position control of the whegs
+    # Rotate motor 1 by 5 degrees
+    dynamixel.rotate_by_degrees(1, 5)
+    print(dynamixel.get_present_position(1))
+    dynamixel.rotate_by_degrees(1, -5)
+    print(dynamixel.get_present_position(1))
+    for i in range(1, 30):
+        dynamixel.rotate_by_degrees(1, 5)
+        print(dynamixel.get_present_position(1))
+    Exception("Test")
 
 def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 3")
