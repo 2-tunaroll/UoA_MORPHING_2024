@@ -178,7 +178,7 @@ def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     dynamixel.sync_write_position('Two_Left_One_Right', 180)
 
     # Rotate all whegs by 360 degrees
-    dynamixel.increment_group_position('All_Motors', increment)
+    dynamixel.increment_group_position('All_Motors', increment, wheg_rpm)
 
     control_pivots_with_dpad(dynamixel, button_states)
     

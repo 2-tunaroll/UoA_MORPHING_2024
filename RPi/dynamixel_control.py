@@ -198,7 +198,6 @@ class DynamixelController:
             logging.error(f"Error getting raw position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
             return None
 
-        logging.info(f"Raw position for motor {motor_id} is {position} ticks")
         return position  # Return the raw encoder value (ticks)
 
     def set_velocity_limit(self, motor_id, velocity_rpm):
@@ -446,14 +445,12 @@ class DynamixelController:
         self.set_group_profile_velocity(group_name, profile_velocity)
 
         for motor_id in self.motor_groups[group_name]:
-            # Get current position of the motor in degrees
-            current_position_degrees = self.get_entire_position(motor_id)
+            # Get current position of the motor in ticks
+            new_position_ticks = degrees/360 * 4096
+            current_position_ticks = self.get_entire_position(motor_id)
             
             # Calculate new position by adding the increment
-            new_position_degrees = current_position_degrees + degrees
-
-            # Convert to encoder units
-            new_position_value = int((new_position_degrees / 360) * 4096)  # Convert degrees to encoder ticks
+            new_position_value = current_position_ticks + new_position_ticks
 
             # Prepare parameters for sync write
             param_goal_position = [
