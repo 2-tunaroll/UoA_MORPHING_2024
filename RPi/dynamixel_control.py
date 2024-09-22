@@ -328,6 +328,13 @@ class DynamixelController:
             logging.error(f"Motor group {group_name} not found")
             return
         
+        # Check if the motor is in multi-turn mode, if not, set it to multi-turn mode
+        current_mode = self.check_operating_mode(motor_id)
+        if current_mode != 'multi_turn':
+            self.set_operating_mode(motor_id, 'multi_turn')
+            logging.info(f"Set motor {motor_id} to multi-turn mode.")
+
+        
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
         
         for i, motor_id in enumerate(self.motor_groups[group_name]):
@@ -462,104 +469,34 @@ class DynamixelController:
 
         groupBulkWrite.clearParam()
 
-    def increment_group_position(self, group_name, degrees, profile_velocity, tolerance=5, timeout=10):
-        """
-        Increment the position of all motors in a group by a specified number of degrees, 
-        adding the increment to their current position and setting a velocity limit (Profile Velocity).
-        
-        :param group_name: Name of the motor group
-        :param degrees: Degrees to increment
-        :param profile_velocity: Profile velocity in RPM (this will be set for each motor in the group)
-        :param tolerance: Degrees of tolerance for position checking
-        :param timeout: Maximum time (in seconds) to wait for motors to reach the target position
-        """
+    def increment_group_position(self, group_name, increment):
+        """Increment the goal position for a group of motors."""
         if group_name not in self.motor_groups:
-            logging.error(f"Motor group '{group_name}' not found")
+            logging.error(f"Motor group {group_name} not found")
             return
+    
+        # Check if the motor is in multi-turn mode, if not, set it to multi-turn mode
+        current_mode = self.check_operating_mode(motor_id)
+        if current_mode != 'multi_turn':
+            self.set_operating_mode(motor_id, 'multi_turn')
+            logging.info(f"Set motor {motor_id} to multi-turn mode.")
 
-        # Ensure the profile velocity is sufficient for the motors to move
-        min_velocity = 30  # Set to a more practical minimum velocity
-        if profile_velocity < min_velocity:  # A very low RPM may cause the motors to not move at all
-            logging.warning(f"Profile velocity {profile_velocity} too low. Setting to minimum {min_velocity} RPM.")
-            profile_velocity = min_velocity
+        increment_ticks = int((increment / 360) * 4096)  # Convert increment to encoder ticks
+        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
+        
+        for motor_id in enumerate(self.motor_groups[group_name]):
+            # Get the current position of the motor
+            current_position = self.get_entire_position(motor_id)
+            new_position = current_position + increment_ticks
+            param_goal_position = [DXL_LOBYTE(DXL_LOWORD(new_position)),
+                                   DXL_HIBYTE(DXL_LOWORD(new_position)),
+                                   DXL_LOBYTE(DXL_HIWORD(new_position)),
+                                   DXL_HIBYTE(DXL_HIWORD(new_position))]
+            groupSyncWrite.addParam(motor_id, param_goal_position)
 
-        # Set profile velocity for all motors in the group
-        self.set_group_profile_velocity(group_name, profile_velocity)
-
-        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
-
-        # Convert the degree increment into encoder ticks
-        increment_ticks = int((degrees / 360) * 4096)  # 4096 ticks per 360 degrees
-
-        target_positions = {}
-
-        # Calculate the new positions for each motor in the group
-        for motor_id in self.motor_groups[group_name]:
-            # Get current position in ticks
-            current_position_ticks = self.get_entire_position(motor_id)
-            if current_position_ticks is None:
-                logging.error(f"Could not retrieve position for motor {motor_id}")
-                return
-            
-            # Calculate the new target position
-            new_position_value = current_position_ticks + increment_ticks
-            target_positions[motor_id] = new_position_value  # Store the target position for checking later
-
-            # Prepare the goal position parameters for the motor
-            param_goal_position = [
-                DXL_LOBYTE(DXL_LOWORD(new_position_value)),
-                DXL_HIBYTE(DXL_LOWORD(new_position_value)),
-                DXL_LOBYTE(DXL_HIWORD(new_position_value)),
-                DXL_HIBYTE(DXL_HIWORD(new_position_value))
-            ]
-
-            # Add the motor's new position to the sync write group
-            result = groupSyncWrite.addParam(motor_id, param_goal_position)
-            if not result:
-                logging.error(f"Failed to add motor {motor_id} to GroupSyncWrite")
-                return
-
-        # Transmit the position command to all motors in the group
         result = groupSyncWrite.txPacket()
         if result != COMM_SUCCESS:
-            logging.error(f"Failed to increment positions for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to sync write positions for group {group_name}: {self.packet_handler.getTxRxResult(result)}")
         else:
-            logging.info(f"Incremented position for all motors in group '{group_name}' by {degrees} degrees")
-
-        # Clear the parameters for the next bulk write
+            logging.info(f"Sync write goal positions set for group {group_name}")
         groupSyncWrite.clearParam()
-
-        # Wait for all motors to reach their target positions or timeout
-        start_time = time.time()
-        while True:
-            all_motors_at_target = True
-            for motor_id, target_position in target_positions.items():
-                # Get the current position of the motor
-                current_position_ticks = self.get_entire_position(motor_id)
-                if current_position_ticks is None:
-                    logging.error(f"Could not retrieve position for motor {motor_id}")
-                    return
-
-                # Calculate the position error
-                position_error_ticks = abs(target_position - current_position_ticks)
-
-                # Convert the tolerance from degrees to ticks
-                tolerance_ticks = int((tolerance / 360) * 4096)
-
-                # If the motor has not yet reached the target position, continue waiting
-                if position_error_ticks > tolerance_ticks:
-                    all_motors_at_target = False
-                    break
-
-            # If all motors have reached their target positions, exit the loop
-            if all_motors_at_target:
-                logging.info(f"All motors in group '{group_name}' reached their target positions")
-                break
-
-            # Check if we've exceeded the timeout
-            if time.time() - start_time > timeout:
-                logging.warning(f"Timeout reached while waiting for motors in group '{group_name}' to reach target positions")
-                break
-
-            # Optional: add a short delay to prevent busy-waiting
-            time.sleep(0.1)  # Increase sleep slightly to reduce excessive checking
