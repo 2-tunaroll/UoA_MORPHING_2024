@@ -97,8 +97,6 @@ class PS4Controller:
                     else:
                         button_states[button] = False  # Ignore press (debounced)
                 else:
-                    if button_states.get(button) != False:
-                        logging.info(f"Button {button} released.")
                     button_states[button] = False
             else:
                 button_states[button] = None  # Button doesn't exist

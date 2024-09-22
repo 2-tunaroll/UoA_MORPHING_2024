@@ -267,7 +267,6 @@ def main():
             if button_states['x'] and emergency_stop_activated:
                 emergency_stop_activated = False
                 logging.info("Emergency Stop Deactivated. Resuming control...")
-                print("Emergency stop deactivated, resuming control")
 
             if not emergency_stop_activated:
                 # Get trigger input (R2) for speed adjustment
@@ -281,20 +280,15 @@ def main():
                 if button_states['triangle']:
                     current_gait_index = (current_gait_index + 1) % total_gaits
                     print(f"Switching to Gait {current_gait_index + 1}")
-                    gait_list[current_gait_index](dynamixel, wheg_rpm, button_states)
+                    current_gait = gait_list[current_gait_index]
                     time.sleep(0.2)  # Debounce delay
                 
                 # Square button: Move to the previous gait
                 elif button_states['square']:
                     current_gait_index = (current_gait_index - 1) % total_gaits
                     print(f"Switching to Gait {current_gait_index + 1}")
-                    gait_list[current_gait_index](dynamixel, wheg_rpm, button_states)
+                    current_gait = gait_list[current_gait_index]
                     time.sleep(0.2)  # Debounce delay
-
-                # Execute the current gait
-                if current_gait != previous_gait:
-                    logging.info(f"Changing to new gait: {current_gait.__name__}")
-                    previous_gait = current_gait
 
                 # Execute the current gait
                 current_gait(dynamixel, wheg_rpm, button_states)

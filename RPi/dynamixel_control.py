@@ -116,20 +116,25 @@ class DynamixelController:
             print(f"Goal velocity set to {velocity} for motor {motor_id}")
 
     def set_goal_position(self, motor_id, position):
-        """Set the goal position for a motor."""
+        """Set the goal position for a motor, but log only if the position changes."""
         POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
 
-        position_value = int((position / 360) * 4096)   # Convert position value from degrees to encoder ticks
-        position_value = position_value % 4096  # Ensure the position value is within 0-4095 ticks
+        # Get the current position to avoid unnecessary logging
+        current_position = self.get_present_position(motor_id)
+        
+        # Only log if the new position differs from the current position
+        if current_position != position:
+            position_value = int((position / 360) * 4096)   # Convert position value from degrees to encoder ticks
+            position_value = position_value % 4096  # Ensure the position value is within 0-4095 ticks
 
-        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, position_value)
-        if result != COMM_SUCCESS:
-            logging.error(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
-        if error != 0:
-            logging.error(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        else:
-            logging.info(f"Goal position {position} set for motor {motor_id}")
-            print(f"Goal position {position} set for motor {motor_id}")
+            result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, position_value)
+            if result != COMM_SUCCESS:
+                logging.error(f"Failed to set goal position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            if error != 0:
+                logging.error(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            else:
+                logging.info(f"Goal position {position} set for motor {motor_id}")
+                print(f"Goal position {position} set for motor {motor_id}")
 
     def get_present_position(self, motor_id):
         """Get the current position of the motor."""
