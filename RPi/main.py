@@ -175,8 +175,8 @@ def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity based on input
 
     # Set the position of the whegs ready for gait 4
-    dynamixel.sync_write_position('Two_Right_One_Left', [180, 180, 180])
-    dynamixel.sync_write_position('Two_Left_One_Right', [0, 0, 0])
+    dynamixel.sync_write_position('Two_Right_One_Left', 180)
+    dynamixel.sync_write_position('Two_Left_One_Right', 0)
 
 def gait_4(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 4")
