@@ -160,8 +160,8 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
 
     # Increase the position of the whegs in groups
     increment = 180 # Increment by 180 degrees
-    dynamixel.increment_group_position('Left_Whegs', increment, wheg_rpm)
-    dynamixel.increment_group_position('Right_Whegs', increment, wheg_rpm) # Reverse direction for right whegs to move in the same direction (because of mounting)
+    dynamixel.increment_group_position('Left_Whegs', increment, 3)
+    dynamixel.increment_group_position('Right_Whegs', increment, 3) # Reverse direction for right whegs to move in the same direction (because of mounting)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, button_states)
