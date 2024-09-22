@@ -55,24 +55,26 @@ class DynamixelController:
 
     def set_operating_mode(self, motor_id, mode):
         """
-        Set the operating mode of the motor. Available modes: 'position', 'velocity'
+        Set the operating mode of the motor.
+        Available modes: 'position', 'velocity', 'multi_turn'
         """
         OPERATING_MODE_ADDR = 11  # Address for operating mode in Control Table
         OPERATING_MODES = {
-            'position': 3,  # Operating mode value for position control
-            'velocity': 1   # Operating mode value for velocity control
+            'position': 3,   # Position control mode
+            'velocity': 1,   # Velocity control mode
+            'multi_turn': 4  # Multi-turn mode for continuous rotation
         }
-
-        # Disable torque before changing the operating mode
-        self.torque_off(motor_id)
 
         if mode not in OPERATING_MODES:
             logging.error(f"Invalid operating mode: {mode}")
-            return  # Don't raise exceptions, just log the error
+            return
+
+        # Disable torque before changing the mode
+        self.torque_off(motor_id)
 
         mode_value = OPERATING_MODES[mode]
         result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR, mode_value)
-        
+
         if result != COMM_SUCCESS:
             logging.error(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         elif error != 0:
@@ -80,14 +82,15 @@ class DynamixelController:
         else:
             logging.info(f"Operating mode set to {mode} for motor {motor_id}")
 
-        # Re-enable torque after setting the operating mode
+        # Re-enable torque after setting the mode
         self.torque_on(motor_id)
+
 
     def check_operating_mode(self, motor_id):
         """
         Check the operating mode of the motor.
         Returns the operating mode as a string.
-        Available modes: 'position', 'velocity'
+        Available modes: 'position', 'velocity', 'multi_turn'
         """
         OPERATING_MODE_ADDR = 11
         operating_mode, result, error = self.packet_handler.read1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR)
@@ -99,6 +102,8 @@ class DynamixelController:
             return 'position'
         elif operating_mode == 1:
             return 'velocity'
+        elif operating_mode == 4:
+            return 'multi_turn'
         logging.debug(f"Operating mode for motor {motor_id} is {operating_mode}")
         return operating_mode
     
@@ -249,28 +254,34 @@ class DynamixelController:
         else:
             logging.info(f"Profile acceleration set to {acceleration_rpmps} RPM/s for motor {motor_id}")
 
-    def rotate_by_degrees(self, motor_id, degrees, tolerance=1):
+    def rotate_by_degrees(self, motor_id, degrees, tolerance=5):
         """
         Rotate the motor by a specified number of degrees relative to its current position,
-        and wait until the motor reaches the target position before continuing.
-        
+        in multi-turn mode, allowing continuous rotation.
+
         :param motor_id: ID of the motor to rotate
-        :param degrees: Degrees to rotate relative to the current position
+        :param degrees: Degrees to rotate relative to the current position (continuous)
         :param tolerance: Acceptable range (in degrees) within which the motor is considered to have reached the target
         """
         POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
 
-        # Get the current position in degrees
-        current_position_degrees = self.get_present_position(motor_id)
+        # Check if the motor is in multi-turn mode, if not, set it to multi-turn mode
+        current_mode = self.check_operating_mode(motor_id)
+        if current_mode != 'multi_turn':
+            self.set_operating_mode(motor_id, 'multi_turn')
+            logging.info(f"Set motor {motor_id} to multi-turn mode.")
 
-        # Calculate the new position by adding the rotation
-        new_position_degrees = current_position_degrees + degrees
+        # Get the current position in ticks (not degrees)
+        current_position_ticks = self.get_entire_position(motor_id)  # Get the full position in encoder ticks
 
-        # Convert the new position to encoder units
-        new_position_value = int((new_position_degrees / 360) * 4096)  # Convert degrees to encoder ticks
+        # Convert the degrees to ticks (Dynamixel uses 4096 ticks per revolution)
+        increment_ticks = int((degrees / 360) * 4096)
+
+        # Calculate the new position in ticks
+        new_position_ticks = current_position_ticks + increment_ticks
 
         # Send the new goal position to the motor
-        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, new_position_value)
+        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, new_position_ticks)
 
         if result != COMM_SUCCESS:
             logging.error(f"Failed to rotate motor {motor_id} by {degrees} degrees: {self.packet_handler.getTxRxResult(result)}")
@@ -279,23 +290,26 @@ class DynamixelController:
             logging.error(f"Error rotating motor {motor_id} by {degrees} degrees: {self.packet_handler.getRxPacketError(error)}")
             return False
         else:
-            logging.info(f"Motor {motor_id} rotated by {degrees} degrees (new target position: {new_position_degrees} degrees)")
+            logging.info(f"Motor {motor_id} rotating by {degrees} degrees (new position: {new_position_ticks} ticks)")
 
         # Wait until the motor reaches the target position within the specified tolerance
         while True:
-            current_position = self.get_present_position(motor_id)
-            position_error = abs(current_position - new_position_degrees) % 360  # Handle wrapping around 0-360 degrees
+            # Get the current position in ticks
+            current_position = self.get_entire_position(motor_id)
 
-            # If the current position is within the tolerance range, consider the position reached
-            if position_error <= tolerance:
-                logging.info(f"Motor {motor_id} reached target position: {current_position} degrees (within {tolerance} degrees tolerance)")
+            # Calculate the position error
+            position_error_ticks = abs(new_position_ticks - current_position)
+
+            # If the error is within tolerance (converted to ticks), stop waiting
+            tolerance_ticks = int((tolerance / 360) * 4096)
+            if position_error_ticks <= tolerance_ticks:
+                logging.info(f"Motor {motor_id} reached target position: {current_position} ticks (within {tolerance} degrees tolerance)")
                 break
 
             # Optional: add a short delay to prevent busy-waiting
             time.sleep(0.05)
 
         return True
-
 
     def close(self):
         """Close the port and clean up resources."""
