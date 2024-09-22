@@ -267,6 +267,8 @@ def main():
             if button_states['x'] and emergency_stop_activated:
                 emergency_stop_activated = False
                 logging.info("Emergency Stop Deactivated. Resuming control...")
+            
+            motor_positions = get_motor_positions(dynamixel)
 
             if not emergency_stop_activated:
                 # Get trigger input (R2) for speed adjustment
@@ -290,7 +292,6 @@ def main():
                     current_gait = gait_list[current_gait_index]
                     time.sleep(0.2)  # Debounce delay
 
-                motor_positions = get_motor_positions(dynamixel)
                 # Execute the current gait
                 current_gait(dynamixel, wheg_rpm, button_states)
 
