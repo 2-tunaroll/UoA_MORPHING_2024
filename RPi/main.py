@@ -156,7 +156,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 2")
 
     # Set the velocity limit for all whegs based on controller input
-    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+    dynamixel.set_group_profile_velocity('Wheg_Group', 3)  # Set velocity based on input
 
     # Increase the position of the whegs in groups
     increment = 180 # Increment by 180 degrees
