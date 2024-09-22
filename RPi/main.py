@@ -261,14 +261,14 @@ def main():
                 if button_states['triangle']:
                     current_gait_index = (current_gait_index + 1) % total_gaits
                     print(f"Switching to Gait {current_gait_index + 1}")
-                    gait_list[current_gait_index](dynamixel)
+                    gait_list[current_gait_index](dynamixel, wheg_rpm, button_states)
                     time.sleep(0.2)  # Debounce delay
                 
                 # Square button: Move to the previous gait
                 elif button_states['square']:
                     current_gait_index = (current_gait_index - 1) % total_gaits
                     print(f"Switching to Gait {current_gait_index + 1}")
-                    gait_list[current_gait_index](dynamixel)
+                    gait_list[current_gait_index](dynamixel, wheg_rpm, button_states)
                     time.sleep(0.2)  # Debounce delay
 
                 # Execute the current gait
