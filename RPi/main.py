@@ -173,7 +173,7 @@ def emergency_stop(dynamixel):
     logging.warning("Emergency stop activated")
     set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
 
-def create_groups(dynamixel = dynamixel):
+def create_groups(dynamixel):
     # Create groups of motors for different gaits
     dynamixel.create_motor_group('Pivot_Group', PIVOTS.values()) # Group for all pivot motors
     dynamixel.create_motor_group('Wheg_Group', WHEGS.values()) # Group for all wheg motors
