@@ -171,7 +171,7 @@ class DynamixelController:
         """Get the current position of the motor."""
         PRESENT_POSITION_ADDR = 132  # Present position address in Control Table
 
-        position, result, error= self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
+        position, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
@@ -202,7 +202,8 @@ class DynamixelController:
         if error != 0:
             logging.error(f"Error getting raw position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
             return None
-
+        
+        int(position)
         return position  # Return the raw encoder value (ticks)
 
     def set_velocity_limit(self, motor_id, velocity_rpm):
