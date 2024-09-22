@@ -171,7 +171,7 @@ class DynamixelController:
         """Get the current position of the motor."""
         PRESENT_POSITION_ADDR = 132  # Present position address in Control Table
 
-        result, error, position = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
+        position, result, error= self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
         if result != COMM_SUCCESS:
             logging.error(f"Failed to get position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
         if error != 0:
@@ -194,7 +194,14 @@ class DynamixelController:
         PRESENT_POSITION_ADDR = 132  # Present position address in Control Table
 
         # Read the raw 4-byte position value from the motor
-        position = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
+        position, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
+        
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to get raw position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            return None
+        if error != 0:
+            logging.error(f"Error getting raw position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            return None
 
         return position  # Return the raw encoder value (ticks)
 
