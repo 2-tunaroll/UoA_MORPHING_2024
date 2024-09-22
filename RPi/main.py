@@ -79,7 +79,6 @@ def set_wheg_velocity(dynamixel, wheg_ids, rpm):
         if mode != 'velocity':
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             logging.info(f"Operating mode set to 'velocity' for wheg_id={wheg_id}")
-            print(f"Set wheg_id={wheg_id} to velocity mode.")
     logging.debug(f"Setting wheg velocity: wheg_ids={list(wheg_ids)}, rpm={rpm}")
     for wheg_id in wheg_ids:
         dynamixel.set_goal_velocity(wheg_id, rpm)
@@ -93,7 +92,6 @@ def set_wheg_position(dynamixel, wheg_ids, position):
         if mode != 'position':
             dynamixel.set_operating_mode(wheg_id, 'position')
             logging.info(f"Operating mode set to 'position' for wheg_id={wheg_id}")
-            print(f"Set wheg_id={wheg_id} to position mode.")
     logging.debug(f"Setting wheg position: wheg_ids={list(wheg_ids)}, position={position}")
     for wheg_id in wheg_ids:
         dynamixel.set_goal_position(wheg_id, position)
@@ -153,7 +151,6 @@ def gait_1(dynamixel, wheg_rpm, button_states, motor_positions):
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    print("Executing Gait 1")
 
 def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 2")
@@ -177,18 +174,15 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
 def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 3")
     set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
-    print("Executing Gait 3")
 
 def gait_4(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 4")
     set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
-    print("Executing Gait 4")
 
 # Emergency stop function (whegs only)
 def emergency_stop(dynamixel):
     logging.warning("Emergency stop activated")
     set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
-    print("Emergency stop activated!")
 
 def create_groups(dynamixel):
     # Create groups of motors for different gaits
@@ -210,7 +204,6 @@ def main():
         ps4_controller = PS4Controller()
         dynamixel = DynamixelController(device_name='/dev/ttyACM0', baudrate=57600)
         logging.info("Initialized PS4 controller and Dynamixel")
-        print("Initialized PS4 controller and Dynamixel")
 
         # Setup motor groups
         create_groups(dynamixel)
@@ -232,7 +225,6 @@ def main():
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             dynamixel.torque_on(wheg_id)
             logging.info(f"Torque on for wheg_id={wheg_id}")
-            print(f"Torque enabled for wheg_id={wheg_id}")
 
         # Turn on torque for pivots (although they are disabled in gaits)
         for pivot_id in PIVOTS.values():
@@ -283,14 +275,12 @@ def main():
                 # Triangle button: Move to the next gait
                 if button_states['triangle']:
                     current_gait_index = (current_gait_index + 1) % total_gaits
-                    print(f"Switching to Gait {current_gait_index + 1}")
                     current_gait = gait_list[current_gait_index]
                     time.sleep(0.2)  # Debounce delay
                 
                 # Square button: Move to the previous gait
                 elif button_states['square']:
                     current_gait_index = (current_gait_index - 1) % total_gaits
-                    print(f"Switching to Gait {current_gait_index + 1}")
                     current_gait = gait_list[current_gait_index]
                     time.sleep(0.2)  # Debounce delay
 
@@ -307,19 +297,16 @@ def main():
 
     except KeyboardInterrupt:
         logging.info("Terminating program...")
-        print("Terminating program...")
 
     finally:
         # Safely turn off wheg and pivot motors and close the controller
         for wheg_id in WHEGS.values():
             dynamixel.torque_off(wheg_id)
             logging.info(f"Torque off for wheg_id={wheg_id}")
-            print(f"Torque off for wheg_id={wheg_id}")
 
         ps4_controller.close()
         dynamixel.close()
         logging.info("Shutdown complete.")
-        print("Shutdown complete.")
 
 if __name__ == "__main__":
     main()
