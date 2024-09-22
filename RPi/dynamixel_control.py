@@ -439,20 +439,25 @@ class DynamixelController:
             logging.error(f"Motor group '{group_name}' not found")
             return
 
-        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
-
         # Set profile velocity for all motors in the group
         self.set_group_profile_velocity(group_name, profile_velocity)
 
-        for motor_id in self.motor_groups[group_name]:
-            # Get current position of the motor in ticks
-            new_position_ticks = int((degrees/360) * 4096)
-            current_position_ticks = self.get_entire_position(motor_id)
-            
-            # Calculate new position by adding the increment
-            new_position_value = current_position_ticks + new_position_ticks
+        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
 
-            # Prepare parameters for sync write
+        # Convert the degree increment into encoder ticks
+        increment_ticks = int((degrees / 360) * 4096)  # 4096 ticks per 360 degrees
+
+        for motor_id in self.motor_groups[group_name]:
+            # Get current position in ticks
+            current_position_ticks = self.get_entire_position(motor_id)
+            if current_position_ticks is None:
+                logging.error(f"Could not retrieve position for motor {motor_id}")
+                return
+            
+            # Calculate the new target position
+            new_position_value = (current_position_ticks + increment_ticks) % 4096  # Ensure wrapping within 0-4095
+
+            # Prepare the goal position parameters for the motor
             param_goal_position = [
                 DXL_LOBYTE(DXL_LOWORD(new_position_value)),
                 DXL_HIBYTE(DXL_LOWORD(new_position_value)),
@@ -460,13 +465,13 @@ class DynamixelController:
                 DXL_HIBYTE(DXL_HIWORD(new_position_value))
             ]
 
-            # Add each motor's goal position to the groupSyncWrite
+            # Add the motor's new position to the sync write group
             result = groupSyncWrite.addParam(motor_id, param_goal_position)
             if not result:
                 logging.error(f"Failed to add motor {motor_id} to GroupSyncWrite")
                 return
 
-        # Transmit packet to all motors in the group
+        # Transmit the position command to all motors in the group
         result = groupSyncWrite.txPacket()
         if result != COMM_SUCCESS:
             logging.error(f"Failed to increment positions for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
