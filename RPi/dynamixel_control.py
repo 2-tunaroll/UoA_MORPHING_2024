@@ -328,12 +328,12 @@ class DynamixelController:
             logging.error(f"Motor group {group_name} not found")
             return
         
-        # Check if the motor is in multi-turn mode, if not, set it to multi-turn mode
-        current_mode = self.check_operating_mode(motor_id)
-        if current_mode != 'multi_turn':
-            self.set_operating_mode(motor_id, 'multi_turn')
-            logging.info(f"Set motor {motor_id} to multi-turn mode.")
-
+        # Check if the motors are in multi-turn mode, if not, set them to multi-turn mode
+        for motor_id in self.motor_groups[group_name]:
+            current_mode = self.check_operating_mode(motor_id)
+            if current_mode != 'multi_turn':
+                self.set_operating_mode(motor_id, 'multi_turn')
+                logging.info(f"Set motor {motor_id} to multi-turn mode.")
         
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
         
@@ -475,11 +475,12 @@ class DynamixelController:
             logging.error(f"Motor group {group_name} not found")
             return
     
-        # Check if the motor is in multi-turn mode, if not, set it to multi-turn mode
-        current_mode = self.check_operating_mode(motor_id)
-        if current_mode != 'multi_turn':
-            self.set_operating_mode(motor_id, 'multi_turn')
-            logging.info(f"Set motor {motor_id} to multi-turn mode.")
+        # Check if the motors are in multi-turn mode, if not, set them to multi-turn mode
+        for motor_id in self.motor_groups[group_name]:
+            current_mode = self.check_operating_mode(motor_id)
+            if current_mode != 'multi_turn':
+                self.set_operating_mode(motor_id, 'multi_turn')
+                logging.info(f"Set motor {motor_id} to multi-turn mode.")
 
         increment_ticks = int((increment / 360) * 4096)  # Convert increment to encoder ticks
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
