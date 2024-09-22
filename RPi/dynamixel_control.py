@@ -249,7 +249,7 @@ class DynamixelController:
         else:
             logging.info(f"Profile acceleration set to {acceleration_rpmps} RPM/s for motor {motor_id}")
 
-    def rotate_by_degrees(self, motor_id, degrees, tolerance=0):
+    def rotate_by_degrees(self, motor_id, degrees, tolerance=1):
         """
         Rotate the motor by a specified number of degrees relative to its current position,
         and wait until the motor reaches the target position before continuing.
