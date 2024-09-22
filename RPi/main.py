@@ -172,22 +172,27 @@ def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 3")
 
     # Set the velocity limit for all whegs based on controller input
-    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
-    increment = 360  # Increment by 360 degrees
-    
-    # Set the goal positions for the groups of 0 and 180 degrees
-    dynamixel.sync_write_position('Two_Right_One_Left', 0)
-    dynamixel.sync_write_position('Two_Left_One_Right', 180)
+    dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity based on input
 
-    # Rotate all whegs by 360 degrees
-    dynamixel.increment_group_position('All_Motors', increment, wheg_rpm)
-
-    control_pivots_with_dpad(dynamixel, button_states)
-    
+    # Set the position of the whegs ready for gait 4
+    dynamixel.sync_write_positions('Two_Right_One_Left', [180, 180, 180])
+    dynamixel.sync_write_positions('Two_Left_One_Right', [0, 0, 0])
 
 def gait_4(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 4")
-    set_wheg_velocity(dynamixel, WHEGS.values(), -wheg_rpm)  # Reverse direction for whegs
+
+    # Set the velocity limit for all whegs based on controller input
+    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+
+    # Increase the position of the whegs in groups
+    increment = 180 # Increment by 180 degrees
+    
+    if wheg_rpm != 0:
+        dynamixel.increment_group_position('Two_Right_One_Left', increment)
+        dynamixel.increment_group_position('Two_Left_One_Right', increment)
+
+    # Control pivots using the D-pad
+    control_pivots_with_dpad(dynamixel, button_states)
 
 # Emergency stop function (whegs only)
 def emergency_stop(dynamixel):
@@ -228,12 +233,6 @@ def main():
         previous_gait = None  # Keep track of the previous gait to detect changes
         emergency_stop_activated = False  # Track emergency stop state
         report_timer = 0  # Timer to report motor positions every second
-        
-        # Start in position control mode for all motors
-        for motor_id in WHEGS.values():
-            dynamixel.set_operating_mode(motor_id, 'position')
-        for motor_id in PIVOTS.values():
-            dynamixel.set_operating_mode(motor_id, 'position')
 
         # Turn on torque and set operating modes for whegs only
         for wheg_id in WHEGS.values():

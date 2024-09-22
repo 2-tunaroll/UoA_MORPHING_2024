@@ -470,34 +470,55 @@ class DynamixelController:
         groupBulkWrite.clearParam()
 
     def increment_group_position(self, group_name, increment):
-        """Increment the goal position for a group of motors."""
+        """ 
+        Increment the goal position for a group of motors, applying negative increment for right-side motors based on motor names.
+        
+        :param group_name: The name of the motor group to increment.
+        :param increment: Degrees to increment the position.
+        """
         if group_name not in self.motor_groups:
-            logging.error(f"Motor group {group_name} not found")
+            logging.error(f"Motor group '{group_name}' not found")
             return
-    
+
         # Check if the motors are in multi-turn mode, if not, set them to multi-turn mode
         for motor_id in self.motor_groups[group_name]:
             current_mode = self.check_operating_mode(motor_id)
             if current_mode != 'multi_turn':
                 self.set_operating_mode(motor_id, 'multi_turn')
                 logging.info(f"Set motor {motor_id} to multi-turn mode.")
-
+        
         increment_ticks = int((increment / 360) * 4096)  # Convert increment to encoder ticks
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
-        
-        for motor_id in self.motor_groups[group_name]:
-            # Get the current position of the motor
-            current_position = self.get_entire_position(motor_id)
-            new_position = current_position + increment_ticks
-            param_goal_position = [DXL_LOBYTE(DXL_LOWORD(new_position)),
-                                   DXL_HIBYTE(DXL_LOWORD(new_position)),
-                                   DXL_LOBYTE(DXL_HIWORD(new_position)),
-                                   DXL_HIBYTE(DXL_HIWORD(new_position))]
-            groupSyncWrite.addParam(motor_id, param_goal_position)
 
+        for motor_name, motor_id in self.motor_groups[group_name].items():
+            # Get the current position of the motor in ticks
+            current_position = self.get_entire_position(motor_id)
+            
+            # Check if the motor name starts with 'R' (indicating right-side motors)
+            if motor_name.startswith('R'):  # Motor names like 'RF_WHEG', 'RM_WHEG', etc.
+                new_position = current_position - increment_ticks  # Reverse the increment for right motors
+            else:
+                new_position = current_position + increment_ticks  # Normal increment for other motors
+            
+            param_goal_position = [
+                DXL_LOBYTE(DXL_LOWORD(new_position)),
+                DXL_HIBYTE(DXL_LOWORD(new_position)),
+                DXL_LOBYTE(DXL_HIWORD(new_position)),
+                DXL_HIBYTE(DXL_HIWORD(new_position))
+            ]
+            
+            # Add the motor's goal position to the sync write group
+            result = groupSyncWrite.addParam(motor_id, param_goal_position)
+            if not result:
+                logging.error(f"Failed to add motor {motor_id} to GroupSyncWrite")
+                return
+
+        # Transmit the sync write command to all motors in the group
         result = groupSyncWrite.txPacket()
         if result != COMM_SUCCESS:
-            logging.error(f"Failed to sync write positions for group {group_name}: {self.packet_handler.getTxRxResult(result)}")
+            logging.error(f"Failed to sync write positions for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
         else:
-            logging.info(f"Sync write goal positions set for group {group_name}")
+            logging.info(f"Sync write goal positions set for group '{group_name}'")
+
+        # Clear the parameters for the next sync write
         groupSyncWrite.clearParam()
