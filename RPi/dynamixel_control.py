@@ -446,7 +446,7 @@ class DynamixelController:
 
         for motor_id in self.motor_groups[group_name]:
             # Get current position of the motor in ticks
-            new_position_ticks = degrees/360 * 4096
+            new_position_ticks = int((degrees/360) * 4096)
             current_position_ticks = self.get_entire_position(motor_id)
             
             # Calculate new position by adding the increment
