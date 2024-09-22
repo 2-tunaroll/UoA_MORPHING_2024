@@ -478,9 +478,10 @@ class DynamixelController:
             return
 
         # Ensure the profile velocity is sufficient for the motors to move
-        if profile_velocity < 10:  # A very low RPM may cause the motors to not move at all
-            logging.warning(f"Profile velocity {profile_velocity} too low. Setting to minimum 10 RPM.")
-            profile_velocity = 10
+        min_velocity = 30  # Set to a more practical minimum velocity
+        if profile_velocity < min_velocity:  # A very low RPM may cause the motors to not move at all
+            logging.warning(f"Profile velocity {profile_velocity} too low. Setting to minimum {min_velocity} RPM.")
+            profile_velocity = min_velocity
 
         # Set profile velocity for all motors in the group
         self.set_group_profile_velocity(group_name, profile_velocity)
@@ -561,4 +562,4 @@ class DynamixelController:
                 break
 
             # Optional: add a short delay to prevent busy-waiting
-            time.sleep(0.05)
+            time.sleep(0.1)  # Increase sleep slightly to reduce excessive checking
