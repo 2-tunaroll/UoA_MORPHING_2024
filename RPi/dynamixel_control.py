@@ -249,9 +249,14 @@ class DynamixelController:
         else:
             logging.info(f"Profile acceleration set to {acceleration_rpmps} RPM/s for motor {motor_id}")
 
-    def rotate_by_degrees(self, motor_id, degrees):
+    def rotate_by_degrees(self, motor_id, degrees, tolerance=5):
         """
-        Rotate the motor by a specified number of degrees relative to its current position.
+        Rotate the motor by a specified number of degrees relative to its current position,
+        and wait until the motor reaches the target position before continuing.
+        
+        :param motor_id: ID of the motor to rotate
+        :param degrees: Degrees to rotate relative to the current position
+        :param tolerance: Acceptable range (in degrees) within which the motor is considered to have reached the target
         """
         POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
 
@@ -262,18 +267,36 @@ class DynamixelController:
         new_position_degrees = current_position_degrees + degrees
 
         # Convert the new position to encoder units
-        new_position_value = int((new_position_degrees / 360) * 4096)   # Convert degrees to encoder ticks
+        new_position_value = int((new_position_degrees / 360) * 4096)  # Convert degrees to encoder ticks
         new_position_value = new_position_value % 4096  # Ensure the position value is within 0-4095 ticks
 
         # Send the new goal position to the motor
         result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, new_position_value)
-        
+
         if result != COMM_SUCCESS:
             logging.error(f"Failed to rotate motor {motor_id} by {degrees} degrees: {self.packet_handler.getTxRxResult(result)}")
+            return False
         elif error != 0:
             logging.error(f"Error rotating motor {motor_id} by {degrees} degrees: {self.packet_handler.getRxPacketError(error)}")
+            return False
         else:
-            logging.info(f"Motor {motor_id} rotated by {degrees} degrees (new position: {new_position_degrees} degrees)")
+            logging.info(f"Motor {motor_id} rotated by {degrees} degrees (new target position: {new_position_degrees} degrees)")
+
+        # Wait until the motor reaches the target position within the specified tolerance
+        while True:
+            current_position = self.get_present_position(motor_id)
+            position_error = abs(current_position - new_position_degrees) % 360  # Handle wrapping around 0-360 degrees
+
+            # If the current position is within the tolerance range, consider the position reached
+            if position_error <= tolerance:
+                logging.info(f"Motor {motor_id} reached target position: {current_position} degrees (within {tolerance} degrees tolerance)")
+                break
+
+            # Optional: add a short delay to prevent busy-waiting
+            time.sleep(0.05)
+
+        return True
+
 
     def close(self):
         """Close the port and clean up resources."""
