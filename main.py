@@ -1,60 +1,63 @@
+"""
+This script implements the main logic for converting PS4 controller inputs into dynamixel motor commands.
+Different gaits are implemented.
+The script also logs motor positions and controller inputs to a log file.
+
+Dependencies:
+    DynamixelController class from dynamixel_control.py
+    PS4Controller class from controller.py
+    DYNAMIXELSDK
+    init file uploaded to the Open RB-150 Board
+"""
+# External Imports
 import os
 import time
 import logging
+import yaml
+
+# Internal Imports
 from datetime import datetime
 from controller import PS4Controller
 from dynamixel_control import DynamixelController
 
+# Load configuration from YAML file
+with open('config.yaml', 'r') as file:
+    config = yaml.safe_load(file)
+
 # Create Logs directory if it doesn't exist
-if not os.path.exists('Logs'):
-    os.makedirs('Logs')
+log_directory = config['logging']['log_directory']
+if not os.path.exists(log_directory):
+    os.makedirs(log_directory)
 
 # Generate log file based on date and time
-log_filename = f"Logs/robot_log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+log_filename = f"{log_directory}/flik_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
 
 # Set up logging to log motor positions and controller inputs
 logging.basicConfig(
     filename=log_filename,
-    level=logging.DEBUG,  # Set to DEBUG to capture detailed logs, while important changes will be printed
+    level=getattr(logging, config['logging']['log_level_file']),  
     format='%(asctime)s %(levelname)s: %(message)s'
 )
 
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)  # Set console output to INFO level
+console_handler.setLevel(logging.config['logging']['log_level_console'])  # Set console output
 console_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 console_handler.setFormatter(console_formatter)
 
 # Add the handler to the logger
 logging.getLogger().addHandler(console_handler)
 
-# Motor IDs for wheeled legs, front on the robot is defined by arrow on body
-WHEGS = {
-    'LR_WHEG': 1, 'LM_WHEG': 2, 'LF_WHEG': 3,
-    'RR_WHEG': 4, 'RM_WHEG': 5, 'RF_WHEG': 6
-}
-
-# Motor IDs for pivots, front pivot is defined by the arrow on the body
-PIVOTS = {
-    'FRONT_PIVOT': 7, 'REAR_PIVOT': 8
-}
-
-# Velocity control limits for whegs and pivots
-MAX_RPM = 20  # Max RPM for wheg motors
-MIN_RPM = 0    # Min RPM for wheg motors
-SMOOTHNESS = 2.5  # Controls how smoothly the speed increases
-PIVOT_STEP = 5  # Step size in degrees for each D-pad press
-PIVOT_MAX_ANGLE = 270  # Max angle for pivots
-PIVOT_MIN_ANGLE = 90   # Min angle for pivots
-
-# Track the current pivot positions
-front_pivot_angle = 180  # Start position for front pivot
-rear_pivot_angle = 180   # Start position for rear pivot
-
-# Track the current wheg positions
-wheg_positions = {
-    'LR_WHEG': 0, 'LM_WHEG': 0, 'LF_WHEG': 0,
-    'RR_WHEG': 0, 'RM_WHEG': 0, 'RF_WHEG': 0
-}
+# Motor and pivot configurations from the YAML file
+WHEGS = config['motor_ids']['whegs']
+PIVOTS = config['motor_ids']['pivots']
+MAX_RPM = config['wheg_parameters']['max_rpm']
+MIN_RPM = config['wheg_parameters']['min_rpm']
+SMOOTHNESS = config['wheg_parameters']['smoothness']
+PIVOT_STEP = config['pivot_parameters']['pivot_step']
+PIVOT_MAX_ANGLE = config['pivot_parameters']['max_angle']
+PIVOT_MIN_ANGLE = config['pivot_parameters']['min_angle']
+front_pivot_angle = config['pivot_parameters']['initial_front_angle']
+rear_pivot_angle = config['pivot_parameters']['initial_rear_angle']
 
 # Adjust the velocity based on the right trigger input
 def adjust_wheg_speed(trigger_value, current_rpm):

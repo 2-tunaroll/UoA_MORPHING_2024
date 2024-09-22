@@ -1,6 +1,14 @@
+""" This script uses the dynamixel_sdk library to control Dynamixel motors connected to the Raspberry Pi via an Open RB15 motor controller board. It uses sync write and bulk write commands to control multiple motors simultaneously. """
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import logging
+import yaml
 
+# Load the full configuration from YAML
+with open('config.yaml', 'r') as file:
+    config = yaml.safe_load(file)
+
+# Access the control table from the config
+control_table = config['control_table']
 class DynamixelController:
     def __init__(self, device_name, baudrate, protocol_version=2.0):
         self.port_handler = PortHandler(device_name)

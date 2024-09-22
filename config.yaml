@@ -1,0 +1,56 @@
+#Configuration file for key parameters in main.py
+logging:
+  log_directory: "Logs"
+  log_level_file: "DEBUG"  # File logging level
+  log_level_console: "INFO"  # Console logging level
+
+motor_ids:
+  whegs:
+    LR_WHEG: 1
+    LM_WHEG: 2
+    LF_WHEG: 3
+    RR_WHEG: 4
+    RM_WHEG: 5
+    RF_WHEG: 6
+  pivots:
+    FRONT_PIVOT: 7
+    REAR_PIVOT: 8
+
+wheg_parameters:
+  max_rpm: 20  # Maximum RPM for the wheg motors
+  min_rpm: 0   # Minimum RPM for the wheg motors
+  smoothness: 2.5  # Speed increase smoothness
+  initial_rpm: 0  # Initial speed for wheg motors
+
+pivot_parameters:
+  pivot_step: 5  # Step size for D-pad pivot control in degrees
+  max_angle: 270  # Maximum pivot angle
+  min_angle: 90  # Minimum pivot angle
+  initial_front_angle: 180  # Starting angle for the front pivot
+  initial_rear_angle: 180   # Starting angle for the rear pivot
+
+controller:
+  device_name: "/dev/ttyACM0"
+  baudrate: 57600
+
+gaits:
+  available_gaits:
+    - gait_1
+    - gait_2
+    - gait_3
+    - gait_4
+  initial_gait: gait_1
+
+reporting:
+  motor_position_interval: 5  # Seconds between logging motor positions
+
+control_table: # Control table values for XC330 and XL430 from https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/
+  torque_enable: 64
+  velocity_goal: 104
+  position_goal: 116
+  present_position: 132
+  homing_offset: 20
+  operating_mode: 11
+  velocity_limit: 44
+  profile_velocity: 112
+  profile_acceleration: 108

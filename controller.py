@@ -1,3 +1,5 @@
+""" This script uses the pygame library to interface with a PS4 controller connected to the Raspberry Pi. It reads the joystick axes, buttons, triggers, and D-pad inputs. The script also includes a debounce logic to ignore rapid sequential button presses within a specified time interval. """
+# External imports
 import pygame
 import logging
 import time
