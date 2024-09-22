@@ -178,6 +178,29 @@ class DynamixelController:
         logging.debug(f"Current position for motor {motor_id} is {position} degrees")
         return position
 
+    def get_entire_position(self, motor_id):
+        """
+        Get the current raw position of the motor in encoder units (ticks).
+        Returns the raw encoder value without converting to degrees.
+        
+        :param motor_id: The ID of the motor
+        :return: Raw encoder value (0-4095 ticks)
+        """
+        PRESENT_POSITION_ADDR = 132  # Present position address in Control Table
+
+        # Read the raw 4-byte position value from the motor
+        position, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, PRESENT_POSITION_ADDR)
+        
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to get raw position for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            return None
+        if error != 0:
+            logging.error(f"Error getting raw position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            return None
+
+        logging.info(f"Raw position for motor {motor_id} is {position} ticks")
+        return position  # Return the raw encoder value (ticks)
+
     def set_velocity_limit(self, motor_id, velocity_rpm):
         """Set the velocity limit for an individual motor."""
         velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)  # Convert RPM to encoder units (based on 0.229 factor)
@@ -404,10 +427,14 @@ class DynamixelController:
 
         groupBulkWrite.clearParam()
 
-    def increment_group_position(self, group_name, degrees):
+    def increment_group_position(self, group_name, degrees, profile_velocity):
         """
         Increment the position of all motors in a group by a specified number of degrees, 
-        adding the increment to their current position.
+        adding the increment to their current position and setting a velocity limit (Profile Velocity).
+        
+        :param group_name: Name of the motor group
+        :param degrees: Degrees to increment
+        :param profile_velocity: Profile velocity in RPM (this will be set for each motor in the group)
         """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group '{group_name}' not found")
@@ -415,16 +442,18 @@ class DynamixelController:
 
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
 
+        # Set profile velocity for all motors in the group
+        self.set_group_profile_velocity(group_name, profile_velocity)
+
         for motor_id in self.motor_groups[group_name]:
-            # Get current position of the motor in encoder ticks
-            current_position_degrees = self.get_present_position(motor_id)
+            # Get current position of the motor in degrees
+            current_position_degrees = self.get_entire_position(motor_id)
             
             # Calculate new position by adding the increment
             new_position_degrees = current_position_degrees + degrees
 
-            # Convert new position to encoder units
+            # Convert to encoder units
             new_position_value = int((new_position_degrees / 360) * 4096)  # Convert degrees to encoder ticks
-            new_position_value = new_position_value % 4096  # Ensure the value is within 0-4095 ticks (wrap-around)
 
             # Prepare parameters for sync write
             param_goal_position = [
