@@ -1,0 +1,22 @@
+2024-09-22 13:19:08,247 INFO: Initializing PS4Controller
+2024-09-22 13:19:08,548 DEBUG: Pygame initialized
+2024-09-22 13:19:08,549 DEBUG: Joystick initialized
+2024-09-22 13:19:08,549 DEBUG: Number of buttons on the controller: 13
+2024-09-22 13:19:08,552 INFO: Port /dev/ttyACM0 opened successfully
+2024-09-22 13:19:08,567 INFO: Baudrate set to 57600
+2024-09-22 13:19:08,567 INFO: Initialized PS4 controller and Dynamixel
+2024-09-22 13:19:08,573 INFO: Torque disabled for motor 1
+2024-09-22 13:19:08,573 INFO: Torque off for wheg_id=1
+2024-09-22 13:19:08,578 INFO: Torque disabled for motor 2
+2024-09-22 13:19:08,578 INFO: Torque off for wheg_id=2
+2024-09-22 13:19:08,584 INFO: Torque disabled for motor 3
+2024-09-22 13:19:08,584 INFO: Torque off for wheg_id=3
+2024-09-22 13:19:08,589 INFO: Torque disabled for motor 4
+2024-09-22 13:19:08,589 INFO: Torque off for wheg_id=4
+2024-09-22 13:19:08,594 INFO: Torque disabled for motor 5
+2024-09-22 13:19:08,594 INFO: Torque off for wheg_id=5
+2024-09-22 13:19:08,600 INFO: Torque disabled for motor 6
+2024-09-22 13:19:08,600 INFO: Torque off for wheg_id=6
+2024-09-22 13:19:08,600 INFO: Closing PS4Controller and quitting pygame
+2024-09-22 13:19:08,677 INFO: Port closed
+2024-09-22 13:19:08,678 INFO: Shutdown complete.
