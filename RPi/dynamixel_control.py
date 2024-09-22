@@ -471,7 +471,7 @@ class DynamixelController:
 
     def increment_group_position(self, group_name, increment):
         """ 
-        Increment the goal position for a group of motors, applying negative increment for right-side motors based on motor names.
+        Increment the goal position for a group of motors, applying negative increment for right-side motors (IDs 4, 5, 6).
         
         :param group_name: The name of the motor group to increment.
         :param increment: Degrees to increment the position.
@@ -486,27 +486,30 @@ class DynamixelController:
             if current_mode != 'multi_turn':
                 self.set_operating_mode(motor_id, 'multi_turn')
                 logging.info(f"Set motor {motor_id} to multi-turn mode.")
-        
-        increment_ticks = int((increment / 360) * 4096)  # Convert increment to encoder ticks
-        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
 
-        for motor_name, motor_id in self.motor_groups[group_name].items():
+        increment_ticks = int((increment / 360) * 4096)  # Convert increment to encoder ticks
+        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
+
+        # List of right-side motor IDs (for which we reverse the increment)
+        right_wheg_ids = [4, 5, 6]
+
+        for motor_id in self.motor_groups[group_name]:
             # Get the current position of the motor in ticks
             current_position = self.get_entire_position(motor_id)
             
-            # Check if the motor name starts with 'R' (indicating right-side motors)
-            if motor_name.startswith('R'):  # Motor names like 'RF_WHEG', 'RM_WHEG', etc.
-                new_position = current_position - increment_ticks  # Reverse the increment for right motors
+            # Reverse increment for right-side motors
+            if motor_id in right_wheg_ids:
+                new_position = current_position - increment_ticks  # Reverse increment for right-side motors
             else:
-                new_position = current_position + increment_ticks  # Normal increment for other motors
-            
+                new_position = current_position + increment_ticks  # Normal increment for left or other motors
+
             param_goal_position = [
                 DXL_LOBYTE(DXL_LOWORD(new_position)),
                 DXL_HIBYTE(DXL_LOWORD(new_position)),
                 DXL_LOBYTE(DXL_HIWORD(new_position)),
                 DXL_HIBYTE(DXL_HIWORD(new_position))
             ]
-            
+
             # Add the motor's goal position to the sync write group
             result = groupSyncWrite.addParam(motor_id, param_goal_position)
             if not result:
