@@ -147,15 +147,15 @@ def gait_2(dynamixel, wheg_rpm, button_states):
     logging.info("Executing Gait 2")
 
     # Set the velocity limit for all whegs based on controller input
-    dynamixel.set_group_velocity_limit('whegs', wheg_rpm)  # Set velocity based on input
+    dynamixel.set_group_velocity_limit('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
     # Rotate the whegs in position mode by setting incremental goal positions
     left_wheg_positions = [360, 360, 360]  # Example goal positions for left side whegs
     right_wheg_positions = [360, 360, 360]  # Example goal positions for right side whegs
 
     # Sync write positions for both left and right whegs
-    dynamixel.sync_write_position('left_whegs', left_wheg_positions)
-    dynamixel.sync_write_position('right_whegs', right_wheg_positions)
+    dynamixel.sync_write_position('Left_Whegs', left_wheg_positions)
+    dynamixel.sync_write_position('Right_Whegs', right_wheg_positions)
 
     # Control pivots using the D-pad (if implemented in your system)
     control_pivots_with_dpad(dynamixel, button_states)
@@ -221,9 +221,9 @@ def main():
             dynamixel.torque_on(pivot_id)
 
         # Set initial velocity limits for pivots to 2 RPM
-        dynamixel.set_group_velocity_limit('pivots', 2)
+        dynamixel.set_group_velocity_limit('Pivot_Group', 2)
         # Set initial velocity limit for whegs to 10 RPM
-        dynamixel.set_group_velocity_limit('whegs', 10)
+        dynamixel.set_group_velocity_limit('Wheg_Group', 10)
         
         # Main loop
         while True:
