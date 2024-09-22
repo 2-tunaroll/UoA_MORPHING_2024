@@ -39,9 +39,9 @@ PIVOTS = {
 }
 
 # Velocity control limits for whegs and pivots
-MAX_RPM = 400  # Max RPM for wheg motors
+MAX_RPM = 20  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
-SMOOTHNESS = 10  # Controls how smoothly the speed increases
+SMOOTHNESS = 1  # Controls how smoothly the speed increases
 PIVOT_STEP = 5  # Step size in degrees for each D-pad press
 PIVOT_MAX_ANGLE = 270  # Max angle for pivots
 PIVOT_MIN_ANGLE = 90   # Min angle for pivots
@@ -162,9 +162,9 @@ def gait_2(dynamixel, wheg_rpm, button_states):
     # Set the velocity limit for all whegs based on controller input
     dynamixel.set_group_velocity_limit('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
-    # Rotate the whegs in position mode by setting incremental goal positions
-    left_wheg_positions = [360, 360, 360]  # Example goal positions for left side whegs
-    right_wheg_positions = [360, 360, 360]  # Example goal positions for right side whegs
+    # Increment the wheg positions by 180 degrees
+    left_wheg_positions = [wheg_positions[wheg] + 180 for wheg in ['LR_WHEG', 'LM_WHEG', 'LF_WHEG']]
+    right_wheg_positions = [wheg_positions[wheg] + 180 for wheg in ['RR_WHEG', 'RM_WHEG', 'RF_WHEG']]
 
     # Sync write positions for both left and right whegs
     dynamixel.sync_write_position('Left_Whegs', left_wheg_positions)
