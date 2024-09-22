@@ -184,6 +184,8 @@ class DynamixelController:
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
+        # Convert positions from degrees to encoder ticks
+        positions = [(int((pos / 360) * 4096) % 4096) for pos in positions]
         
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
         
