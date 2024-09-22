@@ -293,7 +293,7 @@ def main():
                     time.sleep(0.2)  # Debounce delay
 
                 # Execute the current gait
-                current_gait(dynamixel, wheg_rpm, button_states)
+                current_gait(dynamixel, wheg_rpm, button_states, motor_positions)
 
             # Report motor positions and log controller inputs every 5 seconds
             current_time = time.time()
