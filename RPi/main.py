@@ -158,22 +158,32 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     # Set the velocity limit for all whegs based on controller input
     dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
-    # Increment the wheg positions by 180 degrees
-    left_wheg_positions = motor_positions['LR_WHEG'] + 360, motor_positions['LM_WHEG'] + 180, motor_positions['LF_WHEG'] + 180
-    right_wheg_positions = motor_positions['RR_WHEG'] + 360, motor_positions['RM_WHEG'] + 180, motor_positions['RF_WHEG'] + 180
-
-    # Sync write positions for both left and right whegs
-    dynamixel.sync_write_position('Left_Whegs', left_wheg_positions)
-    dynamixel.sync_write_position('Right_Whegs', right_wheg_positions)
+    # Increase the position of the whegs in groups
+    increment = 180 # Increment by 180 degrees
+    dynamixel.increment_group_position('Left_Whegs', increment)
+    dynamixel.increment_group_position('Right_Whegs', increment) # Reverse direction for right whegs to move in the same direction (because of mounting)
 
     # Pause for 1 second to allow the whegs to move
     time.sleep(1)
-    # Control pivots using the D-pad (if implemented in your system)
+    # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, button_states)
 
 def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 3")
-    set_wheg_velocity(dynamixel, WHEGS.values(), wheg_rpm)
+
+    # Set the velocity limit for all whegs based on controller input
+    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+    increment = 360  # Increment by 360 degrees
+    
+    # Set the goal positions for the groups of 0 and 180 degrees
+    dynamixel.set_group_position('Two_Right_One_Left', 0)
+    dynamixel.set_group_position('Two_Left_One_Right', 180)
+
+    # Rotate all whegs by 360 degrees
+    dynamixel.increment_group_position('All_Motors', increment)
+
+    control_pivots_with_dpad(dynamixel, button_states)
+    
 
 def gait_4(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 4")
@@ -213,7 +223,6 @@ def main():
         current_gait_index = 0
         total_gaits = len(gait_list)
 
-        # Initial motor states
         wheg_rpm = 0  # Start with no motion
         current_gait = gait_1  # Start with Gait 1
         previous_gait = None  # Keep track of the previous gait to detect changes
@@ -222,12 +231,20 @@ def main():
 
         # Turn on torque and set operating modes for whegs only
         for wheg_id in WHEGS.values():
+            #Check that the whegs on the right side have correct direction
+            if wheg_id in [WHEGS['RM_WHEG'], WHEGS['RF_WHEG'], WHEGS['RR_WHEG']]:
+                offset = dynamixel.get_homing_offset(wheg_id)  # Get homing offset for whegs
+                logging.info(f"Homing offset for wheg_id={wheg_id} is {offset}")
+                if offset != 4096:
+                    dynamixel.set_homing_offset(wheg_id, 4096)
+                    logging.info(f"Set homing offset to 4096 for wheg_id={wheg_id}")
             dynamixel.set_operating_mode(wheg_id, 'velocity')
             dynamixel.torque_on(wheg_id)
             logging.info(f"Torque on for wheg_id={wheg_id}")
 
         # Turn on torque for pivots (although they are disabled in gaits)
         for pivot_id in PIVOTS.values():
+            dynamixel.get_homing_offset(pivot_id)  # Get homing offset for pivots
             dynamixel.set_operating_mode(pivot_id, 'position')
             dynamixel.torque_on(pivot_id)
 

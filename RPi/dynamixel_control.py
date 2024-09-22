@@ -20,6 +20,39 @@ class DynamixelController:
 
         self.motor_groups = {}  # Dictionary to store motor groups
 
+    def get_homing_offset(self, motor_id):
+        """
+        Get the current homing offset for the motor.
+        """
+        HOMING_OFFSET_ADDR = 20  # Address for homing offset in Control Table
+
+        homing_offset, result, error = self.packet_handler.read4ByteTxRx(self.port_handler, motor_id, HOMING_OFFSET_ADDR)
+        
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to read homing offset for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+            return None
+        if error != 0:
+            logging.error(f"Error reading homing offset for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+            return None
+        
+        logging.info(f"Homing offset for motor {motor_id} is {homing_offset}")
+    
+    def set_homing_offset(self, motor_id, offset):
+        """
+        Set the homing offset for the motor to reverse its position direction.
+        """
+        HOMING_OFFSET_ADDR = 20  # Address for homing offset in Control Table
+
+        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, HOMING_OFFSET_ADDR, offset)
+        
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to set homing offset for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        elif error != 0:
+            logging.error(f"Error setting homing offset for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        else:
+            logging.info(f"Homing offset set to {offset} for motor {motor_id}")
+            print(f"Homing offset set to {offset} for motor {motor_id}")
+
     def set_operating_mode(self, motor_id, mode):
         """
         Set the operating mode of the motor. Available modes: 'position', 'velocity'
