@@ -170,6 +170,8 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     dynamixel.sync_write_position('Left_Whegs', left_wheg_positions)
     dynamixel.sync_write_position('Right_Whegs', right_wheg_positions)
 
+    # Pause for 1 second to allow the whegs to move
+    time.sleep(1)
     # Control pivots using the D-pad (if implemented in your system)
     control_pivots_with_dpad(dynamixel, button_states)
     print("Executing Gait 2")
