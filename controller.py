@@ -47,6 +47,7 @@ class PS4Controller:
         self.debounce_time = debounce_time
         self.last_button_press_time = {}
 
+
     def check_controller_connected(self):
         """Checks if the PS4 controller is still connected and logs only if the connection status changes."""
         try:
@@ -63,7 +64,7 @@ class PS4Controller:
         """Returns joystick axes input and logs only if controller is disconnected."""
         if not self.check_controller_connected():
             logging.error("Controller is disconnected.")
-            return None
+            return None # If controller is disconnected, return None, use this to break the loop in the main program
 
         pygame.event.pump()
         x_axis_left = self.joystick.get_axis(0)  # Left joystick X-axis
@@ -77,7 +78,7 @@ class PS4Controller:
         """Returns button input and only logs changes in button states."""
         if not self.check_controller_connected():
             logging.error("Controller is disconnected.")
-            return None
+            return None 
 
         pygame.event.pump()
         button_states = {}
@@ -88,31 +89,23 @@ class PS4Controller:
                 is_pressed = self.joystick.get_button(index)
                 # Debounce logic: Ignore rapid sequential presses within debounce time
                 if is_pressed:
-                    # if button not in self.last_button_press_time or \
-                    #         (current_time - self.last_button_press_time[button]) > self.debounce_time:
-                    #     self.last_button_press_time[button] = current_time
-                    if button_states.get(button) != True:
-                        logging.info(f"Button {button} pressed.")
-                    button_states[button] = True
-                    # else:
-                    #     button_states[button] = False  # Ignore press (debounced)
+                    if button not in self.last_button_press_time or \
+                            (current_time - self.last_button_press_time[button]) > self.debounce_time:
+                        self.last_button_press_time[button] = current_time
+                        button_states[button] = True
+                        logging.debug(f"Button {button} (index {index}) pressed.")
+                    else:
+                        button_states[button] = False  # Ignore press (debounced)
+                        logging.warning(f"Ignoring rapid press of button {button} (index {index})")
                 else:
                     button_states[button] = False
             else:
                 button_states[button] = None  # Button doesn't exist
                 logging.warning(f"Button {button} (index {index}) does not exist on this controller")
-
-        # Add D-pad states
-        dpad_state = self.joystick.get_hat(self.dpad_index)
-        button_states['dpad_up'] = dpad_state[1] == 1   # Y-axis positive
-        button_states['dpad_down'] = dpad_state[1] == -1  # Y-axis negative
-        button_states['dpad_left'] = dpad_state[0] == -1  # X-axis negative
-        button_states['dpad_right'] = dpad_state[0] == 1   # X-axis positive
-
         return button_states
 
     def get_trigger_input(self):
-        """Returns trigger input and only logs errors."""
+        """Returns trigger input and only logs connection errors."""
         if not self.check_controller_connected():
             logging.error("Controller is disconnected.")
             return None
