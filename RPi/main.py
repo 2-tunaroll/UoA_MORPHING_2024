@@ -39,9 +39,9 @@ PIVOTS = {
 }
 
 # Velocity control limits for whegs and pivots
-MAX_RPM = 10  # Max RPM for wheg motors
+MAX_RPM = 20  # Max RPM for wheg motors
 MIN_RPM = 0    # Min RPM for wheg motors
-SMOOTHNESS = 0.25  # Controls how smoothly the speed increases
+SMOOTHNESS = 2.5  # Controls how smoothly the speed increases
 PIVOT_STEP = 5  # Step size in degrees for each D-pad press
 PIVOT_MAX_ANGLE = 270  # Max angle for pivots
 PIVOT_MIN_ANGLE = 90   # Min angle for pivots
@@ -252,8 +252,8 @@ def main():
         dynamixel.set_group_velocity_limit('Pivot_Group', 5)
         dynamixel.set_group_profile_velocity('Pivot_Group', 5)
         # Set initial velocity limit for whegs to 10 RPM
-        dynamixel.set_group_velocity_limit('Wheg_Group', 10)
-        dynamixel.set_group_profile_velocity('Wheg_Group', 10)
+        dynamixel.set_group_velocity_limit('Wheg_Group', 20)
+        dynamixel.set_group_profile_velocity('Wheg_Group', 20)
 
         # Main loop
         while True:
