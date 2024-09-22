@@ -11,14 +11,12 @@ class DynamixelController:
             logging.error("Failed to open the port")
             raise Exception("Failed to open the port")
         logging.info(f"Port {device_name} opened successfully")
-        print(f"Port {device_name} opened successfully")
 
         # Set baudrate
         if not self.port_handler.setBaudRate(baudrate):
             logging.error("Failed to set baudrate")
             raise Exception("Failed to set baudrate")
         logging.info(f"Baudrate set to {baudrate}")
-        print(f"Baudrate set to {baudrate}")
 
         self.motor_groups = {}  # Dictionary to store motor groups
 
@@ -48,7 +46,6 @@ class DynamixelController:
             logging.error(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         else:
             logging.info(f"Operating mode set to {mode} for motor {motor_id}")
-            print(f"Operating mode set to {mode} for motor {motor_id}")
 
         # Re-enable torque after setting the operating mode
         self.torque_on(motor_id)
@@ -84,7 +81,6 @@ class DynamixelController:
             logging.error(f"Error enabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         else:
             logging.info(f"Torque enabled for motor {motor_id}")
-            print(f"Torque enabled for motor {motor_id}")
 
     def torque_off(self, motor_id):
         """Disable the torque on a motor."""
@@ -98,7 +94,6 @@ class DynamixelController:
             logging.error(f"Error disabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         else:
             logging.info(f"Torque disabled for motor {motor_id}")
-            print(f"Torque disabled for motor {motor_id}")
 
     def set_goal_velocity(self, motor_id, velocity):
         """Set the velocity goal for a motor."""
@@ -113,7 +108,6 @@ class DynamixelController:
             logging.error(f"Error setting goal velocity for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         else:
             logging.info(f"Goal velocity set to {velocity} for motor {motor_id}")
-            print(f"Goal velocity set to {velocity} for motor {motor_id}")
 
     def set_goal_position(self, motor_id, position):
         """Set the goal position for a motor, but log only if the position changes."""
@@ -134,7 +128,6 @@ class DynamixelController:
                 logging.error(f"Error setting goal position for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
             else:
                 logging.info(f"Goal position {position} set for motor {motor_id}")
-                print(f"Goal position {position} set for motor {motor_id}")
 
     def get_present_position(self, motor_id):
         """Get the current position of the motor."""
@@ -164,20 +157,79 @@ class DynamixelController:
             logging.error(f"Error setting velocity limit for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         else:
             logging.info(f"Velocity limit of {velocity_rpm} RPM set for motor {motor_id}")
-            print(f"Velocity limit of {velocity_rpm} RPM set for motor {motor_id}")
+    
+    def set_profile_velocity(self, motor_id, velocity_rpm):
+        """
+        Set the profile velocity (speed) in position control mode.
+        The motor will move to the goal position at this speed.
+        """
+        # Convert RPM to encoder units (0.229 factor for XM and XL motors)
+        velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)
+        
+        ADDR_PROFILE_VELOCITY = 112  # Profile velocity address in the control table
+        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, ADDR_PROFILE_VELOCITY, velocity_limit_in_encoder_units)
+
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to set profile velocity for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        elif error != 0:
+            logging.error(f"Error setting profile velocity for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        else:
+            logging.info(f"Profile velocity set to {velocity_rpm} RPM for motor {motor_id}")
+
+    def set_profile_acceleration(self, motor_id, acceleration_rpmps):
+        """
+        Set the profile acceleration (how fast the motor accelerates) in position control mode.
+        The motor will accelerate at this rate to reach its profile velocity.
+        """
+        # Convert acceleration to encoder units (based on 0.229 factor for XM/XL motors)
+        acceleration_in_encoder_units = int(acceleration_rpmps / 0.229)
+        
+        ADDR_PROFILE_ACCELERATION = 108  # Profile acceleration address in the control table
+        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, ADDR_PROFILE_ACCELERATION, acceleration_in_encoder_units)
+
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to set profile acceleration for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+        elif error != 0:
+            logging.error(f"Error setting profile acceleration for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+        else:
+            logging.info(f"Profile acceleration set to {acceleration_rpmps} RPM/s for motor {motor_id}")
+
+    def rotate_by_degrees(self, motor_id, degrees):
+        """
+        Rotate the motor by a specified number of degrees relative to its current position.
+        """
+        POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
+
+        # Get the current position in degrees
+        current_position_degrees = self.get_present_position(motor_id)
+
+        # Calculate the new position by adding the rotation
+        new_position_degrees = current_position_degrees + degrees
+
+        # Convert the new position to encoder units
+        new_position_value = int((new_position_degrees / 360) * 4096)   # Convert degrees to encoder ticks
+        new_position_value = new_position_value % 4096  # Ensure the position value is within 0-4095 ticks
+
+        # Send the new goal position to the motor
+        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, new_position_value)
+        
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to rotate motor {motor_id} by {degrees} degrees: {self.packet_handler.getTxRxResult(result)}")
+        elif error != 0:
+            logging.error(f"Error rotating motor {motor_id} by {degrees} degrees: {self.packet_handler.getRxPacketError(error)}")
+        else:
+            logging.info(f"Motor {motor_id} rotated by {degrees} degrees (new position: {new_position_degrees} degrees)")
 
     def close(self):
         """Close the port and clean up resources."""
         self.port_handler.closePort()
         logging.info("Port closed")
-        print("Port closed")
 
     """ Functionality for group control of motors """
     def create_motor_group(self, group_name, motor_ids):
         """Create a group of motors for easier control."""
         self.motor_groups[group_name] = motor_ids
         logging.info(f"Motor group '{group_name}' created with motors: {motor_ids}")
-        print(f"Motor group '{group_name}' created with motors: {motor_ids}")
 
     def sync_write_position(self, group_name, positions):
         """Sync write goal positions for a group of motors."""
@@ -202,7 +254,6 @@ class DynamixelController:
             logging.error(f"Failed to sync write positions for group {group_name}: {self.packet_handler.getTxRxResult(result)}")
         else:
             logging.info(f"Sync write goal positions set for group {group_name}")
-            print(f"Sync write goal positions set for group {group_name}")
         groupSyncWrite.clearParam()
 
     def bulk_write_velocity(self, group_name, velocities):
@@ -226,7 +277,6 @@ class DynamixelController:
             logging.error(f"Failed to bulk write velocities for group {group_name}: {self.packet_handler.getTxRxResult(result)}")
         else:
             logging.info(f"Bulk write velocities set for group {group_name}")
-            print(f"Bulk write velocities set for group {group_name}")
         groupBulkWrite.clearParam()
 
     def torque_on_group(self, group_name):
@@ -243,7 +293,6 @@ class DynamixelController:
                 logging.error(f"Error enabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         
         logging.info(f"Torque enabled for all motors in group '{group_name}'")
-        print(f"Torque enabled for all motors in group '{group_name}'")
 
     def torque_off_group(self, group_name):
         """Disable torque for all motors in a group."""
@@ -259,7 +308,6 @@ class DynamixelController:
                 logging.error(f"Error disabling torque for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
         
         logging.info(f"Torque disabled for all motors in group '{group_name}'")
-        print(f"Torque disabled for all motors in group '{group_name}'")
 
     def set_group_velocity_limit(self, group_name, velocity_rpm):
         """Set the velocity limit for all motors in a group using bulk write."""
@@ -288,5 +336,84 @@ class DynamixelController:
             logging.error(f"Failed to bulk write velocity limit for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
         else:
             logging.info(f"Velocity limit of {velocity_rpm} RPM set for all motors in group '{group_name}'")
-            print(f"Velocity limit of {velocity_rpm} RPM set for all motors in group '{group_name}'")
         groupBulkWrite.clearParam()
+
+    def set_group_profile_velocity(self, group_name, velocity_rpm):
+        """
+        Set the profile velocity (speed) for a group of motors in position control mode.
+        """
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group '{group_name}' not found")
+            return
+
+        groupBulkWrite = GroupBulkWrite(self.port_handler, self.packet_handler)
+
+        # Convert the velocity limit from RPM to encoder units
+        velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)
+
+        # Prepare velocity data for each motor in the group
+        param_profile_velocity = [
+            DXL_LOBYTE(DXL_LOWORD(velocity_limit_in_encoder_units)),
+            DXL_HIBYTE(DXL_LOWORD(velocity_limit_in_encoder_units)),
+            DXL_LOBYTE(DXL_HIWORD(velocity_limit_in_encoder_units)),
+            DXL_HIBYTE(DXL_HIWORD(velocity_limit_in_encoder_units))
+        ]
+
+        for motor_id in self.motor_groups[group_name]:
+            result = groupBulkWrite.addParam(motor_id, 112, 4, param_profile_velocity)
+            if not result:
+                logging.error(f"Failed to add motor {motor_id} to bulk write")
+
+        # Execute the bulk write
+        result = groupBulkWrite.txPacket()
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to bulk write profile velocity for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
+        else:
+            logging.info(f"Profile velocity of {velocity_rpm} RPM set for all motors in group '{group_name}'")
+
+        groupBulkWrite.clearParam()
+
+    def increment_group_position(self, group_name, degrees):
+        """
+        Increment the position of all motors in a group by a specified number of degrees.
+        """
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group '{group_name}' not found")
+            return
+
+        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
+
+        for motor_id in self.motor_groups[group_name]:
+            # Get current position of the motor in degrees
+            current_position_degrees = self.get_present_position(motor_id)
+            
+            # Calculate new position by adding the increment
+            new_position_degrees = current_position_degrees + degrees
+
+            # Convert to encoder units
+            new_position_value = int((new_position_degrees / 360) * 4096)  # Convert degrees to encoder ticks
+            new_position_value = new_position_value % 4096  # Ensure the value is within 0-4095 ticks
+
+            # Prepare parameters for sync write
+            param_goal_position = [
+                DXL_LOBYTE(DXL_LOWORD(new_position_value)),
+                DXL_HIBYTE(DXL_LOWORD(new_position_value)),
+                DXL_LOBYTE(DXL_HIWORD(new_position_value)),
+                DXL_HIBYTE(DXL_HIWORD(new_position_value))
+            ]
+
+            # Add each motor's goal position to the groupSyncWrite
+            result = groupSyncWrite.addParam(motor_id, param_goal_position)
+            if not result:
+                logging.error(f"Failed to add motor {motor_id} to GroupSyncWrite")
+                return
+
+        # Transmit packet to all motors in the group
+        result = groupSyncWrite.txPacket()
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to increment positions for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
+        else:
+            logging.info(f"Incremented position for all motors in group '{group_name}' by {degrees} degrees")
+
+        # Clear the parameters for the next bulk write
+        groupSyncWrite.clearParam()

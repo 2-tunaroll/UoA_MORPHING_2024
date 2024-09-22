@@ -146,7 +146,6 @@ def control_pivots_with_dpad(dynamixel, button_states):
 
     logging.info(f"Front pivot angle set to {front_pivot_angle}")
     logging.info(f"Rear pivot angle set to {rear_pivot_angle}")
-    print(f"Pivot angles updated: Front={front_pivot_angle}, Rear={rear_pivot_angle}")
 
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm, button_states, motor_positions):
@@ -160,7 +159,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 2")
 
     # Set the velocity limit for all whegs based on controller input
-    dynamixel.set_group_velocity_limit('Wheg_Group', wheg_rpm)  # Set velocity based on input
+    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
     # Increment the wheg positions by 180 degrees
     left_wheg_positions = motor_positions['LR_WHEG'] + 360, motor_positions['LM_WHEG'] + 180, motor_positions['LF_WHEG'] + 180
@@ -174,7 +173,6 @@ def gait_2(dynamixel, wheg_rpm, button_states, motor_positions):
     time.sleep(1)
     # Control pivots using the D-pad (if implemented in your system)
     control_pivots_with_dpad(dynamixel, button_states)
-    print("Executing Gait 2")
 
 def gait_3(dynamixel, wheg_rpm, button_states, motor_positions):
     logging.info("Executing Gait 3")
@@ -242,9 +240,11 @@ def main():
             dynamixel.torque_on(pivot_id)
 
         # Set initial velocity limits for pivots to 2 RPM
-        dynamixel.set_group_velocity_limit('Pivot_Group', 2)
+        dynamixel.set_group_velocity_limit('Pivot_Group', 5)
+        dynamixel.set_group_profile_velocity('Pivot_Group', 5)
         # Set initial velocity limit for whegs to 10 RPM
-        dynamixel.set_group_velocity_limit('Wheg_Group', 1)
+        dynamixel.set_group_velocity_limit('Wheg_Group', 10)
+        dynamixel.set_group_profile_velocity('Wheg_Group', 10)
 
         # Main loop
         while True:
