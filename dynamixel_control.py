@@ -484,6 +484,9 @@ class DynamixelController:
         # Convert the velocity limit from RPM to encoder units
         velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)
 
+        # Temp set velocity limit of 10000
+        velocity_limit_in_encoder_units = 10000
+        
         # Prepare velocity data for each motor in the group
         param_profile_velocity = [
             DXL_LOBYTE(DXL_LOWORD(velocity_limit_in_encoder_units)),
