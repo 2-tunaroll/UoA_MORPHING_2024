@@ -509,6 +509,41 @@ class DynamixelController:
 
         groupBulkWrite.clearParam()
 
+    def set_group_profile_acceleration(self, group_name, acceleration_rpm2):
+        """
+        Set the profile acceleration for a group of motors in position control mode.
+        """
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group '{group_name}' not found")
+            return
+
+        groupBulkWrite = GroupBulkWrite(self.port_handler, self.packet_handler)
+
+        # Convert the acceleration limit from RPM^2 to encoder units (Dynamixel uses 214.577 units/RPM^2 for conversion)
+        acceleration_limit_in_encoder_units = int(acceleration_rpm2 / 0.916)
+
+        # Prepare acceleration data for each motor in the group
+        param_profile_acceleration = [
+            DXL_LOBYTE(DXL_LOWORD(acceleration_limit_in_encoder_units)),
+            DXL_HIBYTE(DXL_LOWORD(acceleration_limit_in_encoder_units)),
+            DXL_LOBYTE(DXL_HIWORD(acceleration_limit_in_encoder_units)),
+            DXL_HIBYTE(DXL_HIWORD(acceleration_limit_in_encoder_units))
+        ]
+
+        for motor_id in self.motor_groups[group_name]:
+            result = groupBulkWrite.addParam(motor_id, 108, 4, param_profile_acceleration)  # 108 is the address for profile acceleration in most Dynamixel motors
+            if not result:
+                logging.error(f"Failed to add motor {motor_id} to bulk write")
+
+        # Execute the bulk write
+        result = groupBulkWrite.txPacket()
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to bulk write profile acceleration for group '{group_name}': {self.packet_handler.getTxRxResult(result)}")
+        else:
+            logging.info(f"Profile acceleration of {acceleration_rpm2} RPM^2 set for all motors in group '{group_name}'")
+
+        groupBulkWrite.clearParam()
+
     def increment_group_position(self, group_name, increment):
         """ 
         Increment the goal position for a group of motors, applying negative increment for right-side motors (IDs 4, 5, 6).
