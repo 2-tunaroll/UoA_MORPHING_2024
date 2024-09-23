@@ -93,6 +93,7 @@ def set_wheg_position(dynamixel, wheg_ids, position):
             logging.info(f"Operating mode set to 'position' for wheg_id={wheg_id}")
     logging.debug(f"Setting wheg position: wheg_ids={list(wheg_ids)}, position={position}")
     for wheg_id in wheg_ids:
+        dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
         dynamixel.set_goal_position(wheg_id, position)
         logging.debug(f"Set wheg position: wheg_id={wheg_id}, position={position}")
 
