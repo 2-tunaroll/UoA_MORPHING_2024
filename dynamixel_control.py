@@ -357,7 +357,7 @@ class DynamixelController:
         self.port_handler.closePort()
         logging.info("Port closed")
 
-    def sync_write_position(self, group_name, positions):
+    def sync_write_position(self, group_name, position):
         """Sync write goal positions for a group of motors."""
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
@@ -366,14 +366,16 @@ class DynamixelController:
         # Check if the motors are in multi-turn mode, if not, set them to multi-turn mode
         for motor_id in self.motor_groups[group_name]:
             current_mode = self.check_operating_mode(motor_id)
-            if current_mode != 'multi_turn':
-                self.set_operating_mode(motor_id, 'multi_turn')
-                logging.info(f"Set motor {motor_id} to multi-turn mode.")
+            if current_mode != 'position':
+                self.set_operating_mode(motor_id, 'position')
+                logging.info(f"Set motor {motor_id} to position mode.")
+
+        # Update position from degrees to encoder ticks
+        pos = int((position / 360) * 4096)  # Convert position to encoder ticks
         
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Goal position address and size
         
         for i, motor_id in enumerate(self.motor_groups[group_name]):
-            pos = positions
             param_goal_position = [DXL_LOBYTE(DXL_LOWORD(pos)),
                                    DXL_HIBYTE(DXL_LOWORD(pos)),
                                    DXL_LOBYTE(DXL_HIWORD(pos)),
