@@ -307,10 +307,10 @@ def main():
         logging.info("Terminating program...")
 
     finally:
-        # Safely turn off wheg and pivot motors and close the controller
+        # Safely set wheg and pivot motors' velocity to 0 and close the controller
         for wheg_id in WHEGS.values():
-            dynamixel.torque_off(wheg_id)
-            logging.info(f"Torque off for wheg_id={wheg_id}")
+            set_wheg_velocity(dynamixel, [wheg_id], 0)
+            logging.info(f"Set velocity to 0 for wheg_id={wheg_id}")
 
         ps4_controller.close()
         dynamixel.close()
