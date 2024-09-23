@@ -149,38 +149,38 @@ def control_pivots_with_dpad(dynamixel, button_states):
 def gait_init_1(dynamixel):
     logging.info("Initializing Gait 1")
     dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    time.sleep(0.5) # Wait for the motors to reach the velocity limit
+    time.sleep(3) # Wait for the motors to reach the velocity limit
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(0.5) # Wait for the motors to reach the position
+    time.sleep(3) # Wait for the motors to reach the position
 
 def gait_init_2(dynamixel):
     logging.info("Initializing Gait 2")
     dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    time.sleep(0.5) # Wait for the motors to reach the velocity limit
+    time.sleep(3) # Wait for the motors to reach the velocity limit
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(0.5) # Wait for the motors to reach the position
+    time.sleep(3) # Wait for the motors to reach the position
 
 def gait_init_3(dynamixel):      
     logging.info("Initializing Gait 3")
     dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    time.sleep(0.5) # Wait for the motors to reach the velocity limit
+    time.sleep(3) # Wait for the motors to reach the velocity limit
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(0.5) # Wait for the motors to reach the position
+    time.sleep(3) # Wait for the motors to reach the position
 
 def gait_init_4(dynamixel):
     logging.info("Initializing Gait 4")
     dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    time.sleep(0.5) # Wait for the motors to reach the velocity limit
+    time.sleep(3) # Wait for the motors to reach the velocity limit
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(0.5) # Wait for the motors to reach the position
+    time.sleep(3) # Wait for the motors to reach the position
     
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
