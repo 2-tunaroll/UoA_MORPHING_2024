@@ -186,6 +186,8 @@ def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
     # Set the velocity limit for all whegs based on controller input
     dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
+    time.sleep(0.5)  # Wait for 0.5 seconds before moving the whegs to allow for velocity setting
+    
     # Increase the position of the whegs in groups
     increment = 180 # Increment by 180 degrees
     
