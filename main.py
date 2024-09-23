@@ -150,6 +150,7 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.info("Executing Gait 1")
     # Set the velocity limit for all whegs based on controller input
     dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity based on input
+    time.sleep(2) # Wait for 2 seconds before moving whegs
     set_wheg_position(dynamixel, WHEGS.values(), 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
@@ -157,7 +158,7 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
 def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.info("Executing Gait 2")
     
-    if wheg_rpm > 0.5:
+    if wheg_rpm > 1:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
@@ -174,6 +175,7 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
     # Set the velocity limit for all whegs based on controller input
     dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity based on input
+    time.sleep(2) # Wait for 2 seconds before moving whegs
 
     # Set the position of the whegs ready for gait 4
     dynamixel.sync_write_position('Two_Right_One_Left', 180)
@@ -182,7 +184,7 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
 def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.info("Executing Gait 4")
     
-    if wheg_rpm > 0.5:
+    if wheg_rpm > 1:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
