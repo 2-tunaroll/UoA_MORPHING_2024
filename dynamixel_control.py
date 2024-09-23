@@ -43,8 +43,8 @@ class DynamixelController:
 
     def setup_motor_groups(self):
         """Setup all motor groups from the YAML config."""
-        motor_groups = config['motor_groups']  # Access motor groups from config
-        motor_ids = config['motor_ids']  # Access motor IDs from config
+        motor_groups = self.config['motor_groups']  # Access motor groups from config
+        motor_ids = self.config['motor_ids']  # Access motor IDs from config
 
         for group_name, motor_names in motor_groups.items():
             # Get motor IDs by looking up motor names in motor_ids (whegs and pivots)
