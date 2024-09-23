@@ -100,6 +100,7 @@ def set_wheg_position(dynamixel, wheg_ids, position):
 # Function to control pivot position
 def set_pivot_position(dynamixel, pivot_id, position):
     logging.debug(f"Setting pivot position: pivot_id={pivot_id}, position={position}")
+    dynamixel.set_group_profile_velocity('Pivot_Group', 5)  # Set velocity limit to move pivots
     dynamixel.set_goal_position(pivot_id, position)
     logging.debug(f"Set pivot position: pivot_id={pivot_id}, position={position}")
 

@@ -125,6 +125,8 @@ class DynamixelController:
 
         # Re-enable torque after setting the mode
         self.torque_on(motor_id)
+        self.set_group_profile_velocity('All_Motors', 10)  # Set velocity limit to move pivots
+
 
 
     def check_operating_mode(self, motor_id):
@@ -483,9 +485,6 @@ class DynamixelController:
 
         # Convert the velocity limit from RPM to encoder units
         velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)
-
-        # Temp set velocity limit of 10000
-        velocity_limit_in_encoder_units = 100
 
         # Prepare velocity data for each motor in the group
         param_profile_velocity = [
