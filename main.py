@@ -156,14 +156,13 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
 def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.info("Executing Gait 2")
-
-    # Set the velocity limit for all whegs based on controller input
-    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
-
-    # Increase the position of the whegs in groups
-    increment = 180 # Increment by 180 degrees
     
     if wheg_rpm != 0:
+        # Set the velocity limit for all whegs based on controller input
+        dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+
+        # Increase the position of the whegs in groups
+        increment = 180 # Increment by 180 degrees
         dynamixel.increment_group_position('Two_Right_One_Left', increment)
         dynamixel.increment_group_position('Two_Left_One_Right', increment)
 
@@ -182,16 +181,13 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
 def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.info("Executing Gait 4")
-
-    # Set the velocity limit for all whegs based on controller input
-    dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
-
-    time.sleep(0.5)  # Wait for 0.5 seconds before moving the whegs to allow for velocity setting
-    
-    # Increase the position of the whegs in groups
-    increment = 180 # Increment by 180 degrees
     
     if wheg_rpm != 0:
+        # Set the velocity limit for all whegs based on controller input
+        dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+
+        # Increase the position of the whegs in groups
+        increment = 180 # Increment by 180 degrees
         dynamixel.increment_group_position('Two_Right_One_Left', increment)
         dynamixel.increment_group_position('Two_Left_One_Right', increment)
 

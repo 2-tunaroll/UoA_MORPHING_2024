@@ -478,10 +478,6 @@ class DynamixelController:
         if group_name not in self.motor_groups:
             logging.error(f"Motor group '{group_name}' not found")
             return
-        
-        if velocity_rpm == 0:
-            logging.warning("Profile velocit cannot be set to 0 RPM that will cause the motor to rapidly rotate. A limit of 1 RPM will be set instead.")
-            velocity_rpm = 1
 
         groupBulkWrite = GroupBulkWrite(self.port_handler, self.packet_handler)
 
