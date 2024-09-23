@@ -157,7 +157,7 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
 def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.info("Executing Gait 2")
     
-    if wheg_rpm != 0:
+    if wheg_rpm < 0.1:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
@@ -182,7 +182,7 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
 def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.info("Executing Gait 4")
     
-    if wheg_rpm != 0:
+    if wheg_rpm < 0.1:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
