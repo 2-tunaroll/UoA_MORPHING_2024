@@ -298,7 +298,7 @@ def main():
             # Report motor positions and log controller inputs every 5 seconds
             current_time = time.time()
             if current_time - report_timer >= 5:  # Report every 5 seconds
-                log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states)
+                log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states, dpad_input)
                 report_timer = current_time  # Reset the timer
 
             time.sleep(0.1)
