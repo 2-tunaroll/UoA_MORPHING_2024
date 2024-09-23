@@ -340,7 +340,7 @@ def main():
                     current_gait = gait_list[current_gait_index]
 
             if previous_gait != current_gait:    # Execute the new gait
-                logging.info("Switching to new gait: " + current_gait_index)
+                logging.info("Switching to new gait: " + str(current_gait_index))
                 gait_init_list[current_gait_index](dynamixel)
 
             previous_gait = current_gait
