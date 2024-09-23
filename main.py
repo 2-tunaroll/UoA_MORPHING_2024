@@ -297,7 +297,6 @@ def main():
         # Main loop
         while True:
             start_time = time.time()  # Track time for position reporting
-            
             # Get button states for emergency stop and gait selection
             button_states = ps4_controller.get_button_input()
             logging.debug(f"Button states: {button_states}")
@@ -333,18 +332,18 @@ def main():
                 # Triangle button: Move to the next gait
                 if button_states['triangle']:
                     current_gait_index = (current_gait_index + 1) % total_gaits
-                    new_gait = gait_list[current_gait_index]
+                    current_gait = gait_list[current_gait_index]
                 
                 # Square button: Move to the previous gait
                 elif button_states['square']:
                     current_gait_index = (current_gait_index - 1) % total_gaits
-                    new_gait = gait_list[current_gait_index]
+                    current_gait = gait_list[current_gait_index]
 
-            if new_gait != current_gait:    # Execute the new gait
+            if previous_gait != current_gait:    # Execute the new gait
                 logging.info("Switching to new gait: " + current_gait_index)
                 gait_init_list[current_gait_index](dynamixel)
-                current_gait = new_gait
 
+            previous_gait = current_gait
             current_gait(dynamixel, wheg_rpm, button_states, dpad_input)
 
             # Report motor positions and log controller inputs every 5 seconds
