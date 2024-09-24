@@ -164,25 +164,25 @@ void loop() {
   dxl.setGoalVelocity(RM_WHEG, RPM_forwards_right, UNIT_RPM);
   dxl.setGoalVelocity(LF_WHEG, RPM_forwards_left, UNIT_RPM);
   
-  delay(3000);
+  delay(4000);
 
   dxl.setGoalVelocity(LR_WHEG, stop, UNIT_RPM);
   dxl.setGoalVelocity(RM_WHEG, stop, UNIT_RPM);
   dxl.setGoalVelocity(LF_WHEG, stop, UNIT_RPM);
   
-  delay(3000);
+  delay(4000);
 
   dxl.setGoalVelocity(LM_WHEG, RPM_forwards_left, UNIT_RPM);
   dxl.setGoalVelocity(RR_WHEG, RPM_forwards_right, UNIT_RPM);
   dxl.setGoalVelocity(RF_WHEG, RPM_forwards_right, UNIT_RPM);
 
-  delay(3000);
+  delay(4000);
 
   dxl.setGoalVelocity(LM_WHEG, stop, UNIT_RPM);
   dxl.setGoalVelocity(RR_WHEG, stop, UNIT_RPM);
   dxl.setGoalVelocity(RF_WHEG, stop, UNIT_RPM);
 
-  delay(3000);
+  delay(4000);
 }
 
 
