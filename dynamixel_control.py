@@ -161,16 +161,12 @@ class DynamixelController:
                     raise Exception(f"Failed to add parameter for motor {motor_id}.")
         
         # Execute the sync write command
-        logging.debug(f"Executing sync write for group '{group_name}' on parameter '{parameter_name}'")
         result = sync_write.txPacket()
         if result != COMM_SUCCESS:
             logging.error(f"Sync write failed with error: {self.packet_handler.getTxRxResult(result)}")
-        else:
-            logging.info(f"Sync write successful for group '{group_name}' on parameter '{parameter_name}'")
 
         # Clear the parameters after the sync write
         sync_write.clearParam()
-        logging.debug(f"Cleared sync write parameters for group '{group_name}'")
 
     def bulk_read_group(self, motor_ids, parameters):
         """
@@ -404,16 +400,23 @@ class DynamixelController:
             return
         
         # Ensure the group is in velocity control mode
-        logging.debug(f"Setting operating mode to 'velocity' for group {group_name}")
         self.set_operating_mode_group(group_name, 'velocity')
 
+        # Ensure torque is enabled after mode change
+        self.torque_on_group(group_name)
+
+        # Check if any velocity exceeds the hard velocity limit
+        hard_velocity_limit = self.config.get('hard_velocity_limit', None)
+        if hard_velocity_limit is None:
+            logging.error(f"Hard velocity limit not found in config.yaml")
+            return
+
+        for motor_id, velocity in velocities_dict.items():
+            if velocity > hard_velocity_limit:
+                logging.warning(f"Velocity {velocity} for motor {motor_id} exceeds hard limit {hard_velocity_limit}. Limiting to {hard_velocity_limit}.")
+                velocities_dict[motor_id] = hard_velocity_limit
+
         try:
-            # Check the profile velocity for potential conflicts
-            logging.debug(f"Checking and disabling profile velocity for group {group_name}")
-            self.set_group_profile_velocity(group_name, 0)  # Temporarily disable profile velocity
-            
-            # Write target velocities
-            logging.debug(f"Setting target velocities: {velocities_dict}")
             self.sync_write_group(group_name, 'velocity_goal', velocities_dict)
             logging.info(f"Target velocities set for group {group_name}: {velocities_dict}")
         except Exception as e:
