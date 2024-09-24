@@ -173,13 +173,11 @@ class DynamixelController:
         Bulk read command to read multiple parameters from multiple motors.
 
         :param motor_ids: List of motor IDs to read from.
-        :param parameters: List of parameters to read (e.g., ['present_position', 'present_velocity']).
+        :param parameters: List of parameters to read (e.g., ['present_position']).
         :return: Dictionary where keys are motor_ids and values are dictionaries of parameter data.
         """
-        # Create a GroupBulkRead instance
         bulk_read = GroupBulkRead(self.port_handler, self.packet_handler)
 
-        # Add each motor and parameter to the bulk read
         for motor_id in motor_ids:
             for parameter_name in parameters:
                 control_item = self.control_table.get(parameter_name)
@@ -189,18 +187,15 @@ class DynamixelController:
                 
                 address = control_item['address']
                 length = control_item['length']
-                
-                # Add each motor and parameter to the bulk read group
+
                 if not bulk_read.addParam(motor_id, address, length):
                     logging.error(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
                     raise Exception(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
 
-        # Execute the bulk read command
         result = bulk_read.txRxPacket()
         if result != COMM_SUCCESS:
             logging.error(f"Bulk read failed with error: {self.packet_handler.getTxRxResult(result)}")
-
-        # Extract data for each motor and parameter
+        
         motor_data = {}
         for motor_id in motor_ids:
             motor_data[motor_id] = {}
@@ -208,20 +203,28 @@ class DynamixelController:
                 control_item = self.control_table.get(parameter_name)
                 length = control_item['length']
                 
-                # Get the bulk read data for the motor and parameter
                 data = bulk_read.getData(motor_id, control_item['address'], length)
-                motor_data[motor_id][parameter_name] = data
 
-                # If reading 'present_position', convert to degrees
-                if parameter_name == 'present_position':
-                    degrees = self.position_to_degrees(data)
-                    motor_data[motor_id]['position_degrees'] = degrees
-                    logging.info(f"Motor {motor_id}: Position (Degrees) = {degrees:.2f}")
+                if data is None:
+                    logging.error(f"No data received for motor {motor_id}.")
+                else:
+                    # Perform sanity check on position data
+                    if parameter_name == 'present_position':
+                        # Convert data to raw position value
+                        position_value = data
 
-        # Clear the parameters after execution
+                        # Handle conversion to degrees
+                        degrees = self.position_to_degrees(position_value)
+
+                        # Check for valid position range (0-360 degrees)
+                        if degrees < 0 or degrees > 360:
+                            logging.warning(f"Motor {motor_id}: Unreasonable position value {degrees:.2f}.")
+                        motor_data[motor_id]['position_degrees'] = degrees
+                    else:
+                        motor_data[motor_id][parameter_name] = data
+
         bulk_read.clearParam()
-        
-        logging.info(f"Bulk read completed for motors: {motor_ids}")
+
         return motor_data
 
     def set_operating_mode_group(self, group_name, mode):
