@@ -30,6 +30,7 @@ class DynamixelController:
         self.open_port()
         
         # Set up motor groups and control table from config
+        self.motor_groups = {}  # Initialize as an empty dictionary
         self.load_control_table()
         self.setup_motor_groups()
 
