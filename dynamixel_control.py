@@ -109,7 +109,7 @@ class DynamixelController:
             logging.error("Invalid degrees value: None")
             return None
         return int((degrees / 360.0) * 4095)
-    
+
     def sync_write_group(self, group_name, parameter_name, param_dict):
         """
         Sync write command for a group of motors with different values.
@@ -154,11 +154,23 @@ class DynamixelController:
                 else:
                     logging.error(f"Unsupported data length {length} for parameter '{parameter_name}'.")
                     raise Exception(f"Unsupported data length {length}.")
-                
+
                 # Add the parameter to the sync write for the specific motor
                 if not sync_write.addParam(motor_id, bytes(param_data)):
                     logging.error(f"Failed to add parameter for motor {motor_id}.")
                     raise Exception(f"Failed to add parameter for motor {motor_id}.")
+        
+        # Execute the sync write command
+        logging.debug(f"Executing sync write for group '{group_name}' on parameter '{parameter_name}'")
+        result = sync_write.txPacket()
+        if result != COMM_SUCCESS:
+            logging.error(f"Sync write failed with error: {self.packet_handler.getTxRxResult(result)}")
+        else:
+            logging.info(f"Sync write successful for group '{group_name}' on parameter '{parameter_name}'")
+
+        # Clear the parameters after the sync write
+        sync_write.clearParam()
+        logging.debug(f"Cleared sync write parameters for group '{group_name}'")
 
     def bulk_read_group(self, motor_ids, parameters):
         """
