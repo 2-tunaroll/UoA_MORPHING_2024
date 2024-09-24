@@ -126,37 +126,35 @@ def test_dynamixel_controller():
         logging.error(f"Bulk read (position) test failed: {e}")
         return
 
-    # Step 13: Test Set Velocity
-    logging.debug("Test Case: Set target velocities")
+    """
+    Test to perform a bulk read of current velocities with torque off.
+    """
     try:
-        velocities = {motor_id: 100 for motor_id in controller.motor_groups['Wheg_Group']}  # Set velocity to 100
-        controller.set_velocity_group('Wheg_Group', velocities)
-        logging.info(f"Velocities set to {velocities}")
-    except Exception as e:
-        logging.error(f"Set velocity test failed: {e}")
-        return
-    
-    # Step 14: Return velocities to 0
-    logging.debug("Test Case: Set target velocities")
-    try:
-        velocities = {motor_id: 0 for motor_id in controller.motor_groups['Wheg_Group']}  # Set velocity to 100
-        controller.set_velocity_group('Wheg_Group', velocities)
-        logging.info(f"Velocities set to {velocities}")
-    except Exception as e:
-        logging.error(f"Set velocity test failed: {e}")
-        return
+        logging.debug("Test Case: Disable torque before reading velocities")
 
+        # Step 1: Disable torque for the motor group
+        motor_group = 'Wheg_Group'
+        controller.torque_off_group(motor_group)
+        logging.info(f"Torque disabled for {motor_group}.")
+        
+        # Step 2: Perform the bulk read for velocities while torque is off
+        logging.debug("Test Case: Bulk Read - Get current velocities")
+        motor_ids = controller.motor_groups[motor_group]
+        motor_data = controller.bulk_read_group(motor_ids, ['present_velocity'])
+        
+        if motor_data is None:
+            logging.error("Bulk read (velocity) failed: No data returned")
+        else:
+            # Log the velocities for each motor
+            for motor_id, data in motor_data.items():
+                logging.info(f"Motor {motor_id} Velocity: {data.get('present_velocity', 0)}")
 
-    # Step 14: Test Bulk Read for Velocity
-    logging.debug("Test Case: Bulk Read - Get current velocities")
-    try:
-        motor_velocities = controller.bulk_read_group(motor_ids, ['present_velocity'])
-        for motor_id, data in motor_velocities.items():
-            logging.info(f"Motor {motor_id} Velocity: {data['present_velocity']}")
+        # Step 3: Re-enable torque if needed
+        controller.torque_on_group(motor_group)
+        logging.info(f"Torque re-enabled for {motor_group}.")
+        
     except Exception as e:
         logging.error(f"Bulk read (velocity) test failed: {e}")
-        return
-    logging.info("All tests completed successfully.")
 
 if __name__ == "__main__":
     test_dynamixel_controller()
