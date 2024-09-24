@@ -67,12 +67,12 @@ def test_dynamixel_controller():
     time.sleep(2)
 
     # Step 7: Test bulk read (read positions)
-    logging.debug("Test Case: Bulk Read - Read motor positions")
+    logging.debug("Test Case: Bulk Read - Read motor positions (in degrees)")
     try:
         motor_ids = controller.motor_groups['Wheg_Group']
         motor_positions = controller.bulk_read_group(motor_ids, ['present_position'])
         for motor_id, data in motor_positions.items():
-            logging.info(f"Motor {motor_id} Position: {data['present_position']}")
+            logging.info(f"Motor {motor_id} Position (Degrees): {data['position_degrees']:.2f}")
     except Exception as e:
         logging.error(f"Bulk read test failed: {e}")
         return
