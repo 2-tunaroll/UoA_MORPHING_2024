@@ -125,9 +125,12 @@ class DynamixelController:
 
         # Re-enable torque after setting the mode
         self.torque_on(motor_id)
-        if mode == 'velocity': # Apply velocity limit if in velocity mode
+
+        if mode == 'velocity':  # Apply velocity limit if in velocity mode
+            logging.debug(f"Setting velocity limit for motor {motor_id} in velocity mode")
             self.set_group_velocity_limit(motor_id, 10)
-        else: # Apply velocity profile if in position or multi-turn mode
+        else:  # Apply velocity profile if in position or multi-turn mode
+            logging.debug(f"Setting profile velocity for motor {motor_id} in {mode} mode")
             self.set_group_profile_velocity(motor_id, 10)
 
 
