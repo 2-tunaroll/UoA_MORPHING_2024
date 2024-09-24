@@ -239,7 +239,7 @@ def main():
     try:
         # Initialize PS4 controller and Dynamixel
         ps4_controller = PS4Controller()
-        dynamixel = DynamixelController(device_name='/dev/ttyACM0', baudrate=57600)
+        dynamixel = DynamixelController(config_path='config.yaml')
         logging.info("Initialized PS4 controller and Dynamixel")
 
         # List of gaits available for selection
