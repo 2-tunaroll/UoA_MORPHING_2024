@@ -255,7 +255,10 @@ class DynamixelController:
             self.set_group_profile_velocity(group_name)
 
     def set_group_velocity_limit(self, group_name):
-        """Set velocity limit for a group of motors based on config.yaml."""
+        """Set velocity limit for a group of motors based on config.yaml.
+        
+        :param group_name: The name of the motor group to set the velocity limit for.
+        """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
@@ -273,7 +276,11 @@ class DynamixelController:
         logging.info(f"Velocity limit set to {velocity_limit} for group {group_name}")
 
     def set_group_profile_velocity(self, group_name):
-        """Set profile velocity for a group of motors based on config.yaml."""
+        """
+        Set profile velocity for a group of motors based on config.yaml.
+        
+        :param group_name: The name of the motor group to set the profile velocity for.
+        """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
@@ -311,6 +318,43 @@ class DynamixelController:
         torque_values = {motor_id: 1 for motor_id in self.motor_groups[group_name]}
         self.sync_write_group(group_name, 'torque_enable', torque_values)
         logging.info(f"Torque enabled for group {group_name}")
+
+    def set_position_group(self, group_name, positions_dict):
+        """
+        Set target positions (in degrees) for a group of motors.
+        
+        :param group_name: The motor group name (from config)
+        :param positions_dict: Dictionary with motor_id as key and target position in degrees as value.
+        """
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+
+        # Convert degrees to raw position values (0-4095 range)
+        position_goals = {motor_id: int((degrees / 360.0) * 4095) for motor_id, degrees in positions_dict.items()}
+
+        try:
+            self.sync_write_group(group_name, 'position_goal', position_goals)
+            logging.info(f"Target positions set for group {group_name}: {positions_dict}")
+        except Exception as e:
+            logging.error(f"Failed to set positions for group {group_name}: {e}")
+
+    def set_velocity_group(self, group_name, velocities_dict):
+        """
+        Set target velocities for a group of motors.
+        
+        :param group_name: The motor group name (from config)
+        :param velocities_dict: Dictionary with motor_id as key and target velocity as value.
+        """
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+        
+        try:
+            self.sync_write_group(group_name, 'velocity_goal', velocities_dict)
+            logging.info(f"Target velocities set for group {group_name}: {velocities_dict}")
+        except Exception as e:
+            logging.error(f"Failed to set velocities for group {group_name}: {e}")
     # Removed as it has been replaced with a sync write function
     # def set_operating_mode(self, motor_id, mode):
     #     """

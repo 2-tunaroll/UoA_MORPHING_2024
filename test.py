@@ -103,6 +103,48 @@ def test_dynamixel_controller():
     except Exception as e:
         logging.error(f"Setting profile velocity failed: {e}")
         return
+    
+    # Step 11: Test Set Position
+    logging.debug("Test Case: Set target positions")
+    try:
+        positions = {motor_id: 180.0 for motor_id in controller.motor_groups['Wheg_Group']}  # Set to 180 degrees
+        controller.set_position_group('Wheg_Group', positions)
+        logging.info(f"Positions set to {positions}")
+        time.sleep(2)  # Give time for motors to move
+    except Exception as e:
+        logging.error(f"Set position test failed: {e}")
+        return
+
+    # Step 12: Test Bulk Read for Position
+    logging.debug("Test Case: Bulk Read - Get current positions (in degrees)")
+    try:
+        motor_ids = controller.motor_groups['Wheg_Group']
+        motor_positions = controller.bulk_read_group(motor_ids, ['present_position'])
+        for motor_id, data in motor_positions.items():
+            logging.info(f"Motor {motor_id} Position (Degrees): {data['position_degrees']:.2f}")
+    except Exception as e:
+        logging.error(f"Bulk read (position) test failed: {e}")
+        return
+
+    # Step 13: Test Set Velocity
+    logging.debug("Test Case: Set target velocities")
+    try:
+        velocities = {motor_id: 100 for motor_id in controller.motor_groups['Wheg_Group']}  # Set velocity to 100
+        controller.set_velocity_group('Wheg_Group', velocities)
+        logging.info(f"Velocities set to {velocities}")
+    except Exception as e:
+        logging.error(f"Set velocity test failed: {e}")
+        return
+
+    # Step 14: Test Bulk Read for Velocity
+    logging.debug("Test Case: Bulk Read - Get current velocities")
+    try:
+        motor_velocities = controller.bulk_read_group(motor_ids, ['present_velocity'])
+        for motor_id, data in motor_velocities.items():
+            logging.info(f"Motor {motor_id} Velocity: {data['present_velocity']}")
+    except Exception as e:
+        logging.error(f"Bulk read (velocity) test failed: {e}")
+        return
 
     logging.info("All tests completed successfully.")
 
