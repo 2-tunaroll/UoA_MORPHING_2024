@@ -2,6 +2,7 @@
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import logging
 import yaml
+import time
 
 class DynamixelController:
     def __init__(self, config_path='config.yaml', device_name=None, baudrate=None, protocol_version=2.0):
@@ -110,6 +111,18 @@ class DynamixelController:
             return None
         return int((degrees / 360.0) * 4095)
 
+    def set_status_return_level(self, group_name, level=1):
+        """Set the status return level for a group of motors."""
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+        
+        # Set the status return level for all motors in the group
+        status_levels = {motor_id: level for motor_id in self.motor_groups[group_name]}
+        self.sync_write_group(group_name, 'status_return_level', status_levels)
+
+        logging.info(f"Status return level set to {level} for group {group_name}")
+
     def sync_write_group(self, group_name, parameter_name, param_dict):
         """
         Sync write command for a group of motors with different values.
@@ -173,7 +186,7 @@ class DynamixelController:
         Bulk read command to read multiple parameters from multiple motors.
 
         :param motor_ids: List of motor IDs to read from.
-        :param parameters: List of parameters to read (e.g., ['present_position']).
+        :param parameters: List of parameters to read (e.g., ['present_position', 'present_velocity']).
         :return: Dictionary where keys are motor_ids and values are dictionaries of parameter data.
         """
         bulk_read = GroupBulkRead(self.port_handler, self.packet_handler)
@@ -192,6 +205,9 @@ class DynamixelController:
                     logging.error(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
                     raise Exception(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
 
+        # Add a small delay before reading if motors are busy
+        time.sleep(0.1)
+
         result = bulk_read.txRxPacket()
         if result != COMM_SUCCESS:
             logging.error(f"Bulk read failed with error: {self.packet_handler.getTxRxResult(result)}")
@@ -208,20 +224,7 @@ class DynamixelController:
                 if data is None:
                     logging.error(f"No data received for motor {motor_id}.")
                 else:
-                    # Perform sanity check on position data
-                    if parameter_name == 'present_position':
-                        # Convert data to raw position value
-                        position_value = data
-
-                        # Handle conversion to degrees
-                        degrees = self.position_to_degrees(position_value)
-
-                        # Check for valid position range (0-360 degrees)
-                        if degrees < 0 or degrees > 360:
-                            logging.warning(f"Motor {motor_id}: Unreasonable position value {degrees:.2f}.")
-                        motor_data[motor_id]['position_degrees'] = degrees
-                    else:
-                        motor_data[motor_id][parameter_name] = data
+                    motor_data[motor_id][parameter_name] = data
 
         bulk_read.clearParam()
 
