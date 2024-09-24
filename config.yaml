@@ -78,6 +78,9 @@ control_table: # Control table values for XC330 and XL430 from https://emanual.r
   profile_acceleration:
     address: 108
     length: 4
+  present_velocity:
+    address: 128
+    length: 4
 
   # Additional Control Table Items (Currently unused)
   drive_mode:
