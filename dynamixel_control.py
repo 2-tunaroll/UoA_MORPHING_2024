@@ -102,7 +102,14 @@ class DynamixelController:
             logging.error("Invalid position value: None")
             return None
         return (position_value / 4095.0) * 360.0
-     
+    
+    def degrees_to_position(self, degrees):
+        """Convert degrees to a raw motor position value (0-4095)."""
+        if degrees is None:
+            logging.error("Invalid degrees value: None")
+            return None
+        return int((degrees / 360.0) * 4095)
+    
     def sync_write_group(self, group_name, parameter_name, param_dict):
         """
         Sync write command for a group of motors with different values.
@@ -330,8 +337,11 @@ class DynamixelController:
             logging.error(f"Motor group {group_name} not found")
             return
 
-        # Convert degrees to raw position values (0-4095 range)
-        position_goals = {motor_id: int((degrees / 360.0) * 4095) for motor_id, degrees in positions_dict.items()}
+        # Ensure the group is in position control mode
+        self.set_operating_mode_group(group_name, 'position')
+
+        # Convert degrees to raw position values (0-4095 range) using degrees_to_position
+        position_goals = {motor_id: self.degrees_to_position(degrees) for motor_id, degrees in positions_dict.items()}
 
         try:
             self.sync_write_group(group_name, 'position_goal', position_goals)
@@ -349,6 +359,9 @@ class DynamixelController:
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
+        
+        # Ensure the group is in velocity control mode
+        self.set_operating_mode_group(group_name, 'velocity')
         
         try:
             self.sync_write_group(group_name, 'velocity_goal', velocities_dict)

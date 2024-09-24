@@ -145,7 +145,6 @@ def test_dynamixel_controller():
     except Exception as e:
         logging.error(f"Bulk read (velocity) test failed: {e}")
         return
-
     logging.info("All tests completed successfully.")
 
 if __name__ == "__main__":
