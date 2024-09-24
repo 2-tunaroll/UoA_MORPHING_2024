@@ -135,6 +135,17 @@ def test_dynamixel_controller():
     except Exception as e:
         logging.error(f"Set velocity test failed: {e}")
         return
+    
+    # Step 14: Return velocities to 0
+    logging.debug("Test Case: Set target velocities")
+    try:
+        velocities = {motor_id: 0 for motor_id in controller.motor_groups['Wheg_Group']}  # Set velocity to 100
+        controller.set_velocity_group('Wheg_Group', velocities)
+        logging.info(f"Velocities set to {velocities}")
+    except Exception as e:
+        logging.error(f"Set velocity test failed: {e}")
+        return
+
 
     # Step 14: Test Bulk Read for Velocity
     logging.debug("Test Case: Bulk Read - Get current velocities")
