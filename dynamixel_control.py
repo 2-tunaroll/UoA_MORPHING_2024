@@ -274,12 +274,19 @@ class DynamixelController:
             self.set_group_profile_velocity(group_name)
 
     def set_group_velocity_limit(self, group_name):
-        """Set velocity limit for a group of motors based on config.yaml.
+        """
+        Set velocity limit for a group of motors based on config.yaml or the hard velocity limit.
         
         :param group_name: The name of the motor group to set the velocity limit for.
         """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
+            return
+
+        # Get hard velocity limit from config.yaml
+        hard_velocity_limit = self.config.get('hard_velocity_limit', None)
+        if hard_velocity_limit is None:
+            logging.error(f"Hard velocity limit not found in config.yaml")
             return
 
         # Get velocity limit from config.yaml
@@ -288,27 +295,50 @@ class DynamixelController:
             logging.error(f"Velocity limit for group {group_name} not found in config.yaml")
             return
 
+        # Check if the velocity limit exceeds the hard limit
+        if velocity_limit > hard_velocity_limit:
+            logging.warning(f"Velocity limit {velocity_limit} exceeds hard limit {hard_velocity_limit}. Limiting to {hard_velocity_limit}.")
+            velocity_limit = hard_velocity_limit
+
         # Apply velocity limit using sync write
         velocity_limits = {motor_id: velocity_limit for motor_id in self.motor_groups[group_name]}
         self.sync_write_group(group_name, 'velocity_limit', velocity_limits)
 
         logging.info(f"Velocity limit set to {velocity_limit} for group {group_name}")
 
-    def set_group_profile_velocity(self, group_name):
+    def set_group_profile_velocity(self, group_name, profile_velocity=None):
         """
-        Set profile velocity for a group of motors based on config.yaml.
+        Set profile velocity for a group of motors based on config.yaml or a provided value.
         
         :param group_name: The name of the motor group to set the profile velocity for.
+        :param profile_velocity: Optional, if provided will override the value from config.yaml.
         """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
 
-        # Get profile velocity from config.yaml
-        profile_velocity = self.config.get('profile_velocities', {}).get(group_name, None)
-        if profile_velocity is None:
-            logging.error(f"Profile velocity for group {group_name} not found in config.yaml")
+        # Get hard profile velocity limit from config.yaml
+        hard_profile_velocity_limit = self.config.get('hard_profile_velocity_limit', None)
+        if hard_profile_velocity_limit is None:
+            logging.error(f"Hard profile velocity limit not found in config.yaml")
             return
+
+        # Get profile velocity from config.yaml if not provided
+        if profile_velocity is None:
+            profile_velocity = self.config.get('profile_velocities', {}).get(group_name, None)
+            if profile_velocity is None:
+                logging.error(f"Profile velocity for group {group_name} not found in config.yaml and no value was provided.")
+                return
+
+        # Check if the profile velocity is zero (infinite velocity) and log a warning
+        if profile_velocity == 0:
+            logging.warning(f"Profile velocity of 0 (infinite) is not allowed. Limiting to hard profile velocity limit {hard_profile_velocity_limit}.")
+            profile_velocity = 1  # Limit it to 1 instead
+
+        # Check if the profile velocity exceeds the hard limit
+        if profile_velocity > hard_profile_velocity_limit:
+            logging.warning(f"Profile velocity {profile_velocity} exceeds hard limit {hard_profile_velocity_limit}. Limiting to {hard_profile_velocity_limit}.")
+            profile_velocity = hard_profile_velocity_limit
 
         # Apply profile velocity using sync write
         profile_velocities = {motor_id: profile_velocity for motor_id in self.motor_groups[group_name]}
@@ -376,10 +406,6 @@ class DynamixelController:
         # Ensure the group is in velocity control mode
         logging.debug(f"Setting operating mode to 'velocity' for group {group_name}")
         self.set_operating_mode_group(group_name, 'velocity')
-
-        # Ensure torque is enabled for all motors in the group
-        logging.debug(f"Enabling torque for group {group_name}")
-        self.torque_on_group(group_name)
 
         try:
             # Check the profile velocity for potential conflicts
