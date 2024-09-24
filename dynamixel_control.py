@@ -436,6 +436,11 @@ class DynamixelController:
         # Convert the velocity limit from RPM to encoder units
         velocity_limit_in_encoder_units = int(velocity_rpm / 0.229)
 
+        # Ensure that velocity limit isn't set to zero ever
+        if velocity_limit_in_encoder_units == 0:
+            logging.critical("Velocity limit cannot be zero, setting to 1 RPM")
+            velocity_limit_in_encoder_units = 1
+
         # Prepare velocity data for each motor in the group
         param_profile_velocity = [
             DXL_LOBYTE(DXL_LOWORD(velocity_limit_in_encoder_units)),
