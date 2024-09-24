@@ -349,6 +349,7 @@ class DynamixelController:
         except Exception as e:
             logging.error(f"Failed to set positions for group {group_name}: {e}")
 
+
     def set_velocity_group(self, group_name, velocities_dict):
         """
         Set target velocities for a group of motors.
@@ -361,9 +362,20 @@ class DynamixelController:
             return
         
         # Ensure the group is in velocity control mode
+        logging.debug(f"Setting operating mode to 'velocity' for group {group_name}")
         self.set_operating_mode_group(group_name, 'velocity')
-        
+
+        # Ensure torque is enabled for all motors in the group
+        logging.debug(f"Enabling torque for group {group_name}")
+        self.torque_on_group(group_name)
+
         try:
+            # Check the profile velocity for potential conflicts
+            logging.debug(f"Checking and disabling profile velocity for group {group_name}")
+            self.set_group_profile_velocity(group_name, 0)  # Temporarily disable profile velocity
+            
+            # Write target velocities
+            logging.debug(f"Setting target velocities: {velocities_dict}")
             self.sync_write_group(group_name, 'velocity_goal', velocities_dict)
             logging.info(f"Target velocities set for group {group_name}: {velocities_dict}")
         except Exception as e:
