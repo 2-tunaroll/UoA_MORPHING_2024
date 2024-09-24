@@ -304,63 +304,6 @@ class DynamixelController:
         else:
             logging.info(f"Profile acceleration set to {acceleration_rpmps} RPM/s for motor {motor_id}")
 
-    def rotate_by_degrees(self, motor_id, degrees, tolerance=5):
-        """
-        Rotate the motor by a specified number of degrees relative to its current position,
-        in multi-turn mode, allowing continuous rotation.
-
-        :param motor_id: ID of the motor to rotate
-        :param degrees: Degrees to rotate relative to the current position (continuous)
-        :param tolerance: Acceptable range (in degrees) within which the motor is considered to have reached the target
-        """
-        POSITION_GOAL_ADDR = 116  # Position goal address in Control Table
-
-        # Check if the motor is in multi-turn mode, if not, set it to multi-turn mode
-        current_mode = self.check_operating_mode(motor_id)
-        if current_mode != 'multi_turn':
-            self.set_operating_mode(motor_id, 'multi_turn')
-            logging.info(f"Set motor {motor_id} to multi-turn mode.")
-
-        # Get the current position in ticks (not degrees)
-        current_position_ticks = self.get_entire_position(motor_id)  # Get the full position in encoder ticks
-
-        # Convert the degrees to ticks (Dynamixel uses 4096 ticks per revolution)
-        increment_ticks = int((degrees / 360) * 4096)
-
-        # Calculate the new position in ticks
-        new_position_ticks = current_position_ticks + increment_ticks
-
-        # Send the new goal position to the motor
-        result, error = self.packet_handler.write4ByteTxRx(self.port_handler, motor_id, POSITION_GOAL_ADDR, new_position_ticks)
-
-        if result != COMM_SUCCESS:
-            logging.error(f"Failed to rotate motor {motor_id} by {degrees} degrees: {self.packet_handler.getTxRxResult(result)}")
-            return False
-        elif error != 0:
-            logging.error(f"Error rotating motor {motor_id} by {degrees} degrees: {self.packet_handler.getRxPacketError(error)}")
-            return False
-        else:
-            logging.info(f"Motor {motor_id} rotating by {degrees} degrees (new position: {new_position_ticks} ticks)")
-
-        # Wait until the motor reaches the target position within the specified tolerance
-        while True:
-            # Get the current position in ticks
-            current_position = self.get_entire_position(motor_id)
-
-            # Calculate the position error
-            position_error_ticks = abs(new_position_ticks - current_position)
-
-            # If the error is within tolerance (converted to ticks), stop waiting
-            tolerance_ticks = int((tolerance / 360) * 4096)
-            if position_error_ticks <= tolerance_ticks:
-                logging.info(f"Motor {motor_id} reached target position: {current_position} ticks (within {tolerance} degrees tolerance)")
-                break
-
-            # Optional: add a short delay to prevent busy-waiting
-            time.sleep(0.05)
-
-        return True
-
     def close(self):
         """Close the port and clean up resources."""
         self.port_handler.closePort()
@@ -376,8 +319,7 @@ class DynamixelController:
         for motor_id in self.motor_groups[group_name]:
             current_mode = self.check_operating_mode(motor_id)
             if current_mode != 'position':
-                self.set_operating_mode(motor_id, 'position')
-                logging.info(f"Set motor {motor_id} to position mode.")
+                self.set_operating_mode_group(group_name, 'position')
 
         # Update position from degrees to encoder ticks
         pos = int((position / 360) * 4096)  # Convert position to encoder ticks
@@ -566,8 +508,7 @@ class DynamixelController:
         for motor_id in self.motor_groups[group_name]:
             current_mode = self.check_operating_mode(motor_id)
             if current_mode != 'multi_turn':
-                self.set_operating_mode(motor_id, 'multi_turn')
-                logging.info(f"Set motor {motor_id} to multi-turn mode.")
+                self.set_operating_mode_group(group_name, 'multi_turn')
 
         increment_ticks = int((increment / 360) * 4096)  # Convert increment to encoder ticks
         groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, 116, 4)  # Position goal address and size
