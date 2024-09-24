@@ -198,6 +198,7 @@ class DynamixelController:
                     logging.error(f"Control table entry '{parameter_name}' not found.")
                     raise Exception(f"Control table entry '{parameter_name}' not found.")
                 
+                # Get the control table address and length for the parameter
                 address = control_item['address']
                 length = control_item['length']
 
@@ -205,13 +206,11 @@ class DynamixelController:
                     logging.error(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
                     raise Exception(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
 
-        # Add a small delay before reading if motors are busy
-        time.sleep(0.1)
-
         result = bulk_read.txRxPacket()
         if result != COMM_SUCCESS:
             logging.error(f"Bulk read failed with error: {self.packet_handler.getTxRxResult(result)}")
-        
+            return None
+
         motor_data = {}
         for motor_id in motor_ids:
             motor_data[motor_id] = {}
@@ -223,8 +222,15 @@ class DynamixelController:
 
                 if data is None:
                     logging.error(f"No data received for motor {motor_id}.")
+                    motor_data[motor_id][parameter_name] = None
                 else:
-                    motor_data[motor_id][parameter_name] = data
+                    # Handle position data conversion to degrees
+                    if parameter_name == 'present_position':
+                        position_value = data
+                        degrees = self.position_to_degrees(position_value)
+                        motor_data[motor_id]['position_degrees'] = degrees
+                    else:
+                        motor_data[motor_id][parameter_name] = data
 
         bulk_read.clearParam()
 
