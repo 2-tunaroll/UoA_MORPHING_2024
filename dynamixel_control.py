@@ -95,7 +95,14 @@ class DynamixelController:
         else:
             logging.error(f"Control table key '{key}' not found")
             raise ValueError(f"Control table key '{key}' not found")
-         
+    
+    def position_to_degrees(self, position_value):
+        """Convert a raw motor position value (0-4095) to degrees (0-360)."""
+        if position_value is None:
+            logging.error("Invalid position value: None")
+            return None
+        return (position_value / 4095.0) * 360.0
+     
     def sync_write_group(self, group_name, parameter_name, param_dict):
         """
         Sync write command for a group of motors with different values.
@@ -189,6 +196,12 @@ class DynamixelController:
                 # Get the bulk read data for the motor and parameter
                 data = bulk_read.getData(motor_id, control_item['address'], length)
                 motor_data[motor_id][parameter_name] = data
+
+                # If reading 'present_position', convert to degrees
+                if parameter_name == 'present_position':
+                    degrees = self.position_to_degrees(data)
+                    motor_data[motor_id]['position_degrees'] = degrees
+                    logging.info(f"Motor {motor_id}: Position (Degrees) = {degrees:.2f}")
 
         # Clear the parameters after execution
         bulk_read.clearParam()
@@ -287,7 +300,7 @@ class DynamixelController:
         torque_values = {motor_id: 0 for motor_id in self.motor_groups[group_name]}
         self.sync_write_group(group_name, 'torque_enable', torque_values)
         logging.info(f"Torque disabled for group {group_name}")
-        
+
     def torque_on_group(self, group_name):
         """Enable torque for all motors in the group."""
         if group_name not in self.motor_groups:
