@@ -150,27 +150,27 @@ def control_pivots_with_dpad(dynamixel, button_states):
 # Define the initialization for each gait (for whegs only, pivots are disabled)
 def gait_init_1(dynamixel):
     logging.info("Initializing Gait 1")
-    dynamixel.sync_write_position(dynamixel, 'Wheg_Group', 180)
+    dynamixel.sync_write_position('Wheg_Group', 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
 
 def gait_init_2(dynamixel):
     logging.info("Initializing Gait 2")
-    dynamixel.sync_write_position(dynamixel, 'Two_Right_One_Left', 180)
-    dynamixel.sync_write_position(dynamixel, 'Two_Left_One_Right', 0)
+    dynamixel.sync_write_position('Two_Right_One_Left', 180)
+    dynamixel.sync_write_position('Two_Left_One_Right', 0)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
 
 def gait_init_3(dynamixel):      
     logging.info("Initializing Gait 3")
-    dynamixel.sync_write_position(dynamixel, 'Two_Right_One_Left', 180)
-    dynamixel.sync_write_position(dynamixel, 'Two_Left_One_Right', 90)
+    dynamixel.sync_write_position('Two_Right_One_Left', 180)
+    dynamixel.sync_write_position('Two_Left_One_Right', 90)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
 
 def gait_init_4(dynamixel):
     logging.info("Initializing Gait 4")
-    dynamixel.sync_write_position(dynamixel, 'Wheg_Group', 180)
+    dynamixel.sync_write_position('Wheg_Group', 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
     
