@@ -94,44 +94,45 @@ class DynamixelController:
             logging.info(f"Homing offset set to {offset} for motor {motor_id}")
             print(f"Homing offset set to {offset} for motor {motor_id}")
 
-    def set_operating_mode(self, motor_id, mode):
-        """
-        Set the operating mode of the motor.
-        Available modes: 'position', 'velocity', 'multi_turn'
-        """
-        OPERATING_MODE_ADDR = 11  # Address for operating mode in Control Table
-        OPERATING_MODES = {
-            'position': 3,   # Position control mode
-            'velocity': 1,   # Velocity control mode
-            'multi_turn': 4  # Multi-turn mode for continuous rotation
-        }
+    # Removed as it has been replaced with a sync write function
+    # def set_operating_mode(self, motor_id, mode):
+    #     """
+    #     Set the operating mode of the motor.
+    #     Available modes: 'position', 'velocity', 'multi_turn'
+    #     """
+    #     OPERATING_MODE_ADDR = 11  # Address for operating mode in Control Table
+    #     OPERATING_MODES = {
+    #         'position': 3,   # Position control mode
+    #         'velocity': 1,   # Velocity control mode
+    #         'multi_turn': 4  # Multi-turn mode for continuous rotation
+    #     }
 
-        if mode not in OPERATING_MODES:
-            logging.error(f"Invalid operating mode: {mode}")
-            return
+    #     if mode not in OPERATING_MODES: 
+    #         logging.error(f"Invalid operating mode: {mode}")
+    #         return
 
-        # Disable torque before changing the mode
-        self.torque_off(motor_id)
+    #     # Disable torque before changing the mode
+    #     self.torque_off(motor_id)
 
-        mode_value = OPERATING_MODES[mode]
-        result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR, mode_value)
+    #     mode_value = OPERATING_MODES[mode]
+    #     result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, OPERATING_MODE_ADDR, mode_value)
 
-        if result != COMM_SUCCESS:
-            logging.error(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
-        elif error != 0:
-            logging.error(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
-        else:
-            logging.info(f"Operating mode set to {mode} for motor {motor_id}")
+    #     if result != COMM_SUCCESS:
+    #         logging.error(f"Failed to set operating mode for motor {motor_id}: {self.packet_handler.getTxRxResult(result)}")
+    #     elif error != 0:
+    #         logging.error(f"Error setting operating mode for motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+    #     else:
+    #         logging.info(f"Operating mode set to {mode} for motor {motor_id}")
 
-        # Re-enable torque after setting the mode
-        self.torque_on(motor_id)
+    #     # Re-enable torque after setting the mode
+    #     self.torque_on(motor_id)
 
-        if mode == 'velocity':  # Apply velocity limit if in velocity mode
-            logging.debug(f"Setting velocity limit for motor {motor_id} in velocity mode")
-            self.set_group_velocity_limit(motor_id, 10)
-        else:  # Apply velocity profile if in position or multi-turn mode
-            logging.debug(f"Setting profile velocity for motor {motor_id} in {mode} mode")
-            self.set_group_profile_velocity(motor_id, 10)
+    #     if mode == 'velocity':  # Apply velocity limit if in velocity mode
+    #         logging.debug(f"Setting velocity limit for motor {motor_id} in velocity mode")
+    #         self.set_group_velocity_limit(motor_id, 10)
+    #     else:  # Apply velocity profile if in position or multi-turn mode
+    #         logging.debug(f"Setting profile velocity for motor {motor_id} in {mode} mode")
+    #         self.set_group_profile_velocity(motor_id, 10)
 
 
 
@@ -452,6 +453,7 @@ class DynamixelController:
 
     def set_group_velocity_limit(self, group_name, velocity_rpm):
         """Set the velocity limit for all motors in a group using bulk write."""
+
         if group_name not in self.motor_groups:
             logging.error(f"Motor group '{group_name}' not found")
             return
@@ -605,3 +607,57 @@ class DynamixelController:
 
         # Clear the parameters for the next sync write
         groupSyncWrite.clearParam()
+
+    def set_operating_mode_group(self, group_name, mode):
+        """
+        Set the operating mode for a group of motors using sync write.
+        Available modes: 'position', 'velocity', 'multi_turn'
+        """
+        OPERATING_MODE_ADDR = 11  # Address for operating mode in Control Table
+        OPERATING_MODES = {
+            'position': 3,   # Position control mode
+            'velocity': 1,   # Velocity control mode
+            'multi_turn': 4  # Multi-turn mode for continuous rotation
+        }
+
+        if mode not in OPERATING_MODES:
+            logging.error(f"Invalid operating mode: {mode}")
+            return
+
+        # Ensure the group exists
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+
+        mode_value = OPERATING_MODES[mode]
+        groupSyncWrite = GroupSyncWrite(self.port_handler, self.packet_handler, OPERATING_MODE_ADDR, 1)  # 1 byte for operating mode
+
+        # Disable torque for the entire group before changing the mode
+        self.torque_off_group(group_name)
+
+        # Prepare sync write parameters for each motor in the group
+        for motor_id in self.motor_groups[group_name]:
+            param_operating_mode = [mode_value]
+            result = groupSyncWrite.addParam(motor_id, param_operating_mode)
+            if not result:
+                logging.error(f"Failed to add motor {motor_id} to sync write")
+
+        # Transmit the sync write command
+        result = groupSyncWrite.txPacket()
+        if result != COMM_SUCCESS:
+            logging.error(f"Failed to sync write operating modes for group {group_name}: {self.packet_handler.getTxRxResult(result)}")
+        else:
+            logging.info(f"Operating mode set to '{mode}' for group {group_name}")
+        
+        groupSyncWrite.clearParam()
+
+        # Re-enable torque for the entire group after setting the mode
+        self.torque_on_group(group_name)
+
+        # Apply specific configuration for velocity and position modes
+        if mode == 'velocity':
+            logging.debug(f"Setting velocity limit for motors in group {group_name}")
+            self.set_group_velocity_limit(group_name, 10)
+        else:
+            logging.debug(f"Setting profile velocity for motors in group {group_name}")
+            self.set_group_profile_velocity(group_name, 10)

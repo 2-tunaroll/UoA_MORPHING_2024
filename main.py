@@ -72,12 +72,8 @@ def adjust_wheg_speed(trigger_value, current_rpm):
     return current_rpm
 
 def set_wheg_velocity(dynamixel, wheg_ids, rpm):
-    # Check the mode of the whegs
-    for wheg_id in wheg_ids:
-        mode = dynamixel.check_operating_mode(wheg_id)
-        if mode != 'velocity':
-            dynamixel.set_operating_mode(wheg_id, 'velocity')
-            logging.info(f"Operating mode set to 'velocity' for wheg_id={wheg_id}")
+    # Set operating mode to velocity
+    dynamixel.set_operating_mode_group('Wheg_Group', 'velocity')
     logging.debug(f"Setting wheg velocity: wheg_ids={list(wheg_ids)}, rpm={rpm}")
     for wheg_id in wheg_ids:
         dynamixel.set_goal_velocity(wheg_id, rpm)
@@ -258,32 +254,13 @@ def main():
         emergency_stop_activated = False  # Track emergency stop state
         report_timer = 0  # Timer to report motor positions every second
 
-        # Turn on torque and set operating modes for whegs only
-        for wheg_id in WHEGS.values():
-            #Check that the whegs on the right side have correct direction
-            if wheg_id in [WHEGS['RM_WHEG'], WHEGS['RF_WHEG'], WHEGS['RR_WHEG']]:
-                offset = dynamixel.get_homing_offset(wheg_id)  # Get homing offset for whegs
-                logging.info(f"Homing offset for wheg_id={wheg_id} is {offset}")
-                if offset != 0:
-                    dynamixel.set_homing_offset(wheg_id, 0)
-                    logging.info(f"Set homing offset to 4096 for wheg_id={wheg_id}")
-            dynamixel.set_operating_mode(wheg_id, 'velocity')
-            dynamixel.torque_on(wheg_id)
-            logging.info(f"Torque on for wheg_id={wheg_id}")
+        # Set operating mode to position for whegs
+        dynamixel.set_operating_mode_group('Wheg_Group', 'position')
+        logging.info(f"Torque on for motor group = {'Wheg_Group'}")
 
-        # Turn on torque for pivots (although they are disabled in gaits)
-        for pivot_id in PIVOTS.values():
-            dynamixel.get_homing_offset(pivot_id)  # Get homing offset for pivots
-            dynamixel.set_operating_mode(pivot_id, 'position')
-            dynamixel.torque_on(pivot_id)
-
-        # Set initial velocity limits for pivots to 2 RPM
-        dynamixel.set_group_velocity_limit('Pivot_Group', 5)
-        dynamixel.set_group_profile_velocity('Pivot_Group', 5)
-        # Set initial velocity limit for whegs to 10 RPM
-        dynamixel.set_group_velocity_limit('Wheg_Group', 10)
-        dynamixel.set_group_profile_velocity('Wheg_Group', 10)
-        dynamixel.set_group_profile_acceleration('Wheg_Group', 1)
+        # Set operating mode to position for pivots
+        dynamixel.set_operating_mode_group('Pivot_Group', 'position')
+        dynamixel.torque_on_group('Pivot_Group')
 
         # Main loop
         while True:
