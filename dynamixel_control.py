@@ -277,7 +277,27 @@ class DynamixelController:
 
         logging.info(f"Profile velocity set to {profile_velocity} for group {group_name}")
 
+    def torque_off_group(self, group_name):
+        """Disable torque for all motors in the group."""
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
 
+        # Disable torque for each motor
+        torque_values = {motor_id: 0 for motor_id in self.motor_groups[group_name]}
+        self.sync_write_group(group_name, 'torque_enable', torque_values)
+        logging.info(f"Torque disabled for group {group_name}")
+        
+    def torque_on_group(self, group_name):
+        """Enable torque for all motors in the group."""
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+
+        # Enable torque for each motor
+        torque_values = {motor_id: 1 for motor_id in self.motor_groups[group_name]}
+        self.sync_write_group(group_name, 'torque_enable', torque_values)
+        logging.info(f"Torque enabled for group {group_name}")
     # Removed as it has been replaced with a sync write function
     # def set_operating_mode(self, motor_id, mode):
     #     """
