@@ -150,56 +150,41 @@ def control_pivots_with_dpad(dynamixel, button_states):
 # Define the initialization for each gait (for whegs only, pivots are disabled)
 def gait_init_1(dynamixel):
     logging.info("Initializing Gait 1")
-    dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    dynamixel.set_group_profile_acceleration('Wheg_Group', 1)
-    time.sleep(3) # Wait for the motors to reach the velocity limit
-    set_wheg_position(dynamixel, WHEGS.values(), 180)
+    dynamixel.sync_write_position(dynamixel, 'Wheg_Group', 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(3) # Wait for the motors to reach the position
 
 def gait_init_2(dynamixel):
     logging.info("Initializing Gait 2")
-    dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    dynamixel.set_group_profile_acceleration('Wheg_Group', 10)
-    time.sleep(3) # Wait for the motors to reach the velocity limit
-    set_wheg_position(dynamixel, WHEGS.values(), 180)
+    dynamixel.sync_write_position(dynamixel, 'Two_Right_One_Left', 180)
+    dynamixel.sync_write_position(dynamixel, 'Two_Left_One_Right', 0)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(3) # Wait for the motors to reach the position
 
 def gait_init_3(dynamixel):      
     logging.info("Initializing Gait 3")
-    dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    dynamixel.set_group_profile_acceleration('Wheg_Group', 100)
-    time.sleep(3) # Wait for the motors to reach the velocity limit
-    set_wheg_position(dynamixel, WHEGS.values(), 180)
+    dynamixel.sync_write_position(dynamixel, 'Two_Right_One_Left', 180)
+    dynamixel.sync_write_position(dynamixel, 'Two_Left_One_Right', 90)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(3) # Wait for the motors to reach the position
 
 def gait_init_4(dynamixel):
     logging.info("Initializing Gait 4")
-    dynamixel.set_group_profile_velocity('Wheg_Group', 10)  # Set velocity limit to move pivots
-    dynamixel.set_group_profile_acceleration('Wheg_Group', 1000)
-    time.sleep(3) # Wait for the motors to reach the velocity limit
-    set_wheg_position(dynamixel, WHEGS.values(), 180)
+    dynamixel.sync_write_position(dynamixel, 'Wheg_Group', 180)
     set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
     set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
-    time.sleep(3) # Wait for the motors to reach the position
     
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.debug("Executing Gait 1")
 
-    if wheg_rpm > 1:
+    if wheg_rpm != 0:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Two_Right_One_Left', increment)
-        dynamixel.increment_group_position('Two_Left_One_Right', increment)
+        dynamixel.increment_group_position('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
@@ -207,7 +192,7 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
 def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.debug("Executing Gait 2")
     
-    if wheg_rpm > 1:
+    if wheg_rpm != 0:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
@@ -222,7 +207,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
 def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.debug("Executing Gait 3")
 
-    if wheg_rpm > 1:
+    if wheg_rpm != 0:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
@@ -237,14 +222,13 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
 def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
     logging.debug("Executing Gait 4")
     
-    if wheg_rpm > 1:
+    if wheg_rpm != 0:
         # Set the velocity limit for all whegs based on controller input
         dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Two_Right_One_Left', increment)
-        dynamixel.increment_group_position('Two_Left_One_Right', increment)
+        dynamixel.increment_group_position('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)

@@ -125,7 +125,10 @@ class DynamixelController:
 
         # Re-enable torque after setting the mode
         self.torque_on(motor_id)
-        self.set_group_profile_velocity('All_Motors', 10)  # Set velocity limit to move pivots
+        if mode == 'velocity': # Apply velocity limit if in velocity mode
+            self.set_group_velocity_limit(motor_id, 10)
+        else: # Apply velocity profile if in position or multi-turn mode
+            self.set_group_profile_velocity(motor_id, 10)
 
 
 
