@@ -45,15 +45,74 @@ reporting:
   motor_position_interval: 5  # Seconds between logging motor positions
 
 control_table: # Control table values for XC330 and XL430 from https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/
-  torque_enable: 64
-  velocity_goal: 104
-  position_goal: 116
-  present_position: 132
-  homing_offset: 20
-  operating_mode: 11
-  velocity_limit: 44
-  profile_velocity: 112
-  profile_acceleration: 108
+  torque_enable:
+    address: 64
+    length: 1
+  velocity_goal:
+    address: 104
+    length: 4
+  position_goal:
+    address: 116
+    length: 4
+  present_position:
+    address: 132
+    length: 4
+  homing_offset:
+    address: 20
+    length: 4
+  operating_mode:
+    address: 11
+    length: 1
+  velocity_limit:
+    address: 44
+    length: 4
+  profile_velocity:
+    address: 112
+    length: 4
+  profile_acceleration:
+    address: 108
+    length: 4
+
+  # Additional Control Table Items (Currently unused)
+  drive_mode:
+    address: 10
+    length: 1
+  temperature_limit:
+    address: 31
+    length: 1
+  max_voltage_limit:
+    address: 32
+    length: 2
+  min_voltage_limit:
+    address: 34
+    length: 2
+  pwm_limit:
+    address: 36
+    length: 2
+  current_limit:
+    address: 38
+    length: 2
+  acceleration_limit:
+    address: 40
+    length: 4
+  shutdown:
+    address: 63
+    length: 1
+  moving_status:
+    address: 123
+    length: 1
+  moving:
+    address: 122
+    length: 1
+  hardware_error_status:
+    address: 70
+    length: 1
+  indirect_address_1:
+    address: 168
+    length: 2
+  indirect_data_1:
+    address: 224
+    length: 1
 
 motor_groups: # Motor groups that can be controlled with sync and bulk write
   Pivot_Group: 

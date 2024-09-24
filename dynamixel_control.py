@@ -5,37 +5,56 @@ import yaml
 
 class DynamixelController:
     def __init__(self, config_path='config.yaml', device_name=None, baudrate=None, protocol_version=2.0):
-        # Load configuration from the YAML file
-        with open(config_path, 'r') as file:
-            self.config = yaml.safe_load(file)
-
-        # Dynamically set the device_name and baudrate from config or passed arguments
-        self.device_name = device_name or self.config['controller']['device_name']
-        self.baudrate = baudrate or self.config['controller']['baudrate']
+        """Initialize the controller with YAML config and setup motor groups."""
+        # Load configuration
+        self.load_config(config_path)
         
-        # Set up motor groups and control table from config
-        self.motor_groups = self.config['motor_groups']
-        self.control_table = self.config['control_table']
-        self.motor_ids = self.config['motor_ids']
+        # Dynamically set the device_name and baudrate from config or passed arguments
+        self.device_name = device_name or self.config['controller'].get('device_name')
+        self.baudrate = baudrate or self.config['controller'].get('baudrate')
 
+        # Check if device_name or baudrate are not set
+        if not self.device_name:
+            logging.error("Device name not provided and not found in config")
+            raise ValueError("Device name must be provided either as an argument or in the config file")
+        
+        if not self.baudrate:
+            logging.error("Baudrate not provided and not found in config")
+            raise ValueError("Baudrate must be provided either as an argument or in the config file")
+
+        # Initialize SDK handlers
         self.port_handler = PortHandler(self.device_name)
         self.packet_handler = PacketHandler(protocol_version)
 
-        # Open the port
+        # Open the port and set the baudrate
+        self.open_port()
+        
+        # Set up motor groups and control table from config
+        self.load_control_table()
+        self.setup_motor_groups()
+
+    def load_config(self, config_path):
+        """Load configuration from a YAML file."""
+        try:
+            with open(config_path, 'r') as file:
+                self.config = yaml.safe_load(file)
+            logging.info("Configuration loaded successfully")
+        except Exception as e:
+            logging.error(f"Failed to load config: {e}")
+            raise
+    
+    def open_port(self):
+        """Open the port and set baudrate."""
         if not self.port_handler.openPort():
             logging.error("Failed to open the port")
             raise Exception("Failed to open the port")
         logging.info(f"Port {self.device_name} opened successfully")
-
-        # Set baudrate
+        
         if not self.port_handler.setBaudRate(self.baudrate):
             logging.error("Failed to set baudrate")
             raise Exception("Failed to set baudrate")
         logging.info(f"Baudrate set to {self.baudrate}")
-
-        # Automatically set up motor groups
-        self.setup_motor_groups()
-
+        
     def create_motor_group(self, group_name, motor_ids):
         """Create a group of motors for easier control."""
         self.motor_groups[group_name] = motor_ids
@@ -52,6 +71,20 @@ class DynamixelController:
                 motor_ids['whegs'].get(name, motor_ids['pivots'].get(name)) for name in motor_names
             ]
             self.create_motor_group(group_name, motor_ids_list)
+    def load_control_table(self):
+        """Load control table from the configuration file."""
+        self.control_table = self.config.get('control_table', {})
+        if not self.control_table:
+            logging.error("Control table missing or empty in configuration.")
+            raise Exception("Control table not defined in config.")
+        
+        # Verify each control table entry has both 'address' and 'length'
+        for entry, value in self.control_table.items():
+            if 'address' not in value or 'length' not in value:
+                logging.error(f"Control table entry '{entry}' is missing 'address' or 'length'.")
+                raise Exception(f"Control table entry '{entry}' is incomplete.")
+        
+        logging.info("Control table loaded successfully.")
 
     def get_control_table_address(self, key):
         """Get the address for a control table key."""
