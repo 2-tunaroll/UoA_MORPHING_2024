@@ -248,19 +248,14 @@ class DynamixelController:
                 control_item = self.control_table.get(parameter_name)
                 length = control_item['length']
 
+                # Retrieve the raw data from the bulk read
                 data = bulk_read.getData(motor_id, control_item['address'], length)
 
                 if data is None:
                     logging.error(f"No data received for motor {motor_id}.")
                     motor_data[motor_id][parameter_name] = None
                 else:
-                    # Handle specific data conversion for present_position to degrees
-                    if parameter_name == 'present_position':
-                        position_value = data
-                        degrees = self.position_to_degrees(position_value)
-                        motor_data[motor_id]['position_degrees'] = degrees
-                    else:
-                        motor_data[motor_id][parameter_name] = data
+                    motor_data[motor_id][parameter_name] = data  # Keep raw data as-is
 
         bulk_read.clearParam()
 
@@ -518,7 +513,7 @@ class DynamixelController:
     def increment_group_position(self, group_name, increment_degrees):
         """
         Increment the motor positions for a group of motors by a specified number of degrees.
-        
+
         :param group_name: The name of the motor group.
         :param increment_degrees: The number of degrees to increment the motor position.
         """
@@ -538,7 +533,7 @@ class DynamixelController:
 
         # Check if all motors are in Extended Position Control Mode (mode 4)
         for motor_id, data in operating_modes.items():
-            if data.get('operating_mode') != 4:
+            if 'operating_mode' not in data or data['operating_mode'] != 4:
                 logging.warning(f"Motor {motor_id} is not in Extended Position Control Mode. Setting mode now.")
                 self.set_operating_mode_group(group_name, 'multi_turn')
                 break  # Set the mode for the entire group and continue
@@ -555,13 +550,13 @@ class DynamixelController:
         new_positions = {}
 
         for motor_id in motor_ids:
-            data = motor_data.get(motor_id)
-            if data is None:
+            # Ensure motor data contains present_position for each motor
+            if motor_id not in motor_data or 'present_position' not in motor_data[motor_id]:
                 logging.error(f"No position data found for motor {motor_id}")
                 continue
 
-            # Get the present_position and convert it
-            current_position = data.get('present_position')
+            # Get the present_position (raw value)
+            current_position = motor_data[motor_id]['present_position']
             if current_position is None:
                 logging.error(f"No position data found for motor {motor_id}")
                 continue
