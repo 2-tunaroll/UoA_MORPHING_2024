@@ -440,7 +440,7 @@ def test_wheg_motors(dynamixel):
         7: dynamixel.degrees_to_position(90),
         8: dynamixel.degrees_to_position(90)
     }
-    dynamixel.set_position_group('Wheg_Group', pivot_positions)
+    dynamixel.set_position_group('Wheg_Group', 90)
 
 if __name__ == "__main__":
     dynamixel = DynamixelController()
