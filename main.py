@@ -259,7 +259,7 @@ def main():
     try:
         # Initialize PS4 controller, Dynamixel, and RobotState
         ps4_controller = PS4Controller()
-        dynamixel = DynamixelController(config['dynamixel'])
+        dynamixel = DynamixelController()
         robot_state = RobotState(config)
 
         logging.info("Initialized PS4 controller, Dynamixel, and Robot State")
