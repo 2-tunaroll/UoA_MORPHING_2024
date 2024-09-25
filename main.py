@@ -205,7 +205,7 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
         dynamixel.increment_group_position('Wheg_Group', increment, robot_state)
 
     # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input)
+    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
 
 def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
     logging.debug("Executing Gait 2")
