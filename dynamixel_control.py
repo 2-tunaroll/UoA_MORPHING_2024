@@ -575,3 +575,17 @@ class DynamixelController:
         self.sync_write_group(group_name, 'baud_rate', baud_rate_params)
 
         logging.info(f"Baud rate set to {baud_rate_value} for group {group_name}")
+
+    def close(self):
+        """
+        Closes the communication port and performs cleanup.
+        """
+        try:
+            # Close the port if it's open
+            if self.port_handler.is_port_open():
+                self.port_handler.closePort()
+                logging.info("Port closed successfully.")
+            else:
+                logging.warning("Port is already closed.")
+        except Exception as e:
+            logging.error(f"Failed to close the port: {e}")
