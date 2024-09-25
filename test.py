@@ -410,4 +410,5 @@ def run_all_tests():
         logging.error(f"Test execution failed: {e}")
 
 if __name__ == "__main__":
+    run_all_tests()
     test_bulk_read()
