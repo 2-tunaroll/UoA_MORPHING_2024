@@ -420,7 +420,7 @@ class DynamixelController:
         position_goals = {motor_id: self.degrees_to_position(degrees) for motor_id, degrees in positions_dict.items()}
 
         try:
-            self.sync_write_group(group_name, 'position_goal', position_goals)
+            self.sync_write_group(group_name, 'goal_position', position_goals)
             logging.info(f"Target positions set for group {group_name}: {positions_dict}")
         except Exception as e:
             logging.error(f"Failed to set positions for group {group_name}: {e}")
@@ -455,7 +455,7 @@ class DynamixelController:
                 velocities_dict[motor_id] = hard_velocity_limit
 
         try:
-            self.sync_write_group(group_name, 'velocity_goal', velocities_dict)
+            self.sync_write_group(group_name, 'goal_velocity', velocities_dict)
             logging.info(f"Target velocities set for group {group_name}: {velocities_dict}")
         except Exception as e:
             logging.error(f"Failed to set velocities for group {group_name}: {e}")
@@ -508,6 +508,8 @@ class DynamixelController:
         :param group_name: The name of the motor group.
         :param increment_degrees: The number of degrees to increment the motor position by.
         """
+        logging.info(f"Incrementing motor positions by {increment_degrees} degrees for group '{group_name}'")
+
         motor_ids = self.motor_groups.get(group_name, [])
         if not motor_ids:
             logging.warning(f"No motors found for group '{group_name}'")
