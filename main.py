@@ -172,29 +172,25 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, config, robot_state):
 # Define the initialization for each gait (for whegs only, pivots are disabled)
 def gait_init_1(dynamixel):
     logging.info("Initializing Gait 1")
-    dynamixel.sync_write_position('Wheg_Group', 180)
-    set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
-    set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
+    dynamixel.set_position_group('Wheg_Group', 180)
+    dynamixel.set_position_group('Pivot_Group', 180)
 
 def gait_init_2(dynamixel):
     logging.info("Initializing Gait 2")
-    dynamixel.sync_write_position('Two_Right_One_Left', 180)
-    dynamixel.sync_write_position('Two_Left_One_Right', 0)
-    set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
-    set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
+    dynamixel.set_position_group('Wheg_Group', 180)
+    dynamixel.set_position_group('Pivot_Group', 180)
 
 def gait_init_3(dynamixel):      
     logging.info("Initializing Gait 3")
-    dynamixel.sync_write_position('Two_Right_One_Left', 180)
-    dynamixel.sync_write_position('Two_Left_One_Right', 90)
-    set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
-    set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
+    dynamixel.set_position_group('Wheg_Group', 180)
+    dynamixel.set_position_group('Pivot_Group', 180)
+
 
 def gait_init_4(dynamixel):
     logging.info("Initializing Gait 4")
-    dynamixel.sync_write_position('Wheg_Group', 180)
-    set_pivot_position(dynamixel, PIVOTS['FRONT_PIVOT'], 180)
-    set_pivot_position(dynamixel, PIVOTS['REAR_PIVOT'], 180)
+    dynamixel.set_position_group('Wheg_Group', 180)
+    dynamixel.set_position_group('Pivot_Group', 180)
+
     
 # Define multiple gaits (for whegs only, pivots are disabled)
 def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
@@ -206,7 +202,7 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Wheg_Group', increment)
+        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
@@ -220,8 +216,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Two_Right_One_Left', increment)
-        dynamixel.increment_group_position('Two_Left_One_Right', increment)
+        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
@@ -235,8 +230,7 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Two_Right_One_Left', increment)
-        dynamixel.increment_group_position('Two_Left_One_Right', increment)
+        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
@@ -250,7 +244,7 @@ def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Wheg_Group', increment)
+        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
