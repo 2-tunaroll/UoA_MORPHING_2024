@@ -279,6 +279,9 @@ def main():
         # Set the right side whegs to reverse
         dynamixel.set_drive_mode_group('Right_Whegs', True)
 
+        # Set position limits for the pivot motors
+        dynamixel.set_position_limits('Pivot_Group', config['position_limits']['Hinges']['min_degrees'], config['position_limits']['Hinges']['max_degrees'])
+
         # Main loop
         while True:
             button_states = ps4_controller.get_button_input()
