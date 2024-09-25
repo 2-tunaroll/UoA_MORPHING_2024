@@ -184,6 +184,75 @@ def test_bulk_read():
     except Exception as e:
         logging.error(f"Test failed: {e}")
 
+def test_bulk_read_with_torque_off():
+    """
+    Test the bulk read functionality with torque disabled for a group of motors.
+    """
+    try:
+        # Initialize the DynamixelController with the config file path
+        logging.debug("Test Case: Initialize DynamixelController")
+        controller = DynamixelController(config_path='config.yaml')
+        logging.info("DynamixelController initialized successfully.")
+
+        # Open port and set baudrate
+        logging.debug("Test Case: Open port and set baudrate")
+        controller.open_port()
+        logging.info(f"Port {controller.device_name} opened with baudrate {controller.baudrate}.")
+
+        # Define the motor group for the test
+        group_name = 'Wheg_Group'
+
+        # Step 1: Disable torque for the motor group
+        logging.debug(f"Test Case: Disable torque for group: {group_name}")
+        controller.torque_off_group(group_name)
+        logging.info(f"Torque disabled for group {group_name}.")
+
+        # Step 2: Perform bulk read for present position with torque off
+        logging.debug(f"Test Case: Bulk read for group: {group_name} (present_position) with torque off")
+        motor_data = controller.bulk_read_group(group_name, ['present_position'])
+        if motor_data is None:
+            logging.error(f"Bulk read failed for group '{group_name}' (present_position) with torque off")
+        else:
+            for motor_id, data in motor_data.items():
+                position_degrees = data.get('position_degrees', None)
+                if position_degrees is not None:
+                    logging.info(f"Motor {motor_id} Present Position (Degrees) with torque off: {position_degrees:.2f}")
+                else:
+                    logging.error(f"Motor {motor_id}: Failed to read position with torque off.")
+
+        # Step 3: Perform bulk read for present velocity with torque off
+        logging.debug(f"Test Case: Bulk read for group: {group_name} (present_velocity) with torque off")
+        motor_data = controller.bulk_read_group(group_name, ['present_velocity'])
+        if motor_data is None:
+            logging.error(f"Bulk read failed for group '{group_name}' (present_velocity) with torque off")
+        else:
+            for motor_id, data in motor_data.items():
+                velocity = data.get('present_velocity', None)
+                if velocity is not None:
+                    logging.info(f"Motor {motor_id} Present Velocity with torque off: {velocity}")
+                else:
+                    logging.error(f"Motor {motor_id}: Failed to read velocity with torque off.")
+
+        # Step 4: Perform bulk read for operating mode with torque off
+        logging.debug(f"Test Case: Bulk read for group: {group_name} (operating_mode) with torque off")
+        motor_data = controller.bulk_read_group(group_name, ['operating_mode'])
+        if motor_data is None:
+            logging.error(f"Bulk read failed for group '{group_name}' (operating_mode) with torque off")
+        else:
+            for motor_id, data in motor_data.items():
+                mode = data.get('operating_mode', None)
+                if mode is not None:
+                    logging.info(f"Motor {motor_id} Operating Mode with torque off: {mode}")
+                else:
+                    logging.error(f"Motor {motor_id}: Failed to read operating mode with torque off.")
+
+        # Step 5: Re-enable torque for the motor group
+        logging.debug(f"Test Case: Re-enable torque for group: {group_name}")
+        controller.torque_on_group(group_name)
+        logging.info(f"Torque re-enabled for group {group_name}.")
+
+    except Exception as e:
+        logging.error(f"Test failed: {e}")
+
 if __name__ == "__main__":
-    # Run the test cases
-    test_bulk_read()
+    test_bulk_read_with_torque_off()
