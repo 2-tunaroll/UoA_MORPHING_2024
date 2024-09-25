@@ -127,7 +127,7 @@ def log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_sta
     logging.info(f"Button States: {button_states}")
     logging.info(f"D-Pad Input: {dpad_input}")
 
-def control_pivots_with_dpad(dynamixel, dpad_inputs, config, robot_state):
+def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
     """
     Control the front and rear pivots using the D-pad inputs from the controller.
     
@@ -193,7 +193,7 @@ def gait_init_4(dynamixel):
 
     
 # Define multiple gaits (for whegs only, pivots are disabled)
-def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
+def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
     logging.debug("Executing Gait 1")
 
     if wheg_rpm != 0:
@@ -202,12 +202,12 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Wheg_Group', increment)
+        dynamixel.increment_group_position('Wheg_Group', increment, robot_state)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
 
-def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
+def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
     logging.debug("Executing Gait 2")
     
     if wheg_rpm != 0:
@@ -219,9 +219,9 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None):
         dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input)
+    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
 
-def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
+def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
     logging.debug("Executing Gait 3")
 
     if wheg_rpm != 0:
@@ -233,9 +233,9 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None):
         dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input)
+    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
 
-def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
+def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
     logging.debug("Executing Gait 4")
     
     if wheg_rpm != 0:
@@ -247,7 +247,7 @@ def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
         dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input)
+    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
 
 # Emergency stop function
 def emergency_stop(dynamixel):
@@ -324,7 +324,7 @@ def main():
                 gait_init_list[current_gait_index](dynamixel)
 
             previous_gait = current_gait
-            current_gait(dynamixel, wheg_rpm, button_states, dpad_input)
+            current_gait(dynamixel, wheg_rpm, button_states, dpad_input, robot_state)
 
             # Report motor positions every 5 seconds
             current_time = time.time()
@@ -339,8 +339,8 @@ def main():
 
     finally:
         # Safely stop all motors
-        dynamixel.sync_write_group('Wheg_Group', 'velocity_goal', {wheg: 0 for wheg in config['motor_ids']['whegs']})
-        dynamixel.sync_write_group('Pivot_Group', 'position_goal', {pivot: 180 for pivot in config['motor_ids']['pivots']})
+        dynamixel.sync_write_group('Wheg_Group', 'goal_velocity', {wheg: 0 for wheg in config['motor_ids']['whegs']})
+        dynamixel.sync_write_group('Pivot_Group', 'goal_position', {pivot: 180 for pivot in config['motor_ids']['pivots']})
         ps4_controller.close()
         dynamixel.close()
         logging.info("Shutdown complete.")
