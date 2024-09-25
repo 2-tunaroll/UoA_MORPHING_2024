@@ -96,8 +96,6 @@ control_table: # Control table values for XC330 and XL430 from https://emanual.r
   min_position_limit:
     address: 52
     length: 4
-
-  # Additional Control Table Items (Currently unused)
   drive_mode:
     address: 10
     length: 1
