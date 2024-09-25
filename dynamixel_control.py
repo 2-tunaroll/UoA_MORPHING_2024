@@ -469,47 +469,37 @@ class DynamixelController:
         except Exception as e:
             logging.error(f"Failed to set drive mode for group {group_name}: {e}")
 
-    def increment_motor_position_by_degrees(self, group_name, degrees_increment):
+    def increment_motor_position_by_degrees(self, group_name, increment_degrees):
         """
-        Increment the position of motors in a group by a specified number of degrees in extended position mode.
-
-        :param self: The motor controller instance.
-        :param group_name: The motor group to modify (e.g., 'Wheg_Group').
-        :param degrees_increment: The number of degrees to increment the position by.
+        Increment the motor positions for a group of motors by a specified number of degrees.
+        :param group_name: The name of the motor group.
+        :param increment_degrees: The number of degrees to increment the motor position.
         """
-        try:
-            # Ensure the motors are in Extended Position Control Mode
-            self.set_operating_mode_group(group_name, 'multi_turn')
-            logging.info(f"Operating mode set to Extended Position Control Mode for {group_name}.")
+        motor_ids = self.motor_groups.get(group_name, [])
+        if not motor_ids:
+            logging.warning(f"No motors found for group '{group_name}'")
+            return
 
-            # Retrieve the current position for each motor
-            motor_ids = self.motor_groups[group_name]
-            motor_data = self.bulk_read_group(motor_ids, ['present_position'])
-            
-            if motor_data is None:
-                logging.error("Bulk read (positions) failed: No data returned")
-                return
+        # Read current positions
+        motor_data = self.bulk_read_group(group_name, ['present_position'])
+        if motor_data is None:
+            logging.error(f"Failed to read motor positions for group '{group_name}'")
+            return
 
-            # Calculate the new target position for each motor
-            target_positions = {}
-            for motor_id, data in motor_data.items():
-                current_position_raw = data.get('present_position')
-                if current_position_raw is not None:
-                    # Convert degrees to raw motor value (0-4095 represents 360 degrees)
-                    position_increment_raw = self.degreestoposition(degrees_increment)
-                    
-                    # Calculate the new target position in extended position mode
-                    new_position_raw = current_position_raw + position_increment_raw
-                    
-                    target_positions[motor_id] = new_position_raw
-                    logging.info(f"Motor {motor_id} new target position (raw): {new_position_raw}")
+        # Create a dictionary for new positions
+        new_positions = {}
 
-            # Send the new target positions to the motors
-            self.sync_write_group(group_name, 'position_goal', target_positions)
-            logging.info(f"Positions incremented by {degrees_increment} degrees for group {group_name}.")
-            
-        except Exception as e:
-            logging.error(f"Failed to increment motor positions for group {group_name}: {e}")
+        for motor_id, data in motor_data.items():
+            current_position_degrees = self.position_to_degrees(data['present_position'])
+            new_position_degrees = current_position_degrees + increment_degrees
+
+            # Convert back to raw position value
+            new_position_value = self.degrees_to_position(new_position_degrees)
+            new_positions[motor_id] = new_position_value
+
+        # Sync write the new positions
+        self.sync_write_group(group_name, 'position_goal', new_positions)
+        logging.info(f"Motor positions for group '{group_name}' incremented by {increment_degrees} degrees")
 
     def set_position_limits_group(self, group_name, min_degrees=None, max_degrees=None):
         """
