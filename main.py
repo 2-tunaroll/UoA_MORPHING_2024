@@ -278,6 +278,7 @@ def main():
 
         # Set the right side whegs to reverse
         dynamixel.set_drive_mode_group('Right_Whegs', True)
+        dynamixel.set_drive_mode_group('Left_Whegs', False)
         # Set position limits for the pivot motors
         # dynamixel.set_position_limits_group('Pivot_Group', config['position_limits']['Hinges']['min_degrees'], config['position_limits']['Hinges']['max_degrees'])
 
