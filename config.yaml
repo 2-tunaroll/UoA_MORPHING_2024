@@ -63,10 +63,10 @@ control_table: # Control table values for XC330 and XL430 from https://emanual.r
   torque_enable:
     address: 64
     length: 1
-  velocity_goal:
+  goal_velocity:
     address: 104
     length: 4
-  position_goal:
+  goal_position:
     address: 116
     length: 4
   present_position:
