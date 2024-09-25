@@ -216,6 +216,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
+        dynamixel.set_drive_mode_group('Right_Whegs', True)
         dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad
@@ -277,10 +278,8 @@ def main():
         report_timer = time.time()
 
         # Set the right side whegs to reverse
-        dynamixel.set_drive_mode_group('Right_Whegs', True)
-
         # Set position limits for the pivot motors
-        dynamixel.set_position_limits_group('Pivot_Group', config['position_limits']['Hinges']['min_degrees'], config['position_limits']['Hinges']['max_degrees'])
+        # dynamixel.set_position_limits_group('Pivot_Group', config['position_limits']['Hinges']['min_degrees'], config['position_limits']['Hinges']['max_degrees'])
 
         # Main loop
         while True:
