@@ -158,8 +158,8 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
 
     # Prepare positions for sync write
     pivot_positions = {
-        config['motor_ids']['pivots']['FRONT_PIVOT']: front_pivot_position,
-        config['motor_ids']['pivots']['REAR_PIVOT']: rear_pivot_position
+        front_pivot_position,
+        rear_pivot_position
     }
 
     # Sync write the goal positions for the pivots
@@ -342,12 +342,11 @@ def main():
 
     finally:
         # Safely stop all motors
-        dynamixel.sync_write_group('Wheg_Group', 'goal_velocity', {wheg: 0 for wheg in config['motor_ids']['whegs']})
-        dynamixel.sync_write_group('Pivot_Group', 'goal_position', {pivot: 180 for pivot in config['motor_ids']['pivots']})
+        dynamixel.set_velocity_group('All_Motors', 0)
+        dynamixel.set_position_group('All_Motors', 180)
         ps4_controller.close()
         dynamixel.close()
         logging.info("Shutdown complete.")
-
 
 if __name__ == "__main__":
     main()
