@@ -402,12 +402,13 @@ class DynamixelController:
         self.sync_write_group(group_name, 'torque_enable', torque_values)
         logging.info(f"Torque enabled for group {group_name}")
 
-    def set_position_group(self, group_name, positions_dict):
+    def set_position_group(self, group_name, positions):
         """
         Set target positions (in degrees) for a group of motors.
         
         :param group_name: The motor group name (from config)
-        :param positions_dict: Dictionary with motor_id as key and target position in degrees as value.
+        :param positions: Either a dictionary with motor_id as key and target position in degrees as value,
+                        or a single integer to apply the same position to all motors in the group.
         """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
@@ -416,15 +417,25 @@ class DynamixelController:
         # Ensure the group is in position control mode
         self.set_operating_mode_group(group_name, 'position')
 
-        # Convert degrees to raw position values (0-4095 range) using degrees_to_position
-        position_goals = {motor_id: self.degrees_to_position(degrees) for motor_id, degrees in positions_dict.items()}
+        # Check if the input is a dictionary (positions for each motor) or a single integer (same position for all motors)
+        if isinstance(positions, int):
+            # Apply the same position to all motors
+            position_goals = {motor_id: self.degrees_to_position(positions) for motor_id in self.motor_groups[group_name]}
+            logging.info(f"Setting position {positions}° for all motors in group '{group_name}'")
+        elif isinstance(positions, dict):
+            # Apply different positions for each motor
+            position_goals = {motor_id: self.degrees_to_position(degrees) for motor_id, degrees in positions.items()}
+            logging.info(f"Setting individual positions for motors in group '{group_name}': {positions}")
+        else:
+            logging.error("Invalid type for 'positions'. Must be either an integer or a dictionary.")
+            return
 
+        # Try to write the new position values
         try:
             self.sync_write_group(group_name, 'goal_position', position_goals)
-            logging.info(f"Target positions set for group {group_name}: {positions_dict}")
+            logging.info(f"Target positions set for group '{group_name}'")
         except Exception as e:
-            logging.error(f"Failed to set positions for group {group_name}: {e}")
-
+            logging.error(f"Failed to set positions for group '{group_name}': {e}")
 
     def set_velocity_group(self, group_name, velocities_dict):
         """
