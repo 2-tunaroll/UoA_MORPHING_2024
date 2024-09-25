@@ -2,7 +2,6 @@
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import logging
 import yaml
-import time
 
 class DynamixelController:
     def __init__(self, config_path='config.yaml', device_name=None, baudrate=None, protocol_version=2.0):
@@ -502,3 +501,41 @@ class DynamixelController:
             
         except Exception as e:
             logging.error(f"Failed to increment motor positions for group {group_name}: {e}")
+
+    def set_position_limits_group(self, group_name, min_degrees=None, max_degrees=None):
+        """
+        Set the position limits (min and max) for a group of motors, using degrees or raw motor values.
+        
+        :param group_name: The name of the motor group to set limits for (e.g., 'Hinges').
+        :param min_degrees: The minimum allowable position in degrees. If not provided, it will use defaults from config.
+        :param max_degrees: The maximum allowable position in degrees. If not provided, it will use defaults from config.
+        """
+        try:
+            # Ensure the motor group exists
+            if group_name not in self.motor_groups:
+                logging.error(f"Motor group {group_name} not found")
+                return
+            
+            # Load default limits from YAML if not provided
+            if min_degrees is None or max_degrees is None:
+                logging.info(f"Loading position limits from config for group {group_name}")
+                min_degrees = self.config['position_limits'][group_name]['min_degrees']
+                max_degrees = self.config['position_limits'][group_name]['max_degrees']
+
+            # Convert degrees to raw motor position values
+            min_position = self.degrees_to_position(min_degrees)
+            max_position = self.degrees_to_position(max_degrees)
+
+            # Prepare dictionaries to hold min and max position values for each motor
+            min_position_dict = {motor_id: min_position for motor_id in self.motor_groups[group_name]}
+            max_position_dict = {motor_id: max_position for motor_id in self.motor_groups[group_name]}
+
+            # Write the min and max position limits using sync write
+            self.sync_write_group(group_name, 'min_position_limit', min_position_dict)
+            self.sync_write_group(group_name, 'max_position_limit', max_position_dict)
+
+            logging.info(f"Position limits set for group {group_name}: min={min_degrees}° (ticks={min_position}), max={max_degrees}° (ticks={max_position})")
+        
+        except Exception as e:
+            logging.error(f"Failed to set position limits for group {group_name}: {e}")
+

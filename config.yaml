@@ -55,6 +55,10 @@ profile_velocities:
 hard_velocity_limit: 100  # The maximum velocity limit for any motor
 hard_profile_velocity_limit: 100  # The maximum profile velocity limit for any motor
 
+position_limits:
+  min_degrees: 90
+  max_degrees: 270
+
 control_table: # Control table values for XC330 and XL430 from https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/
   torque_enable:
     address: 64
@@ -85,6 +89,12 @@ control_table: # Control table values for XC330 and XL430 from https://emanual.r
     length: 4
   present_velocity:
     address: 128
+    length: 4
+  max_position_limit:
+    address: 48
+    length: 4
+  min_position_limit:
+    address: 52
     length: 4
 
   # Additional Control Table Items (Currently unused)
