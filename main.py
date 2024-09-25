@@ -137,7 +137,7 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
     :param robot_state: An instance of RobotState managing the pivot angles.
     """
     # Extract pivot parameters from config
-    pivot_step = config['pivots']['parameters']['pivot_step']
+    pivot_step = config['pivot_parameters']['pivot_step']
     pivot_min_angle = config['position_limits']['Hinges']['min_angle']
     pivot_max_angle = config['position_limits']['Hinges']['max_angle']
 
@@ -158,8 +158,8 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
 
     # Prepare positions for sync write
     pivot_positions = {
-        config['pivots']['ids']['FRONT_PIVOT']: front_pivot_position,
-        config['pivots']['ids']['REAR_PIVOT']: rear_pivot_position
+        config['motor_ids']['pivots']['FRONT_PIVOT']: front_pivot_position,
+        config['motor_ids']['pivots']['REAR_PIVOT']: rear_pivot_position
     }
 
     # Sync write the goal positions for the pivots
