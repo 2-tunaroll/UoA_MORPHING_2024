@@ -216,7 +216,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
 
         # Increase the position of the whegs in groups
         increment = 360 # Increment by 180 degrees
-        dynamixel.set_drive_mode_group('Right_Whegs', False)
+        dynamixel.set_drive_mode_group('Right_Whegs', True)
         dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
 
     # Control pivots using the D-pad

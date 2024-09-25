@@ -478,6 +478,7 @@ class DynamixelController:
             return
 
         drive_mode_value = 1 if reverse_direction else 0
+        logging.debug(f"Setting drive mode for group '{group_name}', reverse_direction={reverse_direction}, drive_mode_value={drive_mode_value}")
 
         # Disable torque before setting drive mode
         self.torque_off_group(group_name)
@@ -485,6 +486,7 @@ class DynamixelController:
         # Sync write drive mode for all motors
         param_dict = {motor_id: drive_mode_value for motor_id in motor_ids}
         try:
+            logging.debug(f"Sync writing drive mode values: {param_dict}")
             self.sync_write_group(group_name, 'drive_mode', param_dict)
             logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
         except Exception as e:
@@ -495,6 +497,7 @@ class DynamixelController:
 
         # Verify the drive mode was correctly set
         try:
+            logging.debug(f"Reading back drive mode for verification...")
             motor_data = self.bulk_read_group(group_name, ['drive_mode'])
             if motor_data is None:
                 logging.error(f"Failed to read drive mode for group '{group_name}'")
