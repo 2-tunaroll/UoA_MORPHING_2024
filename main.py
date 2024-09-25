@@ -158,10 +158,10 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
 
     # Prepare positions for sync write
     pivot_positions = {
-        front_pivot_position,
-        rear_pivot_position
+        config['motor_ids']['pivots']['FRONT_PIVOT']: front_pivot_position,
+        config['motor_ids']['pivots']['REAR_PIVOT']: rear_pivot_position
     }
-
+    print("Pivot positions: ", pivot_positions)
     # Sync write the goal positions for the pivots
     dynamixel.set_position_group('Pivot_Group', pivot_positions)
 
