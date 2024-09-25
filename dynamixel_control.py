@@ -460,6 +460,15 @@ class DynamixelController:
         self.sync_write_group(group_name, 'drive_mode', param_dict)
         logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
 
+        # Verify the drive mode was correctly set
+        motor_data = self.bulk_read_group(group_name, ['drive_mode'])
+        for motor_id, data in motor_data.items():
+            current_drive_mode = data.get('drive_mode', None)
+            if current_drive_mode != drive_mode_value:
+                logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
+            else:
+                logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if reverse_direction else 'normal'}")
+
     def increment_motor_position_by_degrees(self, group_name, increment_degrees):
         """
         Increment the motor positions for a group of motors by a specified number of degrees.
@@ -481,7 +490,12 @@ class DynamixelController:
         new_positions = {}
 
         for motor_id, data in motor_data.items():
-            current_position_degrees = self.position_to_degrees(data['present_position'])
+            current_position = data.get('present_position')
+            if current_position is None:
+                logging.error(f"No position data found for motor {motor_id}")
+                continue
+
+            current_position_degrees = self.position_to_degrees(current_position)
             new_position_degrees = current_position_degrees + increment_degrees
 
             # Convert back to raw position value
