@@ -152,22 +152,18 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
     elif dpad_inputs['dpad_left']:
         robot_state.adjust_rear_pivot(pivot_step, pivot_min_angle, pivot_max_angle, 'left')
 
-    # Convert angles to raw motor positions
-    front_pivot_position = dynamixel.degrees_to_position(robot_state.front_pivot_angle)
-    rear_pivot_position = dynamixel.degrees_to_position(robot_state.rear_pivot_angle)
-
     # Prepare positions for sync write
     pivot_positions = {
-        config['motor_ids']['pivots']['FRONT_PIVOT']: front_pivot_position,
-        config['motor_ids']['pivots']['REAR_PIVOT']: rear_pivot_position
+        config['motor_ids']['pivots']['FRONT_PIVOT']: robot_state.front_pivot_position,
+        config['motor_ids']['pivots']['REAR_PIVOT']: robot_state.rear_pivot_position
     }
     
     # Sync write the goal positions for the pivots
     dynamixel.set_position_group('Pivot_Group', pivot_positions)
 
     # Logging
-    logging.info(f"Front pivot angle set to {robot_state.front_pivot_angle} degrees (ticks: {front_pivot_position})")
-    logging.info(f"Rear pivot angle set to {robot_state.rear_pivot_angle} degrees (ticks: {rear_pivot_position})")
+    logging.info(f"Front pivot angle set to {robot_state.front_pivot_angle} degrees (ticks: {robot_state.front_pivot_position})")
+    logging.info(f"Rear pivot angle set to {robot_state.rear_pivot_angle} degrees (ticks: {robot_state.rear_pivot_position})")
 
 # Define the initialization for each gait (for whegs only, pivots are disabled)
 def gait_init_1(dynamixel):
