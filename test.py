@@ -347,6 +347,7 @@ def test_set_drive_mode_group(controller, group_name, reverse_direction):
         drive_mode_value = 1 if reverse_direction else 0
         for motor_id, data in motor_data.items():
             current_drive_mode = data.get('drive_mode', None)
+            logging.debug(f"Motor {motor_id} current drive mode read from bulk read: {current_drive_mode}")
             if current_drive_mode != drive_mode_value:
                 logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
             else:
@@ -370,6 +371,7 @@ def test_increment_motor_position_by_degrees(controller, group_name, increment_d
             current_position = data.get('present_position')
             if current_position is None:
                 logging.error(f"No position data found for motor {motor_id}")
+                logging.debug(f"Raw data received for motor {motor_id}: {data}")
                 continue
 
             current_position_degrees = controller.position_to_degrees(current_position)
@@ -382,6 +384,7 @@ def test_increment_motor_position_by_degrees(controller, group_name, increment_d
         logging.info(f"Motor positions for group '{group_name}' incremented by {increment_degrees} degrees.")
     except Exception as e:
         logging.error(f"Failed to increment motor position for group {group_name}: {e}")
+
 
 def test_set_position_limits_group(controller, group_name, min_degrees=None, max_degrees=None):
     logging.debug(f"Test Case: Set position limits for group {group_name}")
