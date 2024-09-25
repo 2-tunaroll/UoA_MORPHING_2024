@@ -135,7 +135,9 @@ control_table: # Control table values for XC330 and XL430 from https://emanual.r
   indirect_data_1:
     address: 224
     length: 1
-
+  status_return_level:
+    address: 68
+    length: 1
 motor_groups: # Motor groups that can be controlled with sync and bulk write
   Pivot_Group: 
     - FRONT_PIVOT
