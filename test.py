@@ -156,5 +156,79 @@ def test_dynamixel_controller():
     except Exception as e:
         logging.error(f"Bulk read (velocity) test failed: {e}")
 
+    try:
+        # Step 1: Set drive mode for right-side motors to reverse direction
+        logging.debug("Test Case: Set drive mode for right-side motors to reverse")
+        controller.set_drive_mode_group('Right_Side', reverse_direction=True)
+        
+        # Step 2: Read the drive mode to confirm it was set correctly
+        logging.debug("Test Case: Bulk Read - Get current drive modes for right-side motors")
+        motor_ids = controller.motor_groups['Right_Side']
+        motor_data = controller.bulk_read_group(motor_ids, ['drive_mode'])
+        
+        if motor_data is None:
+            logging.error("Bulk read (drive mode) failed: No data returned")
+        else:
+            for motor_id, data in motor_data.items():
+                drive_mode = data.get('drive_mode', None)
+                if drive_mode == 1:
+                    logging.info(f"Motor {motor_id} is set to reverse direction.")
+                else:
+                    logging.error(f"Motor {motor_id} drive mode is not correctly set to reverse.")
+
+        # Step 3: Change the operating mode (e.g., to velocity control)
+        logging.debug("Test Case: Switch operating mode to velocity for right-side motors")
+        controller.set_operating_mode_group('Right_Side', 'velocity')
+
+        # Step 4: Read the drive mode again to check if it was reset
+        logging.debug("Test Case: Bulk Read - Verify drive mode after switching control mode")
+        motor_data = controller.bulk_read_group(motor_ids, ['drive_mode'])
+
+        if motor_data is None:
+            logging.error("Bulk read (drive mode) failed: No data returned")
+        else:
+            for motor_id, data in motor_data.items():
+                drive_mode = data.get('drive_mode', None)
+                if drive_mode == 1:
+                    logging.info(f"Motor {motor_id} drive mode (reverse) persisted after switching control mode.")
+                else:
+                    logging.error(f"Motor {motor_id} drive mode was reset after switching control mode.")
+
+        # Step 5: Reset the drive mode back to normal (if needed)
+        logging.debug("Test Case: Reset drive mode for right-side motors to normal")
+        controller.set_drive_mode_group('Right_Side', reverse_direction=False)
+
+        logging.info("Test completed successfully.")
+
+    except Exception as e:
+        logging.error(f"Test for setting drive mode failed: {e}")
+
+    return controller
+
+def test_increment_motor_position(controller):
+    """
+    Test to increment motor positions by a specified number of degrees in extended position mode.
+    """
+    try:
+        logging.debug("Test Case: Increment motor positions by 90 degrees")
+
+        # Increment the motor positions by 90 degrees
+        controller.increment_motor_position_by_degrees('Wheg_Group', 90)
+
+        # Verify the positions were incremented correctly
+        motor_ids = controller.motor_groups['Wheg_Group']
+        motor_data = controller.bulk_read_group(motor_ids, ['present_position'])
+        
+        if motor_data is None:
+            logging.error("Bulk read (positions) failed: No data returned")
+        else:
+            for motor_id, data in motor_data.items():
+                position_degrees = controller.position_to_degrees(data.get('present_position', 0))
+                logging.info(f"Motor {motor_id} Position after increment (Degrees): {position_degrees}")
+
+    except Exception as e:
+        logging.error(f"Increment motor position test failed: {e}")
+
 if __name__ == "__main__":
-    test_dynamixel_controller()
+    controller = test_dynamixel_controller()
+    test_increment_motor_position(controller)
