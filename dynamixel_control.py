@@ -180,14 +180,34 @@ class DynamixelController:
         # Clear the parameters after the sync write
         sync_write.clearParam()
 
-    def bulk_read_group(self, motor_ids, parameters):
+    def bulk_read_group(self, group_name_or_ids, parameters):
         """
         Bulk read command to read multiple parameters from multiple motors.
+        Accepts either a motor group name (defined in config) or a list of motor IDs.
 
-        :param motor_ids: List of motor IDs to read from.
+        :param group_name_or_ids: Either the name of a motor group (from the config) or a list of motor IDs to read from.
         :param parameters: List of parameters to read (e.g., ['present_position', 'present_velocity']).
         :return: Dictionary where keys are motor_ids and values are dictionaries of parameter data.
         """
+        # Check if the input is a group name, resolve it to motor IDs if it is
+        if isinstance(group_name_or_ids, str):
+            group_names = self.motor_groups.get(group_name_or_ids, [])
+            if not group_names:
+                logging.error(f"Motor group '{group_name_or_ids}' not found in config.")
+                raise Exception(f"Motor group '{group_name_or_ids}' not found in config.")
+            
+            # Resolve motor IDs from logical names
+            motor_ids = [self.motor_ids[name] for name in group_names if name in self.motor_ids]
+            if not motor_ids:
+                logging.error(f"No valid motor IDs found for group '{group_name_or_ids}'.")
+                raise Exception(f"No valid motor IDs found for group '{group_name_or_ids}'.")
+        else:
+            motor_ids = group_name_or_ids
+
+        if not motor_ids:
+            logging.error("No motor IDs provided for bulk read.")
+            raise Exception("No motor IDs provided for bulk read.")
+
         bulk_read = GroupBulkRead(self.port_handler, self.packet_handler)
 
         for motor_id in motor_ids:

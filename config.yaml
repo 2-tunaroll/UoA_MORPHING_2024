@@ -24,8 +24,6 @@ wheg_parameters:
 
 pivot_parameters:
   pivot_step: 5  # Step size for D-pad pivot control in degrees
-  max_angle: 270  # Maximum pivot angle
-  min_angle: 90  # Minimum pivot angle
   initial_front_angle: 180  # Starting angle for the front pivot
   initial_rear_angle: 180   # Starting angle for the rear pivot
 
@@ -56,8 +54,10 @@ hard_velocity_limit: 100  # The maximum velocity limit for any motor
 hard_profile_velocity_limit: 100  # The maximum profile velocity limit for any motor
 
 position_limits:
-  min_degrees: 90
-  max_degrees: 270
+  Hinges:
+    min_degrees: 90
+    max_degrees: 270
+  Whegs:
 
 control_table: # Control table values for XC330 and XL430 from https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/
   torque_enable:
