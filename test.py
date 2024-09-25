@@ -431,7 +431,7 @@ def test_pivot_motors(dynamixel):
         7: dynamixel.degrees_to_position(90),
         8: dynamixel.degrees_to_position(90)
     }
-    dynamixel.set_position_group('Pivot_Group', pivot_positions)
+    dynamixel.set_position_group('Pivot_Group', 165)
 
 def test_wheg_motors(dynamixel):
     dynamixel.torque_on_group('Wheg_Group')
