@@ -444,30 +444,21 @@ class DynamixelController:
 
     def set_drive_mode_group(self, group_name, reverse_direction=False):
         """
-        Set the drive mode for a group of motors.
-        
-        :param self: The motor controller instance.
-        :param group_name: The motor group to modify (e.g., 'Right_Side').
-        :param reverse_direction: Set to True to reverse direction, False for normal.
+        Set the drive mode for a group of motors to reverse or normal direction.
+        :param group_name: The name of the motor group (from config).
+        :param reverse_direction: Boolean, True to reverse the drive mode.
         """
-        try:
-            # Define the drive mode value (Bit 0)
-            drive_mode_value = 1 if reverse_direction else 0
+        motor_ids = self.motor_groups.get(group_name, [])
+        if not motor_ids:
+            logging.warning(f"No motors found for group '{group_name}'")
+            return
 
-            # Get the motor IDs for the group
-            if group_name not in self.motor_groups:
-                logging.error(f"Motor group {group_name} not found")
-                return
+        drive_mode_value = 1 if reverse_direction else 0  # 1 is reverse, 0 is normal
 
-            # Set drive mode for each motor in the group
-            drive_modes = {motor_id: drive_mode_value for motor_id in self.motor_groups[group_name]}
-            
-            # Sync write to set drive mode
-            self.sync_write_group(group_name, 'drive_mode', drive_modes)
-            logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
-            
-        except Exception as e:
-            logging.error(f"Failed to set drive mode for group {group_name}: {e}")
+        # Sync write drive mode for all motors in the group
+        param_dict = {motor_id: drive_mode_value for motor_id in motor_ids}
+        self.sync_write_group(group_name, 'drive_mode', param_dict)
+        logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
 
     def increment_motor_position_by_degrees(self, group_name, increment_degrees):
         """
