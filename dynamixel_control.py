@@ -25,6 +25,7 @@ class DynamixelController:
         # Initialize SDK handlers
         self.port_handler = PortHandler(self.device_name)
         self.packet_handler = PacketHandler(protocol_version)
+        self.protocol = protocol_version
 
         # Open the port and set the baudrate
         self.open_port()
@@ -194,7 +195,7 @@ class DynamixelController:
             logging.warning(f"No motors found for group '{group_name}'")
             return None
 
-        bulk_read = GroupBulkRead(self.port_handler, self.packet_handler)
+        bulk_read = GroupBulkRead(self.port_handler, self.protocol)
 
         # Add parameters for each motor in the group
         for motor_id in motor_ids:
