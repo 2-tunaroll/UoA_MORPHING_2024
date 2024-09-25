@@ -359,27 +359,26 @@ def test_increment_motor_position_by_degrees(controller, group_name, increment_d
     logging.debug(f"Test Case: Increment motor position for group {group_name} by {increment_degrees} degrees")
 
     try:
-        # Bulk read current positions
+        # Bulk read current positions (which returns position in degrees)
         motor_data = controller.bulk_read_group(group_name, ['present_position'])
         if motor_data is None:
             logging.error(f"Failed to read motor positions for group '{group_name}'")
             return
 
-        # Create a dictionary for new positions
+        # Create a dictionary for new positions in degrees
         new_positions_dict = {}
         for motor_id, data in motor_data.items():
-            current_position = data.get('present_position')
-            if current_position is None:
+            current_position_degrees = data.get('position_degrees')
+            if current_position_degrees is None:
                 logging.error(f"No position data found for motor {motor_id}")
                 logging.debug(f"Raw data received for motor {motor_id}: {data}")
                 continue
 
-            current_position_degrees = controller.position_to_degrees(current_position)
             new_position_degrees = current_position_degrees + increment_degrees
             new_positions_dict[motor_id] = new_position_degrees
 
         # Call the controller function to write the new positions
-        controller.increment_motor_position_by_degrees(group_name, new_positions_dict)
+        controller.set_position_group(group_name, new_positions_dict)
 
         logging.info(f"Motor positions for group '{group_name}' incremented by {increment_degrees} degrees.")
     except Exception as e:

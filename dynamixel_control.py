@@ -461,29 +461,43 @@ class DynamixelController:
             logging.error(f"Failed to set velocities for group {group_name}: {e}")
 
     def set_drive_mode_group(self, group_name, reverse_direction=False):
-        """
-        Set the drive mode for a group of motors to reverse or normal direction.
-        No bulk read for validation is done here; verification is expected to be handled externally.
-        
-        :param group_name: The name of the motor group (from config).
-        :param reverse_direction: Boolean, True to reverse the drive mode.
-        """
         motor_ids = self.motor_groups.get(group_name, [])
         if not motor_ids:
             logging.warning(f"No motors found for group '{group_name}'")
             return
 
-        drive_mode_value = 1 if reverse_direction else 0  # 1 is reverse, 0 is normal
+        drive_mode_value = 1 if reverse_direction else 0
 
-        # Sync write drive mode for all motors in the group
+        # Disable torque before setting drive mode
+        self.torque_off_group(group_name)
+
+        # Sync write drive mode for all motors
         param_dict = {motor_id: drive_mode_value for motor_id in motor_ids}
-        logging.debug(f"Writing drive mode value: {drive_mode_value} for motors in group '{group_name}': {motor_ids}")
-
         try:
             self.sync_write_group(group_name, 'drive_mode', param_dict)
             logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
         except Exception as e:
             logging.error(f"Failed to set drive mode for group {group_name}: {e}")
+
+        # Re-enable torque
+        self.torque_on_group(group_name)
+
+        # Verify the drive mode was correctly set
+        try:
+            motor_data = self.bulk_read_group(group_name, ['drive_mode'])
+            if motor_data is None:
+                logging.error(f"Failed to read drive mode for group '{group_name}'")
+                return
+
+            for motor_id, data in motor_data.items():
+                current_drive_mode = data.get('drive_mode', None)
+                logging.debug(f"Motor {motor_id} current drive mode read from bulk read: {current_drive_mode}")
+                if current_drive_mode != drive_mode_value:
+                    logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
+                else:
+                    logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if reverse_direction else 'normal'}")
+        except Exception as e:
+            logging.error(f"Failed to read drive mode for group {group_name}: {e}")
 
     def increment_motor_position_by_degrees(self, group_name, new_positions_dict):
         """
@@ -561,15 +575,3 @@ class DynamixelController:
         self.sync_write_group(group_name, 'baud_rate', baud_rate_params)
 
         logging.info(f"Baud rate set to {baud_rate_value} for group {group_name}")
-
-    def test_baud_rate(controller, group_name):
-        logging.debug(f"Test Case: Test communication with group '{group_name}' at new baud rate")
-        try:
-            # Perform a bulk read to check communication
-            motor_data = controller.bulk_read_group(group_name, ['present_position'])
-            if motor_data is None:
-                logging.error(f"Failed to communicate with motors in group '{group_name}'")
-            else:
-                logging.info(f"Successfully communicated with motors in group '{group_name}'")
-        except Exception as e:
-            logging.error(f"Test failed for group '{group_name}': {e}")
