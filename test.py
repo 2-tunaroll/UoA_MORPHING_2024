@@ -434,4 +434,5 @@ def test_pivot_motors(dynamixel):
     dynamixel.set_position_group('Pivot_Group', pivot_positions)
 
 if __name__ == "__main__":
-    test_pivot_motors(test_dynamixel_controller())
+    dynamixel = DynamixelController()
+    test_pivot_motors(dynamixel)
