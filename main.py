@@ -163,7 +163,7 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
     }
     print("Pivot positions: ", pivot_positions)
     # Sync write the goal positions for the pivots
-    dynamixel.set_position_group('Pivot_Group', pivot_positions)
+    dynamixel.set_position_group('Pivot_Group', front_pivot_position)
 
     # Logging
     logging.info(f"Front pivot angle set to {robot_state.front_pivot_angle} degrees (ticks: {front_pivot_position})")
