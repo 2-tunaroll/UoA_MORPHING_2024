@@ -446,10 +446,14 @@ def test_wheg_motors(dynamixel):
     dynamixel.torque_on_group('Wheg_Group')
     dynamixel.set_operating_mode_group('Wheg_Group', 'position')
     pivot_positions = {
-        7: dynamixel.degrees_to_position(90),
-        8: dynamixel.degrees_to_position(90)
+        1: dynamixel.degrees_to_position(90),
+        2: dynamixel.degrees_to_position(90),
+        3: dynamixel.degrees_to_position(90),
+        4: dynamixel.degrees_to_position(90),
+        5: dynamixel.degrees_to_position(90),
+        6: dynamixel.degrees_to_position(90)
     }
-    dynamixel.set_position_group('Wheg_Group', 90)
+    dynamixel.set_position_group('Wheg_Group', pivot_positions)
 
 if __name__ == "__main__":
     dynamixel = DynamixelController()
