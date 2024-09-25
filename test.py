@@ -424,5 +424,14 @@ def run_all_tests():
     except Exception as e:
         logging.error(f"Test execution failed: {e}")
 
+def test_pivot_motors(dynamixel):
+    dynamixel.torque_on_group('Pivot_Group')
+    dynamixel.set_operating_mode_group('Pivot_Group', 'position')
+    pivot_positions = {
+        7: dynamixel.degrees_to_position(90),
+        8: dynamixel.degrees_to_position(90)
+    }
+    dynamixel.set_position_group('Pivot_Group', pivot_positions)
+
 if __name__ == "__main__":
-    run_all_tests()
+    test_pivot_motors(test_dynamixel_controller())

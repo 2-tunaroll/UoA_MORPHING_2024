@@ -2,7 +2,7 @@
 logging:
   log_directory: "Logs"
   log_level_file: "DEBUG"  # File logging level
-  log_level_console: "WARNING"  # Console logging level
+  log_level_console: "INFO"  # Console logging level
 
 motor_ids:
   whegs:
