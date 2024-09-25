@@ -149,7 +149,12 @@ class DynamixelController:
         # Prepare sync write data for each motor
         for motor_id in motor_ids:
             param = param_dict.get(motor_id)
+
             if param is not None:
+                # Convert floats to integers if needed
+                if isinstance(param, float):
+                    param = int(param)
+
                 # Convert the value to the appropriate byte format (little endian)
                 if length == 1:
                     param_data = [DXL_LOBYTE(param)]
