@@ -255,10 +255,11 @@ def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None):
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
 
-# Emergency stop function (whegs only)
+# Emergency stop function
 def emergency_stop(dynamixel):
     logging.warning("Emergency stop activated")
-    set_wheg_velocity(dynamixel, WHEGS.values(), 0)  # Stop all wheg motors
+    dynamixel.set_group_velocity('All_Motors', 0)  # Stop all motors
+
 
 def main():
     try:
@@ -281,11 +282,12 @@ def main():
         emergency_stop_activated = False
         report_timer = time.time()
 
+        # Set the right side whegs to reverse
+        dynamixel.set_drive_mode_group('Right_Whegs', True)
+
         # Main loop
         while True:
-            start_time = time.time()  # Track time for position reporting
             button_states = ps4_controller.get_button_input()
-            logging.debug(f"Button states: {button_states}")
 
             # Check for controller disconnection
             if button_states is None:
@@ -303,7 +305,7 @@ def main():
                 emergency_stop_activated = False
                 logging.info("Emergency Stop Deactivated. Resuming control...")
 
-            motor_positions = get_motor_positions(dynamixel)
+            motor_positions = dynamixel.bulk_read_group('All_Motors', 'present_position')
 
             if not emergency_stop_activated:
                 l2_trigger, r2_trigger = ps4_controller.get_trigger_input()
