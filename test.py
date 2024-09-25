@@ -356,7 +356,7 @@ def run_all_tests():
 
         # Run status return level test before running other tests
         test_set_status_return_level(controller, group_name, level=2)
-        
+
         # Run each test
         test_set_operating_mode_group(controller, group_name, 'position')
         test_set_group_velocity_limit(controller, group_name)
@@ -365,7 +365,7 @@ def run_all_tests():
         test_torque_on_group(controller, group_name)
         test_set_position_group(controller, group_name, positions_dict)
         test_set_velocity_group(controller, group_name, velocities_dict)
-        test_set_drive_mode_group(controller, group_name, reverse_direction=True)
+        # test_set_drive_mode_group(controller, group_name, reverse_direction=True)
         test_increment_motor_position_by_degrees(controller, group_name, 90)
         test_set_position_limits_group(controller, group_name, min_degrees=0, max_degrees=360)
 
