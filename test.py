@@ -254,13 +254,6 @@ def test_bulk_read_with_torque_off():
     except Exception as e:
         logging.error(f"Test failed: {e}")
 
-import logging
-from dynamixel_control import DynamixelController
-import time
-
-# Initialize logging for console output
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
-
 def test_set_operating_mode_group(controller, group_name, mode):
     logging.debug(f"Test Case: Set operating mode for group {group_name} to {mode}")
     try:
@@ -317,6 +310,14 @@ def test_set_velocity_group(controller, group_name, velocities_dict):
     except Exception as e:
         logging.error(f"Failed to set velocities for group {group_name}: {e}")
 
+def test_set_status_return_level(controller, group_name, level=2):
+    logging.debug(f"Test Case: Set status return level for group {group_name} to {level}")
+    try:
+        controller.set_status_return_level_group(group_name, level)
+        logging.info(f"Status return level set to {level} for group {group_name}.")
+    except Exception as e:
+        logging.error(f"Failed to set status return level for group {group_name}: {e}")
+
 def test_set_drive_mode_group(controller, group_name, reverse_direction):
     logging.debug(f"Test Case: Set drive mode for group {group_name} with reverse_direction={reverse_direction}")
     try:
@@ -353,6 +354,9 @@ def run_all_tests():
         positions_dict = {1: 180.0, 2: 180.0, 3: 180.0}  # Test with example positions
         velocities_dict = {1: 50, 2: 50, 3: 50}  # Test with example velocities
 
+        # Run status return level test before running other tests
+        test_set_status_return_level(controller, group_name, level=2)
+        
         # Run each test
         test_set_operating_mode_group(controller, group_name, 'position')
         test_set_group_velocity_limit(controller, group_name)

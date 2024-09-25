@@ -179,6 +179,20 @@ class DynamixelController:
         # Clear the parameters after the sync write
         sync_write.clearParam()
 
+    def set_status_return_level_group(self, group_name, level=2):
+        """
+        Set the status return level for a group of motors.
+        :param group_name: The name of the motor group.
+        :param level: The status return level (0: no return, 1: return only for read commands, 2: return for all commands).
+        """
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
+
+        status_return_params = {motor_id: level for motor_id in self.motor_groups[group_name]}
+        self.sync_write_group(group_name, 'status_return_level', status_return_params)
+        logging.info(f"Status return level set to {level} for group {group_name}")
+
     def bulk_read_group(self, group_name, parameters):
         """
         Bulk read command for a group of motors based on the motor group name.
@@ -460,13 +474,19 @@ class DynamixelController:
         logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
 
         # Verify the drive mode was correctly set
-        motor_data = self.bulk_read_group(group_name, ['drive_mode'])
-        for motor_id, data in motor_data.items():
-            current_drive_mode = data.get('drive_mode', None)
-            if current_drive_mode != drive_mode_value:
-                logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
-            else:
-                logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if reverse_direction else 'normal'}")
+        try:
+            motor_data = self.bulk_read_group(group_name, ['drive_mode'])
+            if motor_data is None:
+                logging.error(f"Failed to read drive mode for group '{group_name}'. No data returned.")
+                return
+            for motor_id, data in motor_data.items():
+                current_drive_mode = data.get('drive_mode', None)
+                if current_drive_mode != drive_mode_value:
+                    logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
+                else:
+                    logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if reverse_direction else 'normal'}")
+        except Exception as e:
+            logging.error(f"Error reading drive mode for group '{group_name}': {e}")
 
     def increment_motor_position_by_degrees(self, group_name, increment_degrees):
         """
