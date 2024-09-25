@@ -299,7 +299,7 @@ def main():
                 emergency_stop_activated = False
                 logging.info("Emergency Stop Deactivated. Resuming control...")
 
-            motor_positions = dynamixel.bulk_read_group('All_Motors', 'present_position')
+            motor_positions = dynamixel.bulk_read_group('All_Motors', ['present_position'])
 
             if not emergency_stop_activated:
                 l2_trigger, r2_trigger = ps4_controller.get_trigger_input()
