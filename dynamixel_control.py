@@ -405,7 +405,7 @@ class DynamixelController:
     def set_position_group(self, group_name, positions):
         """
         Set target positions (in degrees) for a group of motors.
-        
+
         :param group_name: The motor group name (from config)
         :param positions: Either a dictionary with motor_id as key and target position in degrees as value,
                         or a single integer to apply the same position to all motors in the group.
@@ -417,23 +417,38 @@ class DynamixelController:
         # Ensure the group is in position control mode
         self.set_operating_mode_group(group_name, 'position')
 
-        # Check if the input is a dictionary (positions for each motor) or a single integer (same position for all motors)
+        motor_ids = self.motor_groups[group_name]
+
+        # Check if the input is a single integer (same position for all motors)
         if isinstance(positions, int):
             # Apply the same position to all motors
-            position_goals = {motor_id: self.degrees_to_position(positions) for motor_id in self.motor_groups[group_name]}
+            position_goals = {motor_id: self.degrees_to_position(positions) for motor_id in motor_ids}
             logging.info(f"Setting position {positions}° for all motors in group '{group_name}'")
+        
+        # If it's a dictionary, handle different positions for each motor
         elif isinstance(positions, dict):
-            # Apply different positions for each motor
-            position_goals = {motor_id: self.degrees_to_position(degrees) for motor_id, degrees in positions.items()}
-            logging.info(f"Setting individual positions for motors in group '{group_name}': {positions}")
+            # Validate and apply positions for each motor in the group
+            position_goals = {}
+            for motor_id in motor_ids:
+                if motor_id in positions:
+                    degrees = positions[motor_id]
+                    position_goals[motor_id] = self.degrees_to_position(degrees)
+                    logging.info(f"Setting motor {motor_id} to {degrees}°")
+                else:
+                    logging.warning(f"No position specified for motor {motor_id} in group '{group_name}', skipping.")
+            
+            # Check if no valid motors were processed
+            if not position_goals:
+                logging.error(f"No valid motor positions found for group '{group_name}'. Check input dictionary.")
+                return
         else:
             logging.error("Invalid type for 'positions'. Must be either an integer or a dictionary.")
             return
 
-        # Try to write the new position values
+        # Perform sync write to set positions
         try:
             self.sync_write_group(group_name, 'goal_position', position_goals)
-            logging.info(f"Target positions set for group '{group_name}'")
+            logging.info(f"Target positions set for group '{group_name}': {position_goals}")
         except Exception as e:
             logging.error(f"Failed to set positions for group '{group_name}': {e}")
 
