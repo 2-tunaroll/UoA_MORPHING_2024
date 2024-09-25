@@ -254,5 +254,119 @@ def test_bulk_read_with_torque_off():
     except Exception as e:
         logging.error(f"Test failed: {e}")
 
+import logging
+from dynamixel_control import DynamixelController
+import time
+
+# Initialize logging for console output
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
+
+def test_set_operating_mode_group(controller, group_name, mode):
+    logging.debug(f"Test Case: Set operating mode for group {group_name} to {mode}")
+    try:
+        controller.set_operating_mode_group(group_name, mode)
+        logging.info(f"Operating mode for group {group_name} set to {mode} successfully.")
+    except Exception as e:
+        logging.error(f"Failed to set operating mode for group {group_name}: {e}")
+
+def test_set_group_velocity_limit(controller, group_name):
+    logging.debug(f"Test Case: Set velocity limit for group {group_name}")
+    try:
+        controller.set_group_velocity_limit(group_name)
+        logging.info(f"Velocity limit for group {group_name} set successfully.")
+    except Exception as e:
+        logging.error(f"Failed to set velocity limit for group {group_name}: {e}")
+
+def test_set_group_profile_velocity(controller, group_name, profile_velocity=None):
+    logging.debug(f"Test Case: Set profile velocity for group {group_name}")
+    try:
+        controller.set_group_profile_velocity(group_name, profile_velocity)
+        logging.info(f"Profile velocity for group {group_name} set to {profile_velocity} successfully.")
+    except Exception as e:
+        logging.error(f"Failed to set profile velocity for group {group_name}: {e}")
+
+def test_torque_off_group(controller, group_name):
+    logging.debug(f"Test Case: Disable torque for group {group_name}")
+    try:
+        controller.torque_off_group(group_name)
+        logging.info(f"Torque disabled for group {group_name}.")
+    except Exception as e:
+        logging.error(f"Failed to disable torque for group {group_name}: {e}")
+
+def test_torque_on_group(controller, group_name):
+    logging.debug(f"Test Case: Enable torque for group {group_name}")
+    try:
+        controller.torque_on_group(group_name)
+        logging.info(f"Torque enabled for group {group_name}.")
+    except Exception as e:
+        logging.error(f"Failed to enable torque for group {group_name}: {e}")
+
+def test_set_position_group(controller, group_name, positions_dict):
+    logging.debug(f"Test Case: Set position for group {group_name}")
+    try:
+        controller.set_position_group(group_name, positions_dict)
+        logging.info(f"Positions for group {group_name} set successfully: {positions_dict}")
+    except Exception as e:
+        logging.error(f"Failed to set positions for group {group_name}: {e}")
+
+def test_set_velocity_group(controller, group_name, velocities_dict):
+    logging.debug(f"Test Case: Set velocity for group {group_name}")
+    try:
+        controller.set_velocity_group(group_name, velocities_dict)
+        logging.info(f"Velocities for group {group_name} set successfully: {velocities_dict}")
+    except Exception as e:
+        logging.error(f"Failed to set velocities for group {group_name}: {e}")
+
+def test_set_drive_mode_group(controller, group_name, reverse_direction):
+    logging.debug(f"Test Case: Set drive mode for group {group_name} with reverse_direction={reverse_direction}")
+    try:
+        controller.set_drive_mode_group(group_name, reverse_direction)
+        logging.info(f"Drive mode for group {group_name} set to reverse_direction={reverse_direction} successfully.")
+    except Exception as e:
+        logging.error(f"Failed to set drive mode for group {group_name}: {e}")
+
+def test_increment_motor_position_by_degrees(controller, group_name, increment_degrees):
+    logging.debug(f"Test Case: Increment motor position for group {group_name} by {increment_degrees} degrees")
+    try:
+        controller.increment_motor_position_by_degrees(group_name, increment_degrees)
+        logging.info(f"Motor positions for group {group_name} incremented by {increment_degrees} degrees.")
+    except Exception as e:
+        logging.error(f"Failed to increment motor position for group {group_name}: {e}")
+
+def test_set_position_limits_group(controller, group_name, min_degrees=None, max_degrees=None):
+    logging.debug(f"Test Case: Set position limits for group {group_name}")
+    try:
+        controller.set_position_limits_group(group_name, min_degrees, max_degrees)
+        logging.info(f"Position limits set for group {group_name}: min={min_degrees}, max={max_degrees}")
+    except Exception as e:
+        logging.error(f"Failed to set position limits for group {group_name}: {e}")
+
+def run_all_tests():
+    try:
+        # Initialize the DynamixelController
+        logging.debug("Test Case: Initialize DynamixelController")
+        controller = DynamixelController(config_path='config.yaml')
+        logging.info("DynamixelController initialized successfully.")
+
+        # Define motor group for testing
+        group_name = 'Wheg_Group'
+        positions_dict = {1: 180.0, 2: 180.0, 3: 180.0}  # Test with example positions
+        velocities_dict = {1: 50, 2: 50, 3: 50}  # Test with example velocities
+
+        # Run each test
+        test_set_operating_mode_group(controller, group_name, 'position')
+        test_set_group_velocity_limit(controller, group_name)
+        test_set_group_profile_velocity(controller, group_name, 60)
+        test_torque_off_group(controller, group_name)
+        test_torque_on_group(controller, group_name)
+        test_set_position_group(controller, group_name, positions_dict)
+        test_set_velocity_group(controller, group_name, velocities_dict)
+        test_set_drive_mode_group(controller, group_name, reverse_direction=True)
+        test_increment_motor_position_by_degrees(controller, group_name, 90)
+        test_set_position_limits_group(controller, group_name, min_degrees=0, max_degrees=360)
+
+    except Exception as e:
+        logging.error(f"Test execution failed: {e}")
+
 if __name__ == "__main__":
-    test_bulk_read_with_torque_off()
+    run_all_tests()
