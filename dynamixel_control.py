@@ -209,6 +209,8 @@ class DynamixelController:
 
         bulk_read = GroupBulkRead(self.port_handler, self.packet_handler)
 
+        logging.debug(f"Preparing bulk read for motors: {motor_ids}, Parameters: {parameters}")
+
         # Add parameters for each motor in the group
         for motor_id in motor_ids:
             for parameter_name in parameters:
@@ -220,6 +222,8 @@ class DynamixelController:
                 # Get the control table address and length for the parameter
                 address = control_item['address']
                 length = control_item['length']
+
+                logging.debug(f"Adding motor {motor_id}, Address: {address}, Length: {length} to bulk read")
 
                 if not bulk_read.addParam(motor_id, address, length):
                     logging.error(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
@@ -255,6 +259,7 @@ class DynamixelController:
 
         bulk_read.clearParam()
 
+        logging.debug(f"Bulk read successful for group '{group_name}'")
         return motor_data
 
     def set_operating_mode_group(self, group_name, mode):
@@ -470,11 +475,18 @@ class DynamixelController:
 
         # Sync write drive mode for all motors in the group
         param_dict = {motor_id: drive_mode_value for motor_id in motor_ids}
-        self.sync_write_group(group_name, 'drive_mode', param_dict)
-        logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
+        logging.debug(f"Writing drive mode value: {drive_mode_value} for motors in group '{group_name}': {motor_ids}")
+
+        try:
+            self.sync_write_group(group_name, 'drive_mode', param_dict)
+            logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
+        except Exception as e:
+            logging.error(f"Failed to set drive mode for group {group_name}: {e}")
+            return
 
         # Verify the drive mode was correctly set
         try:
+            logging.debug(f"Performing bulk read to verify drive mode for group '{group_name}'")
             motor_data = self.bulk_read_group(group_name, ['drive_mode'])
             if motor_data is None:
                 logging.error(f"Failed to read drive mode for group '{group_name}'. No data returned.")
