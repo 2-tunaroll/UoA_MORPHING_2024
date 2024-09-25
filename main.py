@@ -193,7 +193,7 @@ def gait_init_4(dynamixel):
 
     
 # Define multiple gaits (for whegs only, pivots are disabled)
-def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
+def gait_1(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
     logging.debug("Executing Gait 1")
 
     if wheg_rpm != 0:
@@ -207,7 +207,7 @@ def gait_1(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input)
 
-def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
+def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
     logging.debug("Executing Gait 2")
     
     if wheg_rpm != 0:
@@ -221,7 +221,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
 
-def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
+def gait_3(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
     logging.debug("Executing Gait 3")
 
     if wheg_rpm != 0:
@@ -235,7 +235,7 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
 
-def gait_4(dynamixel, wheg_rpm, button_states, dpad_input=None, robot_state):
+def gait_4(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
     logging.debug("Executing Gait 4")
     
     if wheg_rpm != 0:
