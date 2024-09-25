@@ -138,8 +138,8 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
     """
     # Extract pivot parameters from config
     pivot_step = config['pivot_parameters']['pivot_step']
-    pivot_min_angle = config['position_limits']['Hinges']['min_angle']
-    pivot_max_angle = config['position_limits']['Hinges']['max_angle']
+    pivot_min_angle = config['position_limits']['Hinges']['min_degrees']
+    pivot_max_angle = config['position_limits']['Hinges']['max_degrees']
 
     # Adjust front and rear pivots based on D-pad input
     if dpad_inputs['dpad_down']:
