@@ -320,17 +320,54 @@ def test_set_status_return_level(controller, group_name, level=2):
 
 def test_set_drive_mode_group(controller, group_name, reverse_direction):
     logging.debug(f"Test Case: Set drive mode for group {group_name} with reverse_direction={reverse_direction}")
+
     try:
+        # Set the drive mode
         controller.set_drive_mode_group(group_name, reverse_direction)
-        logging.info(f"Drive mode for group {group_name} set to reverse_direction={reverse_direction} successfully.")
+
+        # Bulk read the drive mode to verify
+        motor_data = controller.bulk_read_group(group_name, ['drive_mode'])
+        if motor_data is None:
+            logging.error(f"Failed to read drive mode for group '{group_name}'")
+            return
+
+        # Verify the drive mode
+        drive_mode_value = 1 if reverse_direction else 0
+        for motor_id, data in motor_data.items():
+            current_drive_mode = data.get('drive_mode', None)
+            if current_drive_mode != drive_mode_value:
+                logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
+            else:
+                logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if reverse_direction else 'normal'}")
     except Exception as e:
         logging.error(f"Failed to set drive mode for group {group_name}: {e}")
 
 def test_increment_motor_position_by_degrees(controller, group_name, increment_degrees):
     logging.debug(f"Test Case: Increment motor position for group {group_name} by {increment_degrees} degrees")
+
     try:
-        controller.increment_motor_position_by_degrees(group_name, increment_degrees)
-        logging.info(f"Motor positions for group {group_name} incremented by {increment_degrees} degrees.")
+        # Bulk read current positions
+        motor_data = controller.bulk_read_group(group_name, ['present_position'])
+        if motor_data is None:
+            logging.error(f"Failed to read motor positions for group '{group_name}'")
+            return
+
+        # Create a dictionary for new positions
+        new_positions_dict = {}
+        for motor_id, data in motor_data.items():
+            current_position = data.get('present_position')
+            if current_position is None:
+                logging.error(f"No position data found for motor {motor_id}")
+                continue
+
+            current_position_degrees = controller.position_to_degrees(current_position)
+            new_position_degrees = current_position_degrees + increment_degrees
+            new_positions_dict[motor_id] = new_position_degrees
+
+        # Call the controller function to write the new positions
+        controller.increment_motor_position_by_degrees(group_name, new_positions_dict)
+
+        logging.info(f"Motor positions for group '{group_name}' incremented by {increment_degrees} degrees.")
     except Exception as e:
         logging.error(f"Failed to increment motor position for group {group_name}: {e}")
 

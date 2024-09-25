@@ -463,6 +463,8 @@ class DynamixelController:
     def set_drive_mode_group(self, group_name, reverse_direction=False):
         """
         Set the drive mode for a group of motors to reverse or normal direction.
+        No bulk read for validation is done here; verification is expected to be handled externally.
+        
         :param group_name: The name of the motor group (from config).
         :param reverse_direction: Boolean, True to reverse the drive mode.
         """
@@ -482,74 +484,29 @@ class DynamixelController:
             logging.info(f"Drive mode set for group {group_name} with reverse_direction={reverse_direction}")
         except Exception as e:
             logging.error(f"Failed to set drive mode for group {group_name}: {e}")
-            return
 
-        # Verify the drive mode was correctly set
-        try:
-            logging.debug(f"Performing bulk read to verify drive mode for group '{group_name}'")
-            motor_data = self.bulk_read_group(group_name, ['drive_mode'])
-            if motor_data is None:
-                logging.error(f"Failed to read drive mode for group '{group_name}'. No data returned.")
-                return
-            for motor_id, data in motor_data.items():
-                current_drive_mode = data.get('drive_mode', None)
-                if current_drive_mode != drive_mode_value:
-                    logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
-                else:
-                    logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if reverse_direction else 'normal'}")
-        except Exception as e:
-            logging.error(f"Error reading drive mode for group '{group_name}': {e}")
-
-    def increment_motor_position_by_degrees(self, group_name, increment_degrees):
+    def increment_motor_position_by_degrees(self, group_name, new_positions_dict):
         """
         Increment the motor positions for a group of motors by a specified number of degrees.
+        The new_positions_dict is passed directly from the external bulk read operation.
+
         :param group_name: The name of the motor group.
-        :param increment_degrees: The number of degrees to increment the motor position.
+        :param new_positions_dict: A dictionary with motor_id as key and the new target position in degrees as value.
         """
         motor_ids = self.motor_groups.get(group_name, [])
         if not motor_ids:
             logging.warning(f"No motors found for group '{group_name}'")
             return
 
-        # Ensure the motors are in Extended Position Control Mode (mode 4)
-        motor_modes = self.bulk_read_group(group_name, ['operating_mode'])
-        if motor_modes is None:
-            logging.error(f"Failed to read operating modes for group '{group_name}'")
-            return
-
-        for motor_id, data in motor_modes.items():
-            operating_mode = data.get('operating_mode')
-            if operating_mode != 4:  # Mode 4 is Extended Position Control Mode
-                logging.warning(f"Motor {motor_id} is not in Extended Position Control Mode. Setting mode now.")
-                self.set_operating_mode_group(group_name, 'multi_turn')
-                break  # Set mode for the entire group and break
-
-        # Read current positions
-        motor_data = self.bulk_read_group(group_name, ['present_position'])
-        if motor_data is None:
-            logging.error(f"Failed to read motor positions for group '{group_name}'")
-            return
-
-        # Create a dictionary for new positions
-        new_positions = {}
-
-        for motor_id, data in motor_data.items():
-            current_position = data.get('present_position')
-            if current_position is None:
-                logging.error(f"No position data found for motor {motor_id}")
-                continue
-
-            current_position_degrees = self.position_to_degrees(current_position)
-            new_position_degrees = current_position_degrees + increment_degrees
-
-            # Convert back to raw position value
-            new_position_value = self.degrees_to_position(new_position_degrees)
-            new_positions[motor_id] = new_position_value
+        # Convert new positions from degrees to raw position values (0-4095 range)
+        new_position_goals = {motor_id: self.degrees_to_position(degrees) for motor_id, degrees in new_positions_dict.items()}
 
         # Sync write the new positions
-        self.sync_write_group(group_name, 'position_goal', new_positions)
-        logging.info(f"Motor positions for group '{group_name}' incremented by {increment_degrees} degrees")
-
+        try:
+            self.sync_write_group(group_name, 'position_goal', new_position_goals)
+            logging.info(f"Motor positions for group '{group_name}' incremented.")
+        except Exception as e:
+            logging.error(f"Failed to increment motor positions for group '{group_name}': {e}")
 
     def set_position_limits_group(self, group_name, min_degrees=None, max_degrees=None):
         """
