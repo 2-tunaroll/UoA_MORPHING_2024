@@ -159,12 +159,11 @@ def test_dynamixel_controller():
     try:
         # Step 1: Set drive mode for right-side motors to reverse direction
         logging.debug("Test Case: Set drive mode for right-side motors to reverse")
-        controller.set_drive_mode_group('Right_Side', reverse_direction=True)
+        controller.set_drive_mode_group('Right_Whegs', reverse_direction=True)
         
         # Step 2: Read the drive mode to confirm it was set correctly
         logging.debug("Test Case: Bulk Read - Get current drive modes for right-side motors")
-        motor_ids = controller.motor_groups['Right_Side']
-        motor_data = controller.bulk_read_group(motor_ids, ['drive_mode'])
+        motor_data = controller.bulk_read_group('Right_Whegs', ['drive_mode'])
         
         if motor_data is None:
             logging.error("Bulk read (drive mode) failed: No data returned")
@@ -178,11 +177,11 @@ def test_dynamixel_controller():
 
         # Step 3: Change the operating mode (e.g., to velocity control)
         logging.debug("Test Case: Switch operating mode to velocity for right-side motors")
-        controller.set_operating_mode_group('Right_Side', 'velocity')
+        controller.set_operating_mode_group('Right_Whegs', 'velocity')
 
         # Step 4: Read the drive mode again to check if it was reset
         logging.debug("Test Case: Bulk Read - Verify drive mode after switching control mode")
-        motor_data = controller.bulk_read_group(motor_ids, ['drive_mode'])
+        motor_data = controller.bulk_read_group('Right_Side', ['drive_mode'])
 
         if motor_data is None:
             logging.error("Bulk read (drive mode) failed: No data returned")
@@ -196,7 +195,7 @@ def test_dynamixel_controller():
 
         # Step 5: Reset the drive mode back to normal (if needed)
         logging.debug("Test Case: Reset drive mode for right-side motors to normal")
-        controller.set_drive_mode_group('Right_Side', reverse_direction=False)
+        controller.set_drive_mode_group('Right_Whegs', reverse_direction=False)
 
         logging.info("Test completed successfully.")
 
@@ -217,7 +216,7 @@ def test_increment_motor_position(controller):
 
         # Verify the positions were incremented correctly
         motor_ids = controller.motor_groups['Wheg_Group']
-        motor_data = controller.bulk_read_group(motor_ids, ['present_position'])
+        motor_data = controller.bulk_read_group('Right_Whegs', ['present_position'])
         
         if motor_data is None:
             logging.error("Bulk read (positions) failed: No data returned")
