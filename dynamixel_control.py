@@ -180,43 +180,30 @@ class DynamixelController:
         # Clear the parameters after the sync write
         sync_write.clearParam()
 
-    def bulk_read_group(self, group_name_or_ids, parameters):
+    def bulk_read_group(self, group_name, parameters):
         """
-        Bulk read command to read multiple parameters from multiple motors.
-        Accepts either a motor group name (defined in config) or a list of motor IDs.
-
-        :param group_name_or_ids: Either the name of a motor group (from the config) or a list of motor IDs to read from.
+        Bulk read command for a group of motors based on the motor group name.
+        
+        :param group_name: The name of the motor group (from config) to which the command will be sent.
         :param parameters: List of parameters to read (e.g., ['present_position', 'present_velocity']).
         :return: Dictionary where keys are motor_ids and values are dictionaries of parameter data.
         """
-        # Check if the input is a group name, resolve it to motor IDs if it is
-        if isinstance(group_name_or_ids, str):
-            group_names = self.motor_groups.get(group_name_or_ids, [])
-            if not group_names:
-                logging.error(f"Motor group '{group_name_or_ids}' not found in config.")
-                raise Exception(f"Motor group '{group_name_or_ids}' not found in config.")
-            
-            # Resolve motor IDs from logical names
-            motor_ids = [self.motor_ids[name] for name in group_names if name in self.motor_ids]
-            if not motor_ids:
-                logging.error(f"No valid motor IDs found for group '{group_name_or_ids}'.")
-                raise Exception(f"No valid motor IDs found for group '{group_name_or_ids}'.")
-        else:
-            motor_ids = group_name_or_ids
-
+        # Retrieve the motor IDs for the given group name
+        motor_ids = self.motor_groups.get(group_name, [])
         if not motor_ids:
-            logging.error("No motor IDs provided for bulk read.")
-            raise Exception("No motor IDs provided for bulk read.")
+            logging.warning(f"No motors found for group '{group_name}'")
+            return None
 
         bulk_read = GroupBulkRead(self.port_handler, self.packet_handler)
 
+        # Add parameters for each motor in the group
         for motor_id in motor_ids:
             for parameter_name in parameters:
                 control_item = self.control_table.get(parameter_name)
                 if not control_item:
                     logging.error(f"Control table entry '{parameter_name}' not found.")
                     raise Exception(f"Control table entry '{parameter_name}' not found.")
-                
+
                 # Get the control table address and length for the parameter
                 address = control_item['address']
                 length = control_item['length']
@@ -225,25 +212,27 @@ class DynamixelController:
                     logging.error(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
                     raise Exception(f"Failed to add motor {motor_id} for parameter '{parameter_name}'.")
 
+        # Execute the bulk read command
         result = bulk_read.txRxPacket()
         if result != COMM_SUCCESS:
             logging.error(f"Bulk read failed with error: {self.packet_handler.getTxRxResult(result)}")
             return None
 
+        # Retrieve the motor data
         motor_data = {}
         for motor_id in motor_ids:
             motor_data[motor_id] = {}
             for parameter_name in parameters:
                 control_item = self.control_table.get(parameter_name)
                 length = control_item['length']
-                
+
                 data = bulk_read.getData(motor_id, control_item['address'], length)
 
                 if data is None:
                     logging.error(f"No data received for motor {motor_id}.")
                     motor_data[motor_id][parameter_name] = None
                 else:
-                    # Handle position data conversion to degrees
+                    # Handle specific data conversion for present_position to degrees
                     if parameter_name == 'present_position':
                         position_value = data
                         degrees = self.position_to_degrees(position_value)
