@@ -545,3 +545,31 @@ class DynamixelController:
         except Exception as e:
             logging.error(f"Failed to set position limits for group {group_name}: {e}")
 
+    def set_motor_baud_rate(self, group_name, baud_rate_value):
+        """
+        Set the baud rate for a group of motors.
+        :param group_name: The name of the motor group (from config).
+        :param baud_rate_value: The baud rate value to set (e.g., 3 for 1 Mbps).
+        """
+        motor_ids = self.motor_groups.get(group_name, [])
+        if not motor_ids:
+            logging.warning(f"No motors found for group '{group_name}'")
+            return
+
+        # Sync write baud rate for all motors in the group
+        baud_rate_params = {motor_id: baud_rate_value for motor_id in motor_ids}
+        self.sync_write_group(group_name, 'baud_rate', baud_rate_params)
+
+        logging.info(f"Baud rate set to {baud_rate_value} for group {group_name}")
+
+    def test_baud_rate(controller, group_name):
+        logging.debug(f"Test Case: Test communication with group '{group_name}' at new baud rate")
+        try:
+            # Perform a bulk read to check communication
+            motor_data = controller.bulk_read_group(group_name, ['present_position'])
+            if motor_data is None:
+                logging.error(f"Failed to communicate with motors in group '{group_name}'")
+            else:
+                logging.info(f"Successfully communicated with motors in group '{group_name}'")
+        except Exception as e:
+            logging.error(f"Test failed for group '{group_name}': {e}")

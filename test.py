@@ -318,6 +318,18 @@ def test_set_status_return_level(controller, group_name, level=2):
     except Exception as e:
         logging.error(f"Failed to set status return level for group {group_name}: {e}")
 
+def test_baud_rate(controller, group_name):
+    logging.debug(f"Test Case: Test communication with group '{group_name}' at new baud rate")
+    try:
+        # Perform a bulk read to check communication
+        motor_data = controller.bulk_read_group(group_name, ['present_position'])
+        if motor_data is None:
+            logging.error(f"Failed to communicate with motors in group '{group_name}'")
+        else:
+            logging.info(f"Successfully communicated with motors in group '{group_name}'")
+    except Exception as e:
+        logging.error(f"Test failed for group '{group_name}': {e}")
+
 def test_set_drive_mode_group(controller, group_name, reverse_direction):
     logging.debug(f"Test Case: Set drive mode for group {group_name} with reverse_direction={reverse_direction}")
 
@@ -395,6 +407,7 @@ def run_all_tests():
         test_set_status_return_level(controller, group_name, level=2)
 
         # Run each test
+        test_baud_rate(controller, 'All_Motors')
         test_set_operating_mode_group(controller, group_name, 'position')
         test_set_group_velocity_limit(controller, group_name)
         test_set_group_profile_velocity(controller, group_name, 60)

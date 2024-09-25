@@ -29,7 +29,7 @@ pivot_parameters:
 
 controller:
   device_name: "/dev/ttyACM0"
-  baudrate: 57600
+  baudrate: 115200
 
 gaits:
   available_gaits:
