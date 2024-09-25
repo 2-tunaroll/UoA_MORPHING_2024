@@ -115,8 +115,75 @@ def test_increment_motor_position(controller):
     except Exception as e:
         logging.error(f"Increment motor position test failed: {e}")
 
+def test_bulk_read():
+    """
+    Test the bulk read functionality by reading present positions, velocities, and operating modes of motors.
+    """
+    try:
+        # Initialize the DynamixelController with the config file path
+        logging.debug("Test Case: Initialize DynamixelController")
+        controller = DynamixelController(config_path='config.yaml')
+        logging.info("DynamixelController initialized successfully.")
+
+        # Open port and set baudrate
+        logging.debug("Test Case: Open port and set baudrate")
+        controller.open_port()
+        logging.info(f"Port {controller.device_name} opened with baudrate {controller.baudrate}.")
+        
+        # Define motor groups to be tested
+        test_groups = ['Wheg_Group', 'Pivot_Group', 'Right_Whegs']
+
+        for group in test_groups:
+            logging.debug(f"Test Case: Bulk read for group: {group}")
+            
+            # Test reading present position
+            try:
+                motor_data = controller.bulk_read_group(group, ['present_position'])
+                if motor_data is None:
+                    logging.error(f"Bulk read failed for group '{group}' (present_position)")
+                else:
+                    for motor_id, data in motor_data.items():
+                        position_degrees = data.get('position_degrees', None)
+                        if position_degrees is not None:
+                            logging.info(f"Motor {motor_id} Present Position (Degrees): {position_degrees:.2f}")
+                        else:
+                            logging.error(f"Motor {motor_id}: Failed to read position.")
+            except Exception as e:
+                logging.error(f"Error reading present position for group '{group}': {e}")
+
+            # Test reading present velocity
+            try:
+                motor_data = controller.bulk_read_group(group, ['present_velocity'])
+                if motor_data is None:
+                    logging.error(f"Bulk read failed for group '{group}' (present_velocity)")
+                else:
+                    for motor_id, data in motor_data.items():
+                        velocity = data.get('present_velocity', None)
+                        if velocity is not None:
+                            logging.info(f"Motor {motor_id} Present Velocity: {velocity}")
+                        else:
+                            logging.error(f"Motor {motor_id}: Failed to read velocity.")
+            except Exception as e:
+                logging.error(f"Error reading present velocity for group '{group}': {e}")
+
+            # Test reading operating mode
+            try:
+                motor_data = controller.bulk_read_group(group, ['operating_mode'])
+                if motor_data is None:
+                    logging.error(f"Bulk read failed for group '{group}' (operating_mode)")
+                else:
+                    for motor_id, data in motor_data.items():
+                        mode = data.get('operating_mode', None)
+                        if mode is not None:
+                            logging.info(f"Motor {motor_id} Operating Mode: {mode}")
+                        else:
+                            logging.error(f"Motor {motor_id}: Failed to read operating mode.")
+            except Exception as e:
+                logging.error(f"Error reading operating mode for group '{group}': {e}")
+
+    except Exception as e:
+        logging.error(f"Test failed: {e}")
+
 if __name__ == "__main__":
     # Run the test cases
-    controller = test_dynamixel_controller()
-    if controller:
-        test_increment_motor_position(controller)
+    test_bulk_read()

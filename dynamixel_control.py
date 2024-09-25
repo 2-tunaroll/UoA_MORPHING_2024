@@ -2,9 +2,6 @@
 from dynamixel_sdk import *  # Uses Dynamixel SDK library
 import logging
 import yaml
-
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
-
 class DynamixelController:
     def __init__(self, config_path='config.yaml', device_name=None, baudrate=None, protocol_version=2.0):
         """Initialize the controller with YAML config and setup motor groups."""
@@ -27,7 +24,6 @@ class DynamixelController:
         # Initialize SDK handlers
         self.port_handler = PortHandler(self.device_name)
         self.packet_handler = PacketHandler(protocol_version)
-        self.protocol = protocol_version
 
         # Open the port and set the baudrate
         self.open_port()
@@ -197,7 +193,7 @@ class DynamixelController:
             logging.warning(f"No motors found for group '{group_name}'")
             return None
 
-        bulk_read = GroupBulkRead(self.port_handler, self.protocol)
+        bulk_read = GroupBulkRead(self.port_handler, self.packet_handler)
 
         # Add parameters for each motor in the group
         for motor_id in motor_ids:
