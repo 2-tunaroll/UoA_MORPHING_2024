@@ -415,7 +415,7 @@ def run_all_tests():
         test_torque_on_group(controller, group_name)
         test_set_position_group(controller, group_name, positions_dict)
         test_set_velocity_group(controller, group_name, velocities_dict)
-        # test_set_drive_mode_group(controller, group_name, reverse_direction=True)
+        test_set_drive_mode_group(controller, group_name, reverse_direction=True)
         test_increment_motor_position_by_degrees(controller, group_name, 90)
         test_set_position_limits_group(controller, group_name, min_degrees=0, max_degrees=360)
 
