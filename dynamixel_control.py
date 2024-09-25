@@ -480,6 +480,19 @@ class DynamixelController:
             logging.warning(f"No motors found for group '{group_name}'")
             return
 
+        # Ensure the motors are in Extended Position Control Mode (mode 4)
+        motor_modes = self.bulk_read_group(group_name, ['operating_mode'])
+        if motor_modes is None:
+            logging.error(f"Failed to read operating modes for group '{group_name}'")
+            return
+
+        for motor_id, data in motor_modes.items():
+            operating_mode = data.get('operating_mode')
+            if operating_mode != 4:  # Mode 4 is Extended Position Control Mode
+                logging.warning(f"Motor {motor_id} is not in Extended Position Control Mode. Setting mode now.")
+                self.set_operating_mode_group(group_name, 'multi_turn')
+                break  # Set mode for the entire group and break
+
         # Read current positions
         motor_data = self.bulk_read_group(group_name, ['present_position'])
         if motor_data is None:
@@ -505,6 +518,7 @@ class DynamixelController:
         # Sync write the new positions
         self.sync_write_group(group_name, 'position_goal', new_positions)
         logging.info(f"Motor positions for group '{group_name}' incremented by {increment_degrees} degrees")
+
 
     def set_position_limits_group(self, group_name, min_degrees=None, max_degrees=None):
         """
