@@ -547,9 +547,9 @@ class DynamixelController:
     def increment_group_position(self, group_name, increment_degrees):
         """
         Increment the motor positions for a group of motors by a specified number of degrees.
-
+        
         :param group_name: The name of the motor group.
-        :param increment_degrees: The number of degrees to increment the motor position.
+        :param increment_degrees: The number of degrees to increment the motor position, can be an int for all motors or a dict with motor IDs as keys and increments as values.
         """
         motor_ids = self.motor_groups.get(group_name, [])
         if not motor_ids:
@@ -583,32 +583,61 @@ class DynamixelController:
         # Create a dictionary for new positions
         new_positions = {}
 
-        for motor_id in motor_ids:
-            # Ensure motor data contains present_position for each motor
-            if motor_id not in motor_data or 'present_position' not in motor_data[motor_id]:
-                logging.error(f"No position data found for motor {motor_id}")
-                continue
+        # Handle increment_degrees being either an int or a dict
+        if isinstance(increment_degrees, dict):
+            # Handle per-motor increments from the dictionary
+            for motor_id in motor_ids:
+                # Ensure motor data contains present_position for each motor
+                if motor_id not in motor_data or 'present_position' not in motor_data[motor_id]:
+                    logging.error(f"No position data found for motor {motor_id}")
+                    continue
 
-            # Get the present_position (raw value)
-            current_position = motor_data[motor_id]['present_position']
-            if current_position is None:
-                logging.error(f"No position data found for motor {motor_id}")
-                continue
+                # Get the present_position (raw value)
+                current_position = motor_data[motor_id]['present_position']
+                if current_position is None:
+                    logging.error(f"No position data found for motor {motor_id}")
+                    continue
 
-            # Convert the current position to degrees and calculate new position
-            current_position_degrees = self.position_to_degrees(current_position)
-            new_position_degrees = current_position_degrees + increment_degrees
+                # Get the increment for this specific motor, or use 0 if not found
+                increment = increment_degrees.get(motor_id, 0)
 
-            # Convert back to raw position value
-            new_position_value = self.degrees_to_position(new_position_degrees)
-            new_positions[motor_id] = new_position_value
+                # Convert the current position to degrees and calculate new position
+                current_position_degrees = self.position_to_degrees(current_position)
+                new_position_degrees = current_position_degrees + increment
 
-            logging.debug(f"Motor {motor_id}: Current Position: {current_position_degrees:.2f}°, New Position: {new_position_degrees:.2f}°")
+                # Convert back to raw position value
+                new_position_value = self.degrees_to_position(new_position_degrees)
+                new_positions[motor_id] = new_position_value
+
+                logging.debug(f"Motor {motor_id}: Current Position: {current_position_degrees:.2f}°, New Position: {new_position_degrees:.2f}°")
+        else:
+            # Handle single int increment for all motors
+            for motor_id in motor_ids:
+                # Ensure motor data contains present_position for each motor
+                if motor_id not in motor_data or 'present_position' not in motor_data[motor_id]:
+                    logging.error(f"No position data found for motor {motor_id}")
+                    continue
+
+                # Get the present_position (raw value)
+                current_position = motor_data[motor_id]['present_position']
+                if current_position is None:
+                    logging.error(f"No position data found for motor {motor_id}")
+                    continue
+
+                # Convert the current position to degrees and calculate new position
+                current_position_degrees = self.position_to_degrees(current_position)
+                new_position_degrees = current_position_degrees + increment_degrees
+
+                # Convert back to raw position value
+                new_position_value = self.degrees_to_position(new_position_degrees)
+                new_positions[motor_id] = new_position_value
+
+                logging.debug(f"Motor {motor_id}: Current Position: {current_position_degrees:.2f}°, New Position: {new_position_degrees:.2f}°")
 
         # Sync write the new positions
         try:
             self.sync_write_group(group_name, 'goal_position', new_positions)
-            logging.info(f"Motor positions for group '{group_name}' incremented by {increment_degrees} degrees.")
+            logging.info(f"Motor positions for group '{group_name}' incremented.")
         except Exception as e:
             logging.error(f"Failed to increment motor positions for group '{group_name}': {e}")
 
