@@ -454,7 +454,7 @@ class DynamixelController:
             for motor_id, degrees in positions.items():
                 # Log each conversion for detailed debugging
                 raw_position = self.degrees_to_position(degrees)
-                logging.deubg(f"Setting motor {motor_id} to {degrees}° ({raw_position} ticks)")
+                logging.debug(f"Setting motor {motor_id} to {degrees}° ({raw_position} ticks)")
                 position_goals[motor_id] = raw_position
             logging.debug(f"Setting individual positions for motors in group '{group_name}': {positions}")
         else:
