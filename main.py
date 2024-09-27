@@ -245,7 +245,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
         dynamixel.set_group_profile_velocity('Wheg_Group', velcoities)  # Set velocity based on input
         # Setup dict with the position increment for each wheg
         increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
-        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increments)
+        dynamixel.increment_group_position('Wheg_Group', increments)
         # Wait based on the formula time = Degrees/6*RPM
         time.sleep(robot_state.gait_parameters['gait_2']['slow_ang']/6*wheg_rpm)
         robot_state.odd_even += 1
@@ -374,7 +374,7 @@ def main():
 
     finally:
         # Safely stop all motors
-        dynamixel.set_velocity_group('All_Motors', 0)
+        dynamixel.set_velocity_group('All_Motors', {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0})
         dynamixel.set_position_group('All_Motors', 180)
         ps4_controller.close()
         dynamixel.close()
