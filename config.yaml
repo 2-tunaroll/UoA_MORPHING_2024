@@ -48,6 +48,7 @@ reporting:
 velocity_limits:
   Wheg_Group: 400  # Velocity limit for Wheg_Group
   Pivot_Group: 50 # Velocity limit for Pivot_Group
+  All_Motors: 400
 
 profile_velocities:
   Wheg_Group: 400  # Profile velocity for Wheg_Group
