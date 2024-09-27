@@ -359,6 +359,8 @@ def main():
             if previous_gait != current_gait:
                 logging.info(f"Switching to new gait: {current_gait_index}")
                 gait_init_list[current_gait_index](dynamixel)
+                # Reset the wheg RPM to 0 when switching gaits
+                wheg_rpm = 0
 
             previous_gait = current_gait
             current_gait(dynamixel, wheg_rpm, button_states, dpad_input, robot_state)
