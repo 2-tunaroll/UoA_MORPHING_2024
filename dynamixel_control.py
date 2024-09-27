@@ -269,6 +269,7 @@ class DynamixelController:
         :param group_name: The name of the motor group to set the operating mode for.
         :param mode: The operating mode to set ('position', 'velocity', 'multi_turn').
         """
+        logging.info(f"Setting operating mode '{mode}' for group '{group_name}'")
         OPERATING_MODES = {
             'position': 3,   # Position control mode
             'velocity': 1,   # Velocity control mode
@@ -294,7 +295,7 @@ class DynamixelController:
         operating_mode_params = {motor_id: mode_value for motor_id in self.motor_groups[group_name]}
         self.sync_write_group(group_name, 'operating_mode', operating_mode_params)
 
-        logging.info(f"Operating mode set to '{mode}' for group {group_name}")
+        logging.debug(f"Operating mode set to '{mode}' for group {group_name}")
 
         # Re-enable torque for the entire group after setting the mode
         self.torque_on_group(group_name)
@@ -345,8 +346,9 @@ class DynamixelController:
         Set profile velocity for a group of motors based on config.yaml or a provided value.
         
         :param group_name: The name of the motor group to set the profile velocity for.
-        :param profile_velocity: Optional, if provided will override the value from config.yaml.
+        :param profile_velocity: Optional, can be an integer for all motors or a dictionary with motor IDs as keys and velocities as values.
         """
+        logging.info(f"Setting profile velocity for group {group_name}")
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
@@ -356,32 +358,47 @@ class DynamixelController:
         if hard_profile_velocity_limit is None:
             logging.error(f"Hard profile velocity limit not found in config.yaml")
             return
+        logging.debug(f"Hard profile velocity limit: {hard_profile_velocity_limit}")
 
-        # Get profile velocity from config.yaml if not provided
+        # If no profile_velocity provided, get it from config.yaml
         if profile_velocity is None:
             profile_velocity = self.config.get('profile_velocities', {}).get(group_name, None)
             if profile_velocity is None:
                 logging.error(f"Profile velocity for group {group_name} not found in config.yaml and no value was provided.")
                 return
 
-        # Check if the profile velocity is zero (infinite velocity) and log a warning
-        if profile_velocity == 0:
-            logging.warning(f"Profile velocity of 0 (infinite) is not allowed. Limiting to hard profile velocity limit {hard_profile_velocity_limit}.")
-            profile_velocity = 1  # Limit it to 1 instead
+        # Handle the case where profile_velocity is a dictionary (per motor setting)
+        if isinstance(profile_velocity, dict):
+            # Iterate through the dictionary and apply velocity limits
+            profile_velocities = {}
+            for motor_id, velocity in profile_velocity.items():
+                if velocity == 0:
+                    logging.warning(f"Profile velocity of 0 (infinite) is not allowed for motor {motor_id}. Limiting to 1 instead.")
+                    velocity = 1
+                elif velocity > hard_profile_velocity_limit:
+                    logging.warning(f"Profile velocity {velocity} for motor {motor_id} exceeds hard limit {hard_profile_velocity_limit}. Limiting to {hard_profile_velocity_limit}.")
+                    velocity = hard_profile_velocity_limit
+                profile_velocities[motor_id] = velocity
+        else:
+            # If profile_velocity is a single integer, apply the same velocity to all motors in the group
+            if profile_velocity == 0:
+                logging.warning(f"Profile velocity of 0 (infinite) is not allowed. Limiting to 1 instead.")
+                profile_velocity = 1
+            elif profile_velocity > hard_profile_velocity_limit:
+                logging.warning(f"Profile velocity {profile_velocity} exceeds hard limit {hard_profile_velocity_limit}. Limiting to {hard_profile_velocity_limit}.")
+                profile_velocity = hard_profile_velocity_limit
+            
+            # Apply the same profile velocity to all motors in the group
+            profile_velocities = {motor_id: profile_velocity for motor_id in self.motor_groups[group_name]}
 
-        # Check if the profile velocity exceeds the hard limit
-        if profile_velocity > hard_profile_velocity_limit:
-            logging.warning(f"Profile velocity {profile_velocity} exceeds hard limit {hard_profile_velocity_limit}. Limiting to {hard_profile_velocity_limit}.")
-            profile_velocity = hard_profile_velocity_limit
-
-        # Apply profile velocity using sync write
-        profile_velocities = {motor_id: profile_velocity for motor_id in self.motor_groups[group_name]}
+        # Apply profile velocities using sync write
         self.sync_write_group(group_name, 'profile_velocity', profile_velocities)
 
-        logging.info(f"Profile velocity set to {profile_velocity} for group {group_name}")
+        logging.info(f"Profile velocities set for group {group_name}: {profile_velocities}")
 
     def torque_off_group(self, group_name):
         """Disable torque for all motors in the group."""
+        logging.info(f"Disabling torque for group {group_name}")
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
@@ -389,10 +406,11 @@ class DynamixelController:
         # Disable torque for each motor
         torque_values = {motor_id: 0 for motor_id in self.motor_groups[group_name]}
         self.sync_write_group(group_name, 'torque_enable', torque_values)
-        logging.info(f"Torque disabled for group {group_name}")
+        logging.debug(f"Torque disabled for group {group_name}")
 
     def torque_on_group(self, group_name):
         """Enable torque for all motors in the group."""
+        logging.info(f"Enabling torque for group {group_name}")
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
@@ -400,7 +418,7 @@ class DynamixelController:
         # Enable torque for each motor
         torque_values = {motor_id: 1 for motor_id in self.motor_groups[group_name]}
         self.sync_write_group(group_name, 'torque_enable', torque_values)
-        logging.info(f"Torque enabled for group {group_name}")
+        logging.debug(f"Torque enabled for group {group_name}")
 
     def set_position_group(self, group_name, positions):
         """
@@ -410,27 +428,35 @@ class DynamixelController:
         :param positions: Either a dictionary with motor_id as key and target position in degrees as value,
                         or a single integer to apply the same position to all motors in the group.
         """
+        logging.info(f"Running set_position_group for group '{group_name}' with positions: {positions}")
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
 
-        # Ensure the group is in position control mode
-        self.set_operating_mode_group(group_name, 'position')
-
+        # Check the operating modes for all motors in the group
+        operating_modes = self.bulk_read_group(group_name, ['operating_mode'])
+        # If any motor is not in position control mode, set the mode now
+        for motor_id, data in operating_modes.items():
+            current_mode = data.get('operating_mode', None)
+            if current_mode != 3:
+                logging.warning(f"Motor {motor_id} is not in Position Control Mode. Setting mode now.")
+                self.set_operating_mode_group(group_name, 'position')
+                break
+                   
         # Check if the input is a dictionary (positions for each motor) or a single integer (same position for all motors)
         if isinstance(positions, int):
             # Apply the same position to all motors
             position_goals = {motor_id: self.degrees_to_position(positions) for motor_id in self.motor_groups[group_name]}
-            logging.info(f"Setting position {positions}° for all motors in group '{group_name}'")
+            logging.debug(f"Setting position {positions}° for all motors in group '{group_name}'")
         elif isinstance(positions, dict):
             # Apply different positions for each motor
             position_goals = {}
             for motor_id, degrees in positions.items():
                 # Log each conversion for detailed debugging
                 raw_position = self.degrees_to_position(degrees)
-                logging.info(f"Setting motor {motor_id} to {degrees}° ({raw_position} ticks)")
+                logging.deubg(f"Setting motor {motor_id} to {degrees}° ({raw_position} ticks)")
                 position_goals[motor_id] = raw_position
-            logging.info(f"Setting individual positions for motors in group '{group_name}': {positions}")
+            logging.debug(f"Setting individual positions for motors in group '{group_name}': {positions}")
         else:
             logging.error("Invalid type for 'positions'. Must be either an integer or a dictionary.")
             return
@@ -438,7 +464,7 @@ class DynamixelController:
         # Now let's sync write the positions
         try:
             self.sync_write_group(group_name, 'goal_position', position_goals)
-            logging.info(f"Target positions set for group '{group_name}': {positions}")
+            logging.debug(f"Target positions set for group '{group_name}': {positions}")
         except Exception as e:
             logging.error(f"Failed to set positions for group '{group_name}': {e}")
 
