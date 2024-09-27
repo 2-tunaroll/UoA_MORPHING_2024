@@ -390,7 +390,9 @@ class DynamixelController:
             
             # Apply the same profile velocity to all motors in the group
             profile_velocities = {motor_id: profile_velocity for motor_id in self.motor_groups[group_name]}
-
+        # Convert profile velocities to raw values
+        profile_velocities = {motor_id: self.degrees_to_position(velocity) for motor_id, velocity in profile_velocities.items()}
+        
         # Apply profile velocities using sync write
         self.sync_write_group(group_name, 'profile_velocity', profile_velocities)
 
