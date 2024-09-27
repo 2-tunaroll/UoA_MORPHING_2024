@@ -247,7 +247,7 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
         increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
         dynamixel.increment_group_position('Wheg_Group', increments)
         # Wait based on the formula time = Degrees/6*RPM
-        wait_time = robot_state.gait_parameters['gait_2']['slow_ang']/6*wheg_rpm
+        wait_time = robot_state.gait_parameters['gait_2']['slow_ang']/(6*wheg_rpm)
         logging.info(f"Waiting for rotation {wait_time} seconds at {wheg_rpm} RPM")
         time.sleep(wait_time)
         robot_state.odd_even += 1
