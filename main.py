@@ -72,6 +72,17 @@ class RobotState:
         # Initialize wheg RPMs (assume they start at the minimum RPM)
         self.wheg_rpms = {wheg: config['wheg_parameters']['min_rpm'] for wheg in config['motor_ids']['whegs']}
 
+        # Initalise the gait parameters
+        self.setup_gait_parameters()
+    
+    def setup_gait_parameters(self):
+        """Setup the gait parameters for each gait from the config file."""
+        self.gait_parameters = {}
+        self.gait_parameters['gait_2'] = {}
+        self.gait_parameters['gait_2']['slow_ang'] = config['gaits']['gait_2']['slow_ang']
+        self.gait_parameters['gait_2']['fast_ang'] = config['gaits']['gait_2']['fast_ang']
+        self.odd_even = 0
+
     def adjust_front_pivot(self, step, min_angle, max_angle, direction):
         """Adjust the front pivot angle based on D-pad input."""
         if direction == 'up':
@@ -167,13 +178,21 @@ def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
 
 # Define the initialization for each gait (for whegs only, pivots are disabled)
 def gait_init_1(dynamixel):
-    logging.info("Initializing Gait 1")
+    logging.info("Initialising Gait 1")
     dynamixel.set_position_group('Wheg_Group', 180)
     dynamixel.set_position_group('Pivot_Group', 180)
 
 def gait_init_2(dynamixel):
-    logging.info("Initializing Gait 2")
-    dynamixel.set_position_group('Wheg_Group', 180)
+    logging.info("Initialising Gait 2")
+    positions = { # Setup dict with initial position for each wheg
+        1: 160,
+        2: 200,
+        3: 160,
+        4: 200,
+        5: 160,
+        6: 200,
+    }
+    dynamixel.set_position_group('Wheg_Group', positions)
     dynamixel.set_position_group('Pivot_Group', 180)
 
 def gait_init_3(dynamixel):      
@@ -207,12 +226,29 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
     logging.debug("Executing Gait 2")
     
     if wheg_rpm != 0:
-        # Set the velocity limit for all whegs based on controller input
-        dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
-
-        # Increase the position of the whegs in groups
-        increment = 360 # Increment by 180 degrees
-        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
+        # Fast rpm based on the formula fastRPM = slowRPM*(fast_ang/slow_ang), use the odd_even variable to alternate between the two whegs letting the robot complete half cycles while checking for speed
+        if robot_state.odd_even % 2 == 0:
+            logging.debug(f"Odd gait cycle")
+            rpm_1 = wheg_rpm
+            rpm_2 = wheg_rpm*(robot_state.gait_parameters['gait_2']['fast_ang']/robot_state.gait_parameters['gait_2']['slow_ang'])
+            inc_1 = robot_state.gait_parameters['gait_2']['slow_ang']
+            inc_2 = robot_state.gait_parameters['gait_2']['fast_ang']
+        else: 
+            logging.debug(f"Even gait cycle")
+            rpm_1 = wheg_rpm*(robot_state.gait_parameters['gait_2']['fast_ang']/robot_state.gait_parameters['gait_2']['slow_ang'])
+            rpm_2 = wheg_rpm
+            inc_1 = robot_state.gait_parameters['gait_2']['fast_ang']
+            inc_2 = robot_state.gait_parameters['gait_2']['slow_ang']
+    
+        # Setup dict with initiaial profile velocities of each wheg
+        velcoities = {1: wheg_rpm*rpm_1, 2: wheg_rpm*rpm_2, 3: wheg_rpm*rpm_1, 4: wheg_rpm*rpm_2, 5: wheg_rpm*rpm_1, 6: wheg_rpm*rpm_2}
+        dynamixel.set_group_profile_velocity('Wheg_Group', velcoities)  # Set velocity based on input
+        # Setup dict with the position increment for each wheg
+        increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
+        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increments)
+        # Wait based on the formula time = Degrees/6*RPM
+        time.sleep(robot_state.gait_parameters['gait_2']['slow_ang']/6*wheg_rpm)
+        robot_state.odd_even += 1
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
@@ -226,7 +262,7 @@ def gait_3(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
+        dynamixel.increment_group_position('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
@@ -240,7 +276,7 @@ def gait_4(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
 
         # Increase the position of the whegs in groups
         increment = 180 # Increment by 180 degrees
-        dynamixel.increment_motor_position_by_degrees('Wheg_Group', increment)
+        dynamixel.increment_group_position('Wheg_Group', increment)
 
     # Control pivots using the D-pad
     control_pivots_with_dpad(dynamixel, dpad_input, robot_state)

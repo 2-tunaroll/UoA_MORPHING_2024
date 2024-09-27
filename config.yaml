@@ -17,7 +17,7 @@ motor_ids:
     REAR_PIVOT: 8
 
 wheg_parameters:
-  max_rpm: 50  # Maximum RPM for the wheg motors
+  max_rpm: 30 # Maximum RPM for the wheg motors
   min_rpm: 0   # Minimum RPM for the wheg motors
   smoothness: 2.5  # Speed increase smoothness
   initial_rpm: 0  # Initial speed for wheg motors
@@ -38,17 +38,20 @@ gaits:
     - gait_3
     - gait_4
   initial_gait: gait_1
+  gait_2:
+    slow_ang: 40
+    fast_ang: 320
 
 reporting:
   motor_position_interval: 5  # Seconds between logging motor positions
 
 velocity_limits:
-  Wheg_Group: 200  # Velocity limit for Wheg_Group
+  Wheg_Group: 400  # Velocity limit for Wheg_Group
   Pivot_Group: 50 # Velocity limit for Pivot_Group
 
 profile_velocities:
-  Wheg_Group: 100  # Profile velocity for Wheg_Group
-  Pivot_Group: 100 # Profile velocity for Pivot_Group
+  Wheg_Group: 400  # Profile velocity for Wheg_Group
+  Pivot_Group: 50 # Profile velocity for Pivot_Group
 
 hard_velocity_limit: 200  # The maximum velocity limit for any motor
 hard_profile_velocity_limit: 200  # The maximum profile velocity limit for any motor
