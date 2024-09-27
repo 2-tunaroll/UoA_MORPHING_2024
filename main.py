@@ -241,8 +241,8 @@ def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
             inc_2 = robot_state.gait_parameters['gait_2']['slow_ang']
     
         # Setup dict with initiaial profile velocities of each wheg
-        velcoities = {1: wheg_rpm*rpm_1, 2: wheg_rpm*rpm_2, 3: wheg_rpm*rpm_1, 4: wheg_rpm*rpm_2, 5: wheg_rpm*rpm_1, 6: wheg_rpm*rpm_2}
-        dynamixel.set_group_profile_velocity('Wheg_Group', velcoities)  # Set velocity based on input
+        velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
+        dynamixel.set_group_profile_velocity('Wheg_Group', velocities)  # Set velocity based on input
         # Setup dict with the position increment for each wheg
         increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
         dynamixel.increment_group_position('Wheg_Group', increments)
