@@ -209,7 +209,7 @@ class FLIKRobot:
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
-        wait_time = 1
+        wait_time = 3
         logging.info(f"Initialised Gait 1, waiting for {wait_time} seconds")
         await asyncio.sleep(wait_time)
         self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
@@ -232,7 +232,7 @@ class FLIKRobot:
         }
         self.dynamixel.set_position_group('Wheg_Group', positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
-        wait_time = 1
+        wait_time = 3
         logging.info(f"Initialised Gait 2, waiting for {wait_time} seconds")
         await asyncio.sleep(wait_time)
         self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
@@ -243,7 +243,7 @@ class FLIKRobot:
         self.wheg_rpm = 0
         self.set_position_group('Wheg_Group', 180)
         self.set_position_group('Pivot_Group', 180)
-        wait_time = 1
+        wait_time = 3
         logging.info(f"Initialised Gait 3, waiting for {wait_time} seconds")
         await asyncio.sleep(wait_time)
         self.set_operating_mode_group('Wheg_Group', 'multi_turn')
@@ -254,7 +254,7 @@ class FLIKRobot:
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
-        wait_time = 1
+        wait_time = 3
         logging.info(f"Initialised Gait 4, waiting for {wait_time} seconds")
         await asyncio.sleep(wait_time)
         self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
@@ -361,6 +361,8 @@ class FLIKRobot:
             if 'x' in self.button_states and self.button_states['x'] and self.emergency_stop_activated:
                 self.emergency_stop_activated = False
                 logging.info("Emergency Stop Deactivated. Resuming control...")
+                self.gait_change_requested = True
+                self.next_gait_index = 0
 
             # Monitor Triangle (increase gait) and Square (decrease gait) buttons for gait change
             if  self.button_states['triangle']:
@@ -464,7 +466,7 @@ class FLIKRobot:
                     reboot_success = self.dynamixel.reboot_motor(reboot_id)  # Reboot the motor
 
                     if reboot_success:
-                        self.current_gait_index = 0  # Change back to gait 0
+                        self.next_gait_index = 0  # Change back to gait 0
                         self.gait_change_requested = True
                         logging.info(f"Motor {reboot_id} reset, and gait changed to 0.")
                     else:
