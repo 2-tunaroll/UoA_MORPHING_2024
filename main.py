@@ -423,20 +423,6 @@ class FLIKRobot:
                 motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
                 hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
 
-                # Check for hardware errors
-                error_detected = False
-                for motor_id, error_status in hardware_errors.items():
-                    if error_status != 0:  # Non-zero error status indicates a hardware error
-                        logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
-                        error_detected = True
-
-                # If any hardware errors are detected, reset motors and change gait
-                if error_detected:
-                    logging.warning("Hardware error detected! Resetting motors and switching to gait 0...")
-                    self.reset_motors()
-                    self.current_gait_index = 0  # Change back to gait 0
-                    self.gait_change_requested = True
-
                 # Header for the log
                 logging.info(f"\n{'Motor':<10}{'Position (ticks)':<20}{'Velocity (ticks/sec)':<25}{'Load (%)':<10}")
 
