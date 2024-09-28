@@ -140,12 +140,12 @@ class FLIKRobot:
         logging.debug(f"Adjusting wheg speed: trigger_value={trigger_value}, current_rpm={self.wheg_rpm}")
         target_rpm = ((trigger_value + 1) / 2) * (self.MAX_RPM - self.MIN_RPM) + self.MIN_RPM # Trigger value ranges from -1 to 1, map this to RPM range
         # Implement smooth transition to target RPM
-        if target_rpm > self.wehg_rpm:
-            self.wehg_rpm = min(self.wehg_rpm + self.SMOOTHNESS, target_rpm)
+        if target_rpm > self.wheg_rpm:
+            self.wheg_rpm = min(self.wheg_rpm + self.SMOOTHNESS, target_rpm)
         else:
-            self.wehg_rpm = max(self.wehg_rpm - self.SMOOTHNESS, target_rpm)
+            self.wheg_rpm = max(self.wheg_rpm - self.SMOOTHNESS, target_rpm)
         logging.debug(f"Adjusted wheg speed: target_rpm={target_rpm}, current_rpm={self.wheg_rpm}")
-        return self.wehg_rpm
+        return self.wheg_rpm
     
     def log(self, motor_positions, l2_trigger, r2_trigger, button_states, dpad_input):
         """Log the current robot state, including pivots, whegs, and controller inputs."""
