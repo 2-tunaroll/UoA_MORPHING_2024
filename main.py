@@ -251,11 +251,11 @@ class FLIKRobot:
         
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
-            increment = 180  # Example movement angle
+            increment = 360  # Example movement angle
             self.dynamixel.increment_group_position('Wheg_Group', increment)
 
             # Calculate wait time based on RPM (example formula: degrees moved / (6 * RPM))
-            wait_time = 180 / (6 * self.wheg_rpm)
+            wait_time = increment / (6 * self.wheg_rpm)
             logging.info(f"Gait 1 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
@@ -284,7 +284,7 @@ class FLIKRobot:
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time
-            wait_time = inc_1 / (6 * self.wheg_rpm)
+            wait_time = inc_1 / (6 * rpm_1)
             self.odd_even += 1
             logging.info(f"Gait 2 step executed, wait for {wait_time:.2f} seconds")
             return wait_time
