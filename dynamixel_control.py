@@ -372,26 +372,21 @@ class DynamixelController:
             # Iterate through the dictionary and apply velocity limits
             profile_velocities = {}
             for motor_id, velocity in profile_velocity.items():
-                if velocity == 0:
-                    logging.warning(f"Profile velocity of 0 (infinite) is not allowed for motor {motor_id}. Limiting to 1 instead.")
-                    velocity = 1
-                elif velocity > hard_profile_velocity_limit:
+                if velocity > hard_profile_velocity_limit:
                     logging.warning(f"Profile velocity {velocity} for motor {motor_id} exceeds hard limit {hard_profile_velocity_limit}. Limiting to {hard_profile_velocity_limit}.")
                     velocity = hard_profile_velocity_limit
                 profile_velocities[motor_id] = velocity
         else:
             # If profile_velocity is a single integer, apply the same velocity to all motors in the group
-            if profile_velocity == 0:
-                logging.warning(f"Profile velocity of 0 (infinite) is not allowed. Limiting to 1 instead.")
-                profile_velocity = 1
-            elif profile_velocity > hard_profile_velocity_limit:
+            if profile_velocity > hard_profile_velocity_limit:
                 logging.warning(f"Profile velocity {profile_velocity} exceeds hard limit {hard_profile_velocity_limit}. Limiting to {hard_profile_velocity_limit}.")
                 profile_velocity = hard_profile_velocity_limit
-            
             # Apply the same profile velocity to all motors in the group
             profile_velocities = {motor_id: profile_velocity for motor_id in self.motor_groups[group_name]}
         # Convert profile velocities to raw values
         profile_velocities = {motor_id: velocity*0.229 for motor_id, velocity in profile_velocities.items()}
+        # Ensure this value is >= 1
+        profile_velocities = {motor_id: max(1, velocity) for motor_id, velocity in profile_velocities.items()}
         
         # Apply profile velocities using sync write
         self.sync_write_group(group_name, 'profile_velocity', profile_velocities)
