@@ -386,8 +386,10 @@ class DynamixelController:
         # Convert profile velocities to raw values
         profile_velocities = {motor_id: velocity*0.229 for motor_id, velocity in profile_velocities.items()}
         # Ensure this value is >= 1
-        profile_velocities = {motor_id: max(1, velocity) for motor_id, velocity in profile_velocities.items()}
-        
+        for profile_velocity in profile_velocities.values():
+            if profile_velocity < 1:
+                profile_velocity = 1
+                logging.warning(f"Profile velocity too low, setting to 1")
         # Apply profile velocities using sync write
         self.sync_write_group(group_name, 'profile_velocity', profile_velocities)
 
