@@ -142,6 +142,8 @@ class FLIKRobot:
         # Implement smooth transition to target RPM
         if target_rpm > self.wheg_rpm:
             self.wheg_rpm = min(self.wheg_rpm + self.SMOOTHNESS, target_rpm)
+        elif trigger_value < -0.95 # Low trigger value, ensure velocity is 0
+            self.wheg_rpm = 0
         else:
             self.wheg_rpm = max(self.wheg_rpm - self.SMOOTHNESS, target_rpm)
         logging.debug(f"Adjusted wheg speed: target_rpm={target_rpm}, current_rpm={self.wheg_rpm}")
@@ -418,6 +420,11 @@ class FLIKRobot:
                 self.report_states(5)   # Log states every 5 seconds (customizable interval)
             )
         
+        except asyncio.CancelledError:
+            logging.info("Tasks were cancelled, shutting down gracefully...")
+            # Handle task cancellation properly, we still want to go to `finally`
+            raise
+
         except KeyboardInterrupt:
             logging.info("Terminating program...")
 
