@@ -342,7 +342,7 @@ class FLIKRobot:
     async def async_emergency_stop(self):
         """Asynchronously stop all motors during an emergency."""
         logging.warning("Emergency stop activated! Stopping all motors asynchronously.")
-        self.dynamixel.set_group_velocity('All_Motors', 0)  # Stop all motors immediately
+        self.dynamixel.set_velocity_group('All_Motors', 0)  # Stop all motors immediately
         await asyncio.sleep(0.01)  # Let other tasks run (non-blocking)
 
     async def check_inputs(self):
