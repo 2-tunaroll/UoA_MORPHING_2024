@@ -169,33 +169,39 @@ class FLIKRobot:
         """
         while self.allow_pivot_control:
             try:
+                change = False
                 # Adjust front and rear pivots based on D-pad input
                 if self.dpad_inputs['dpad_down']:
                     self.adjust_front_pivot('down')
+                    change = True
                 elif self.dpad_inputs['dpad_up']:
                     self.adjust_front_pivot('up')
+                    change = True
                 elif self.dpad_inputs['dpad_right']:
                     self.adjust_rear_pivot('up')
+                    change = True
                 elif self.dpad_inputs['dpad_left']:
                     self.adjust_rear_pivot('down')
+                    change = True
 
-                # Prepare positions for sync write
-                pivot_positions = {
-                    self.config['motor_ids']['pivots']['FRONT_PIVOT']: self.front_pivot_angle,
-                    self.config['motor_ids']['pivots']['REAR_PIVOT']: self.rear_pivot_angle
-                }
-                
-                # Sync write the goal positions for the pivots
-                self.dynamixel.set_position_group('Pivot_Group', pivot_positions)
+                if change:
+                    # Prepare positions for sync write
+                    pivot_positions = {
+                        self.config['motor_ids']['pivots']['FRONT_PIVOT']: self.front_pivot_angle,
+                        self.config['motor_ids']['pivots']['REAR_PIVOT']: self.rear_pivot_angle
+                    }
+                    
+                    # Sync write the goal positions for the pivots
+                    self.dynamixel.set_position_group('Pivot_Group', pivot_positions)
 
-                # Logging
-                logging.info(f"Front pivot angle set to {self.front_pivot_angle} degrees (ticks: {self.front_pivot_angle})")
-                logging.info(f"Rear pivot angle set to {self.rear_pivot_angle} degrees (ticks: {self.rear_pivot_angle})")
+                    # Logging
+                    logging.info(f"Front pivot angle set to {self.front_pivot_angle} degrees (ticks: {self.front_pivot_angle})")
+                    logging.info(f"Rear pivot angle set to {self.rear_pivot_angle} degrees (ticks: {self.rear_pivot_angle})")
             
             except Exception as e:
                 logging.error(f"Error controlling pivots: {e}")
             
-            await asyncio.sleep(0.1) #Control responsiveness
+            await asyncio.sleep(0.25) #Control responsiveness
         
     # Define the initialization for each gait (for whegs only, pivots are disabled)
     async def gait_init_1(self):
