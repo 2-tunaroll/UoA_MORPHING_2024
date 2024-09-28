@@ -255,16 +255,16 @@ class FLIKRobot:
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
         if self.wheg_rpm > 1:
             # Example RPM-based alternating gait logic
-            if self.robot_state.odd_even % 2 == 0:
+            if self.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
-                rpm_2 = self.wheg_rpm * (self.robot_state.gait_parameters['gait_2']['fast_ang'] / self.robot_state.gait_parameters['gait_2']['slow_ang'])
-                inc_1 = self.robot_state.gait_parameters['gait_2']['slow_ang']
-                inc_2 = self.robot_state.gait_parameters['gait_2']['fast_ang']
+                rpm_2 = self.wheg_rpm * (self.gait_parameters['gait_2']['fast_ang'] / self.gait_parameters['gait_2']['slow_ang'])
+                inc_1 = self.gait_parameters['gait_2']['slow_ang']
+                inc_2 = self.gait_parameters['gait_2']['fast_ang']
             else:
-                rpm_1 = self.wheg_rpm * (self.robot_state.gait_parameters['gait_2']['fast_ang'] / self.robot_state.gait_parameters['gait_2']['slow_ang'])
+                rpm_1 = self.wheg_rpm * (self.gait_parameters['gait_2']['fast_ang'] / self.gait_parameters['gait_2']['slow_ang'])
                 rpm_2 = self.wheg_rpm
-                inc_1 = self.robot_state.gait_parameters['gait_2']['fast_ang']
-                inc_2 = self.robot_state.gait_parameters['gait_2']['slow_ang']
+                inc_1 = self.gait_parameters['gait_2']['fast_ang']
+                inc_2 = self.gait_parameters['gait_2']['slow_ang']
 
             # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
@@ -274,7 +274,7 @@ class FLIKRobot:
 
             # Calculate wait time
             wait_time = inc_1 / (6 * self.wheg_rpm)
-            self.robot_state.odd_even += 1
+            self.odd_even += 1
             logging.info(f"Gait 2 step executed, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
@@ -299,7 +299,7 @@ class FLIKRobot:
         """Execute Gait 4 and return how long to wait before the next step."""
         logging.debug("Executing Gait 4")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm > 1:
+        if self.wheg_rpm > 5:
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
             increment = 180  # Example movement angle
