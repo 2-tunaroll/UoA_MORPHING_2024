@@ -702,11 +702,7 @@ class DynamixelController:
         Closes the communication port and performs cleanup.
         """
         try:
-            # Close the port if it's open
-            if self.port_handler.is_port_open():
-                self.port_handler.closePort()
-                logging.info("Port closed successfully.")
-            else:
-                logging.warning("Port is already closed.")
+            self.port_handler.closePort()
+            logging.info("Port closed successfully.")
         except Exception as e:
             logging.error(f"Failed to close the port: {e}")
