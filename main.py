@@ -256,7 +256,6 @@ class FLIKRobot:
     async def gait_1(self):
         """Execute Gait 1 and return how long to wait before the next step."""
         logging.debug("Executing Gait 1")
-        logging.info(f"L2 Trigger: {self.l2_trigger}, R2 Trigger: {self.r2_trigger}")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
         if self.wheg_rpm > 1:
         
@@ -343,7 +342,7 @@ class FLIKRobot:
         """Asynchronously check for controller inputs, including gait change."""
         while True:
             self.button_states = self.ps4_controller.get_button_input()
-            self.dpad_input = self.ps4_controller.get_dpad_input()
+            self.dpad_inputs = self.ps4_controller.get_dpad_input()
             self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
 
             # Check for emergency stop (Circle button)
