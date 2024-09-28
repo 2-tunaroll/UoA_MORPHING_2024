@@ -124,16 +124,16 @@ class FLIKRobot:
     def adjust_front_pivot(self, direction):
         """Adjust the front pivot angle based on D-pad input."""
         if direction == 'up':
-            self.front_pivot_angle = max(self.front_pivot_angle - self.pivot_step, self.pivot_max_angle)
+            self.front_pivot_angle = max(self.front_pivot_angle - self.pivot_step, self.pivot_min_angle)
         elif direction == 'down':
-            self.front_pivot_angle = min(self.front_pivot_angle + self.pivot_step, self.pivot_min_angle)
+            self.front_pivot_angle = min(self.front_pivot_angle + self.pivot_step, self.pivot_max_angle)
 
     def adjust_rear_pivot(self, direction):
         """Adjust the rear pivot angle based on D-pad input."""
         if direction == 'up':
-            self.rear_pivot_angle = max(self.rear_pivot_angle - self.pivot_step, self.pivot_max_angle)
+            self.rear_pivot_angle = max(self.rear_pivot_angle - self.pivot_step, self.pivot_min_angle)
         elif direction == 'down':
-            self.rear_pivot_angle = min(self.rear_pivot_angle + self.pivot_step, self.pivot_min_angle)
+            self.rear_pivot_angle = min(self.rear_pivot_angle + self.pivot_step, self.pivot_max_angle)
 
     def adjust_wheg_rpm(self, trigger_value):
         """ Function to adjust the speed of the whegs based on how far the right trigger is pressed. Smooth transition to target RPM. """
