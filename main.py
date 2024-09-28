@@ -160,7 +160,7 @@ class FLIKRobot:
         logging.info(f"Button States: {button_states}")
         logging.info(f"D-Pad Input: {dpad_input}")
 
-    async def control_pivots_with_dpad(self, dpad_inputs):
+    async def control_pivots_with_dpad(self):
         """
         Control the front and rear pivots using the D-pad inputs from the controller.
         
@@ -170,13 +170,13 @@ class FLIKRobot:
         while self.allow_pivot_control:
             try:
                 # Adjust front and rear pivots based on D-pad input
-                if dpad_inputs['dpad_down']:
+                if self.dpad_inputs['dpad_down']:
                     self.adjust_front_pivot('down')
-                elif dpad_inputs['dpad_up']:
+                elif self.dpad_inputs['dpad_up']:
                     self.adjust_front_pivot('up')
-                elif dpad_inputs['dpad_right']:
+                elif self.dpad_inputs['dpad_right']:
                     self.adjust_rear_pivot('up')
-                elif dpad_inputs['dpad_left']:
+                elif self.dpad_inputs['dpad_left']:
                     self.adjust_rear_pivot('down')
 
                 # Prepare positions for sync write
@@ -435,7 +435,7 @@ class FLIKRobot:
             await asyncio.gather(
                 self.check_inputs(),    # Run input checking
                 self.execute_gait(),    # Run gait execution
-                self.control_pivots_with_dpad,
+                self.control_pivots_with_dpad(),
                 self.report_states(5)   # Log states every 5 seconds (customizable interval)
             )
         
