@@ -236,7 +236,7 @@ class FLIKRobot:
         """Execute Gait 1 and return how long to wait before the next step."""
         logging.debug("Executing Gait 1")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm != 0:
+        if self.wheg_rpm > 1:
         
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
@@ -253,7 +253,7 @@ class FLIKRobot:
         """Execute Gait 2 and return how long to wait before the next step."""
         logging.debug("Executing Gait 2")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm != 0:
+        if self.wheg_rpm > 1:
             # Example RPM-based alternating gait logic
             if self.robot_state.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
@@ -283,7 +283,7 @@ class FLIKRobot:
         """Execute Gait 3 and return how long to wait before the next step."""
         logging.debug("Executing Gait 3")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm != 0:
+        if self.wheg_rpm > 1:
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
             increment = 180  # Example movement angle
@@ -299,7 +299,7 @@ class FLIKRobot:
         """Execute Gait 4 and return how long to wait before the next step."""
         logging.debug("Executing Gait 4")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm != 0:
+        if self.wheg_rpm > 1:
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
             increment = 180  # Example movement angle
