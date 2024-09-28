@@ -422,12 +422,14 @@ class FLIKRobot:
             )
         
         except asyncio.CancelledError:
-            logging.info("Tasks were cancelled, shutting down gracefully...")
-            # Handle task cancellation properly, we still want to go to `finally`
-            raise
+            # Handle task cancellation gracefully and log that tasks were cancelled
+            logging.info("Tasks were cancelled due to shutdown, proceeding to cleanup...")
+            # Suppress further propagation of CancelledError
+            pass
 
         except KeyboardInterrupt:
-            logging.info("Terminating program...")
+            # This block might not be necessary if KeyboardInterrupt triggers a CancelledError
+            logging.info("Program interrupted. Proceeding to shutdown.")
 
         finally:
             # Safely stop all motors and close connections

@@ -5,7 +5,7 @@ import logging
 import time
 
 class PS4Controller:
-    def __init__(self, debounce_time=0.2):
+    def __init__(self, debounce_time=0.1):
         logging.info("Initializing PS4Controller")
 
         # Initialize pygame
@@ -98,7 +98,7 @@ class PS4Controller:
                         logging.debug(f"Button {button} (index {index}) pressed.")
                     else:
                         button_states[button] = False  # Ignore press (debounced)
-                        logging.warning(f"Ignoring rapid press of button {button} (index {index})")
+                        logging.debug(f"Ignoring rapid press of button {button} (index {index})")
                 else:
                     button_states[button] = False
             else:
