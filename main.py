@@ -14,99 +14,136 @@ import os
 import time
 import logging
 import yaml
+import asyncio
 
 # Internal Imports
 from datetime import datetime
 from controller import PS4Controller
 from dynamixel_control import DynamixelController
 
-# Load configuration from YAML file
-with open('config.yaml', 'r') as file:
-    config = yaml.safe_load(file)
+class FLIKRobot:
+    def __init__(self):
+        # Load configuration from YAML file
+        with open('config.yaml', 'r') as file:
+            self.config = yaml.safe_load(file)
 
-# Create Logs directory if it doesn't exist
-log_directory = config['logging']['log_directory']
-if not os.path.exists(log_directory):
-    os.makedirs(log_directory)
+        # Setup logging
+        self.setup_logging()
 
-# Generate log file based on date and time
-log_filename = f"{log_directory}/flik_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+        # Create variables from the configuration
+        self.setup_variables()
 
-# Set up logging to log motor positions and controller inputs
-logging.basicConfig(
-    filename=log_filename,
-    level=getattr(logging, config['logging']['log_level_file']),  
-    format='%(asctime)s %(levelname)s: %(message)s'
-)
-
-console_handler = logging.StreamHandler()
-console_handler.setLevel(getattr(logging, config['logging']['log_level_console']))  # Set console output
-console_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-console_handler.setFormatter(console_formatter)
-
-# Add the handler to the logger
-logging.getLogger().addHandler(console_handler)
-
-# Motor and pivot configurations from the YAML file
-WHEGS = config['motor_ids']['whegs']
-PIVOTS = config['motor_ids']['pivots']
-MAX_RPM = config['wheg_parameters']['max_rpm']
-MIN_RPM = config['wheg_parameters']['min_rpm']
-SMOOTHNESS = config['wheg_parameters']['smoothness']
-front_pivot_angle = config['pivot_parameters']['initial_front_angle']
-rear_pivot_angle = config['pivot_parameters']['initial_rear_angle']
-
-class RobotState:
-    def __init__(self, config):
-        """
-        Initialize the robot state, including pivot angles and wheg RPMs.
+        # Initisalise components
+        try:
+            self.ps4_controller = PS4Controller()
+            self.dynamixel = DynamixelController()
+            logging.info("Initialised PS4 controller, Dynamixel, and Robot State")
+        except Exception as e:
+            logging.error(f"Error initialising components: {e}")
         
-        :param config: The configuration dictionary loaded from the YAML file.
-        """
-        self.config = config
-        
-        # Initialize pivot angles
-        self.front_pivot_angle = config['pivot_parameters']['initial_front_angle']
-        self.rear_pivot_angle = config['pivot_parameters']['initial_rear_angle']
-        
-        # Initialize wheg RPMs (assume they start at the minimum RPM)
-        self.wheg_rpms = {wheg: config['wheg_parameters']['min_rpm'] for wheg in config['motor_ids']['whegs']}
+        # Setup the whegs and pivots
+        self.setup_whegs()
+        self.setup_pivots()
 
-        # Initalise the gait parameters
-        self.setup_gait_parameters()
+    def setup_logging(self):
+        # Create Logs directory if it doesn't exist
+        log_directory = self.config['logging']['log_directory']
+        if not os.path.exists(log_directory):
+            os.makedirs(log_directory)
+
+        # Generate log file based on date and time
+        log_filename = f"{log_directory}/flik_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+
+        # Set up logging to log motor positions and controller inputs
+        logging.basicConfig(
+            filename=log_filename,
+            level=getattr(logging, self.config['logging']['log_level_file']),  
+            format='%(asctime)s %(levelname)s: %(message)s'
+        )
+
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(getattr(logging, self.config['logging']['log_level_console']))  # Set console output
+        console_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+        console_handler.setFormatter(console_formatter)
+
+        # Add the handler to the logger
+        logging.getLogger().addHandler(console_handler)
+
+    def setup_whegs(self):
+        # Set the right side whegs to reverse
+        self.dynamixel.set_drive_mode_group('Right_Whegs', True)
+        self.dynamixel.set_drive_mode_group('Left_Whegs', False)
+        logging.info("Set the right side whegs to reverse direction")
     
-    def setup_gait_parameters(self):
-        """Setup the gait parameters for each gait from the config file."""
+    def setup_pivots(self):
+        # Set position limits for the pivot motors
+        self.dynamixel.set_position_limits_group('Pivot_Group', self.config['position_limits']['Hinges']['min_degrees'], self.config['position_limits']['Hinges']['max_degrees'])
+        logging.info("Set position limits for the pivot motors")
+
+    def setup_variables(self):
+        # Motor and pivot configurations from the YAML file
+        self.WHEGS = self.config['motor_ids']['whegs']
+        self.PIVOTS = self.config['motor_ids']['pivots']
+        self.MAX_RPM = self.config['wheg_parameters']['max_rpm']
+        self.MIN_RPM = self.config['wheg_parameters']['min_rpm']
+        self.SMOOTHNESS = self.config['wheg_parameters']['smoothness']
+        self.front_pivot_angle = self.config['pivot_parameters']['initial_front_angle']
+        self.rear_pivot_angle = self.config['pivot_parameters']['initial_rear_angle']
+        self.pivot_max_angle = self.config['position_limits']['Hinges']['max_degrees']
+        self.pivot_min_angle = self.config['position_limits']['Hinges']['min_degrees']
+        self.pivot_step = self.config['pivot_parameters']['pivot_step']
+        self.wheg_rpm = self.config['wheg_parameters']['min_rpm']
+        self.current_gait_index = 0
+        self.total_gaits = len(self.config['gaits'])
+        self.emergency_stop_activated = False
+        self.report_timer = time.time()
+
+        # Gait parameters
+        self.odd_even = 0
         self.gait_parameters = {}
         self.gait_parameters['gait_2'] = {}
-        self.gait_parameters['gait_2']['slow_ang'] = config['gaits']['gait_2']['slow_ang']
-        self.gait_parameters['gait_2']['fast_ang'] = config['gaits']['gait_2']['fast_ang']
-        self.odd_even = 0
+        self.gait_parameters['gait_2']['slow_ang'] = self.config['gaits']['gait_2']['slow_ang']
+        self.gait_parameters['gait_2']['fast_ang'] = self.config['gaits']['gait_2']['fast_ang']
 
-    def adjust_front_pivot(self, step, min_angle, max_angle, direction):
+        self.gait_init_methods = {
+            0: self.gait_init_1,
+            1: self.gait_init_2,
+            2: self.gait_init_3,
+            3: self.gait_init_4
+        }
+
+        self.gait_methods = {
+            0: self.gait_1,
+            1: self.gait_2,
+            2: self.gait_3,
+            3: self.gait_4
+        }
+        
+    def adjust_front_pivot(self, direction):
         """Adjust the front pivot angle based on D-pad input."""
         if direction == 'up':
-            self.front_pivot_angle = max(self.front_pivot_angle - step, min_angle)
+            self.front_pivot_angle = max(self.front_pivot_angle - self.pivot_step, self.pivot_max_angle)
         elif direction == 'down':
-            self.front_pivot_angle = min(self.front_pivot_angle + step, max_angle)
+            self.front_pivot_angle = min(self.front_pivot_angle + self.pivot_step, self.pivot_min_angle)
 
-    def adjust_rear_pivot(self, step, min_angle, max_angle, direction):
+    def adjust_rear_pivot(self, direction):
         """Adjust the rear pivot angle based on D-pad input."""
-        if direction == 'left':
-            self.rear_pivot_angle = max(self.rear_pivot_angle - step, min_angle)
-        elif direction == 'right':
-            self.rear_pivot_angle = min(self.rear_pivot_angle + step, max_angle)
+        if direction == 'up':
+            self.rear_pivot_angle = max(self.rear_pivot_angle - self.pivot_step, self.pivot_max_angle)
+        elif direction == 'down':
+            self.rear_pivot_angle = min(self.rear_pivot_angle + self.pivot_step, self.pivot_min_angle)
 
-    def adjust_wheg_rpm(self, wheg_id, trigger_value, max_rpm, min_rpm, smoothness):
-        """Adjust the RPM of the specified wheg motor based on trigger input."""
-        current_rpm = self.wheg_rpms[wheg_id]
-        target_rpm = ((trigger_value + 1) / 2) * (max_rpm - min_rpm) + min_rpm
-        
-        # Smooth transition to target RPM
-        if target_rpm > current_rpm:
-            self.wheg_rpms[wheg_id] = min(current_rpm + smoothness, target_rpm)
+    def adjust_wheg_rpm(self, trigger_value):
+        """ Function to adjust the speed of the whegs based on how far the right trigger is pressed. Smooth transition to target RPM. """
+        logging.debug(f"Adjusting wheg speed: trigger_value={trigger_value}, current_rpm={self.wheg_rpm}")
+        target_rpm = ((trigger_value + 1) / 2) * (self.MAX_RPM - self.MIN_RPM) + self.MIN_RPM # Trigger value ranges from -1 to 1, map this to RPM range
+        # Implement smooth transition to target RPM
+        if target_rpm > self.wehg_rpm:
+            self.wehg_rpm = min(self.wehg_rpm + self.SMOOTHNESS, target_rpm)
         else:
-            self.wheg_rpms[wheg_id] = max(current_rpm - smoothness, target_rpm)
+            self.wehg_rpm = max(self.wehg_rpm - self.SMOOTHNESS, target_rpm)
+        logging.debug(f"Adjusted wheg speed: target_rpm={target_rpm}, current_rpm={self.wheg_rpm}")
+        return self.wehg_rpm
     
     def log(self, motor_positions, l2_trigger, r2_trigger, button_states, dpad_input):
         """Log the current robot state, including pivots, whegs, and controller inputs."""
@@ -118,271 +155,215 @@ class RobotState:
         logging.info(f"Button States: {button_states}")
         logging.info(f"D-Pad Input: {dpad_input}")
 
+    def control_pivots_with_dpad(self, dpad_inputs):
+        """
+        Control the front and rear pivots using the D-pad inputs from the controller.
+        
+        :param dpad_inputs: A dictionary with the state of each button, including the D-pad.
+        :param config: The YAML configuration containing pivot parameters (pivot_step, min/max angles).
+        """
+        # Adjust front and rear pivots based on D-pad input
+        if dpad_inputs['dpad_down']:
+            self.adjust_front_pivot('down')
+        elif dpad_inputs['dpad_up']:
+            self.adjust_front_pivot('up')
+        elif dpad_inputs['dpad_right']:
+            self.adjust_rear_pivot('up')
+        elif dpad_inputs['dpad_left']:
+            self.adjust_rear_pivot('down')
 
-def adjust_wheg_speed(trigger_value, current_rpm):
-    """ Function to adjust the speed of the whegs based on how far the right trigger is pressed. Smooth transition to target RPM. """
-    logging.debug(f"Adjusting wheg speed: trigger_value={trigger_value}, current_rpm={current_rpm}")
-    target_rpm = ((trigger_value + 1) / 2) * (MAX_RPM - MIN_RPM) + MIN_RPM # Trigger value ranges from -1 to 1, map this to RPM range
-    # Implement smooth transition to target RPM
-    if target_rpm > current_rpm:
-        current_rpm = min(current_rpm + SMOOTHNESS, target_rpm)
-    else:
-        current_rpm = max(current_rpm - SMOOTHNESS, target_rpm)
-    logging.debug(f"Adjusted wheg speed: target_rpm={target_rpm}, current_rpm={current_rpm}")
-    return current_rpm
+        # Prepare positions for sync write
+        pivot_positions = {
+            self.config['motor_ids']['pivots']['FRONT_PIVOT']: self.front_pivot_angle,
+            self.config['motor_ids']['pivots']['REAR_PIVOT']: self.rear_pivot_angle
+        }
+        
+        # Sync write the goal positions for the pivots
+        self.dynamixel.set_position_group('Pivot_Group', pivot_positions)
 
-# Function to log motor positions and controller inputs at the same time
-def log_positions_and_inputs(motor_positions, l2_trigger, r2_trigger, button_states, dpad_input):
-    logging.info(f"Motor Positions: {motor_positions}")
-    logging.info(f"L2 Trigger: {l2_trigger}, R2 Trigger: {r2_trigger}")
-    logging.info(f"Button States: {button_states}")
-    logging.info(f"D-Pad Input: {dpad_input}")
+        # Logging
+        logging.info(f"Front pivot angle set to {self.front_pivot_angle} degrees (ticks: {self.front_pivot_angle})")
+        logging.info(f"Rear pivot angle set to {self.rear_pivot_angle} degrees (ticks: {self.rear_pivot_angle})")
+        
+    # Define the initialization for each gait (for whegs only, pivots are disabled)
+    def gait_init_1(self):
+        logging.info("Initialising Gait 1")
+        self.wheg_rpm = 0
+        self.dynamixel.set_position_group('Wheg_Group', 180)
+        self.dynamixel.set_position_group('Pivot_Group', 180)
 
-def control_pivots_with_dpad(dynamixel, dpad_inputs, robot_state):
-    """
-    Control the front and rear pivots using the D-pad inputs from the controller.
-    
-    :param dynamixel: The DynamixelController instance.
-    :param dpad_inputs: A dictionary with the state of each button, including the D-pad.
-    :param config: The YAML configuration containing pivot parameters (pivot_step, min/max angles).
-    :param robot_state: An instance of RobotState managing the pivot angles.
-    """
-    # Extract pivot parameters from config
-    pivot_step = config['pivot_parameters']['pivot_step']
-    pivot_min_angle = config['position_limits']['Hinges']['min_degrees']
-    pivot_max_angle = config['position_limits']['Hinges']['max_degrees']
+    def gait_init_2(self):
+        logging.info("Initialising Gait 2")
+        self.wheg_rpm = 0
+        positions = { # Setup dict with initial position for each wheg
+            1: 160,
+            2: 200,
+            3: 160,
+            4: 200,
+            5: 160,
+            6: 200,
+        }
+        self.dynamixel.set_position_group('Wheg_Group', positions)
+        self.dynamixel.set_position_group('Pivot_Group', 180)
 
-    # Adjust front and rear pivots based on D-pad input
-    if dpad_inputs['dpad_down']:
-        robot_state.adjust_front_pivot(pivot_step, pivot_min_angle, pivot_max_angle, 'down')
-    elif dpad_inputs['dpad_up']:
-        robot_state.adjust_front_pivot(pivot_step, pivot_min_angle, pivot_max_angle, 'up')
-
-    if dpad_inputs['dpad_right']:
-        robot_state.adjust_rear_pivot(pivot_step, pivot_min_angle, pivot_max_angle, 'right')
-    elif dpad_inputs['dpad_left']:
-        robot_state.adjust_rear_pivot(pivot_step, pivot_min_angle, pivot_max_angle, 'left')
-
-    # Prepare positions for sync write
-    pivot_positions = {
-        config['motor_ids']['pivots']['FRONT_PIVOT']: robot_state.front_pivot_angle,
-        config['motor_ids']['pivots']['REAR_PIVOT']: robot_state.rear_pivot_angle
-    }
-    
-    # Sync write the goal positions for the pivots
-    dynamixel.set_position_group('Pivot_Group', pivot_positions)
-
-    # Logging
-    logging.info(f"Front pivot angle set to {robot_state.front_pivot_angle} degrees (ticks: {robot_state.front_pivot_angle})")
-    logging.info(f"Rear pivot angle set to {robot_state.rear_pivot_angle} degrees (ticks: {robot_state.rear_pivot_angle})")
-
-# Define the initialization for each gait (for whegs only, pivots are disabled)
-def gait_init_1(dynamixel):
-    logging.info("Initialising Gait 1")
-    dynamixel.set_position_group('Wheg_Group', 180)
-    dynamixel.set_position_group('Pivot_Group', 180)
-
-def gait_init_2(dynamixel):
-    logging.info("Initialising Gait 2")
-    positions = { # Setup dict with initial position for each wheg
-        1: 160,
-        2: 200,
-        3: 160,
-        4: 200,
-        5: 160,
-        6: 200,
-    }
-    dynamixel.set_position_group('Wheg_Group', positions)
-    dynamixel.set_position_group('Pivot_Group', 180)
-
-def gait_init_3(dynamixel):      
-    logging.info("Initializing Gait 3")
-    dynamixel.set_position_group('Wheg_Group', 180)
-    dynamixel.set_position_group('Pivot_Group', 180)
+    def gait_init_3(self):      
+        logging.info("Initialsing Gait 3")
+        self.wheg_rpm = 0
+        self.set_position_group('Wheg_Group', 180)
+        self.set_position_group('Pivot_Group', 180)
 
 
-def gait_init_4(dynamixel):
-    logging.info("Initializing Gait 4")
-    dynamixel.set_position_group('Wheg_Group', 180)
-    dynamixel.set_position_group('Pivot_Group', 180)
+    def gait_init_4(self):
+        logging.info("Initialising Gait 4")
+        self.wheg_rpm = 0
+        self.dynamixel.set_position_group('Wheg_Group', 180)
+        self.dynamixel.set_position_group('Pivot_Group', 180)
 
-    
-# Define multiple gaits (for whegs only, pivots are disabled)
-def gait_1(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
-    logging.debug("Executing Gait 1")
+        
+    # Define multiple gaits (for whegs only, pivots are disabled)
+    def gait_1(self, wheg_rpm, button_states, dpad_input):
+        logging.debug("Executing Gait 1")
 
-    if wheg_rpm != 0:
-        # Set the velocity limit for all whegs based on controller input
-        dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+        if wheg_rpm != 0:
+            # Set the velocity limit for all whegs based on controller input
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
-        # Increase the position of the whegs in groups
-        increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Wheg_Group', increment)
+            # Increase the position of the whegs in groups
+            increment = 180 # Increment by 180 degrees
+            self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-    # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
+        # Control pivots using the D-pad
+        self.control_pivots_with_dpad(dpad_input)
 
-def gait_2(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
-    logging.debug("Executing Gait 2")
-    
-    if wheg_rpm != 0:
-        # Fast rpm based on the formula fastRPM = slowRPM*(fast_ang/slow_ang), use the odd_even variable to alternate between the two whegs letting the robot complete half cycles while checking for speed
-        if robot_state.odd_even % 2 == 0:
-            logging.debug(f"Odd gait cycle")
-            rpm_1 = wheg_rpm
-            rpm_2 = wheg_rpm*(robot_state.gait_parameters['gait_2']['fast_ang']/robot_state.gait_parameters['gait_2']['slow_ang'])
-            inc_1 = robot_state.gait_parameters['gait_2']['slow_ang']
-            inc_2 = robot_state.gait_parameters['gait_2']['fast_ang']
-        else: 
-            logging.debug(f"Even gait cycle")
-            rpm_1 = wheg_rpm*(robot_state.gait_parameters['gait_2']['fast_ang']/robot_state.gait_parameters['gait_2']['slow_ang'])
-            rpm_2 = wheg_rpm
-            inc_1 = robot_state.gait_parameters['gait_2']['fast_ang']
-            inc_2 = robot_state.gait_parameters['gait_2']['slow_ang']
-    
-        # Setup dict with initiaial profile velocities of each wheg
-        velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
-        dynamixel.set_group_profile_velocity('Wheg_Group', velocities)  # Set velocity based on input
-        # Setup dict with the position increment for each wheg
-        increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
-        dynamixel.increment_group_position('Wheg_Group', increments)
-        # Wait based on the formula time = Degrees/6*RPM
-        wait_time = robot_state.gait_parameters['gait_2']['slow_ang']/(6*wheg_rpm)
-        logging.info(f"Waiting for rotation {wait_time} seconds at {wheg_rpm} RPM")
-        time.sleep(wait_time)
-        robot_state.odd_even += 1
+    def gait_2(self, wheg_rpm, button_states, dpad_input):
+        logging.debug("Executing Gait 2")
+        
+        if wheg_rpm != 0:
+            # Fast rpm based on the formula fastRPM = slowRPM*(fast_ang/slow_ang), use the odd_even variable to alternate between the two whegs letting the robot complete half cycles while checking for speed
+            if self.odd_even % 2 == 0:
+                logging.debug(f"Odd gait cycle")
+                rpm_1 = wheg_rpm
+                rpm_2 = wheg_rpm*(self.gait_parameters['gait_2']['fast_ang']/self.gait_parameters['gait_2']['slow_ang'])
+                inc_1 = self.gait_parameters['gait_2']['slow_ang']
+                inc_2 = self.gait_parameters['gait_2']['fast_ang']
+            else: 
+                logging.debug(f"Even gait cycle")
+                rpm_1 = wheg_rpm*(self.gait_parameters['gait_2']['fast_ang']/self.gait_parameters['gait_2']['slow_ang'])
+                rpm_2 = wheg_rpm
+                inc_1 = self.gait_parameters['gait_2']['fast_ang']
+                inc_2 = self.gait_parameters['gait_2']['slow_ang']
+        
+            # Setup dict with initiaial profile velocities of each wheg
+            velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)  # Set velocity based on input
+            # Setup dict with the position increment for each wheg
+            increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
+            self.dynamixel.increment_group_position('Wheg_Group', increments)
+            # Wait based on the formula time = Degrees/6*RPM
+            wait_time = self.gait_parameters['gait_2']['slow_ang']/(6*wheg_rpm)
+            logging.info(f"Waiting for rotation {wait_time} seconds at {wheg_rpm} RPM")
+            time.sleep(wait_time)
+            self.odd_even += 1
 
-    # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
+        # Control pivots using the D-pad
+        self.control_pivots_with_dpad(dpad_input)
 
-def gait_3(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
-    logging.debug("Executing Gait 3")
+    def gait_3(self, wheg_rpm, button_states, dpad_input):
+        logging.debug("Executing Gait 3")
 
-    if wheg_rpm != 0:
-        # Set the velocity limit for all whegs based on controller input
-        dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+        if wheg_rpm != 0:
+            # Set the velocity limit for all whegs based on controller input
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
-        # Increase the position of the whegs in groups
-        increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Wheg_Group', increment)
+            # Increase the position of the whegs in groups
+            increment = 180 # Increment by 180 degrees
+            self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-    # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
+        # Control pivots using the D-pad
+        self.control_pivots_with_dpad(dpad_input)
 
-def gait_4(dynamixel, wheg_rpm, button_states, dpad_input, robot_state):
-    logging.debug("Executing Gait 4")
-    
-    if wheg_rpm != 0:
-        # Set the velocity limit for all whegs based on controller input
-        dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
+    def gait_4(self, wheg_rpm, button_states, dpad_input):
+        logging.debug("Executing Gait 4")
+        
+        if wheg_rpm != 0:
+            # Set the velocity limit for all whegs based on controller input
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
 
-        # Increase the position of the whegs in groups
-        increment = 180 # Increment by 180 degrees
-        dynamixel.increment_group_position('Wheg_Group', increment)
+            # Increase the position of the whegs in groups
+            increment = 180 # Increment by 180 degrees
+            self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-    # Control pivots using the D-pad
-    control_pivots_with_dpad(dynamixel, dpad_input, robot_state)
+        # Control pivots using the D-pad
+        self.control_pivots_with_dpad(dpad_input)
 
-# Emergency stop function
-def emergency_stop(dynamixel):
-    logging.warning("Emergency stop activated")
-    dynamixel.set_group_velocity('All_Motors', 0)  # Stop all motors
+    # Emergency stop function
+    def emergency_stop(self):
+        logging.warning("Emergency stop activated")
+        self.dynamixel.set_group_velocity('All_Motors', 0)  # Stop all motors
 
 
-def main():
-    try:
-        # Initialize PS4 controller, Dynamixel, and RobotState
-        ps4_controller = PS4Controller()
-        dynamixel = DynamixelController()
-        robot_state = RobotState(config)
+    def run(self):
+        try:
+            while True:
+                self.button_states = self.ps4_controller.get_button_input()
 
-        logging.info("Initialized PS4 controller, Dynamixel, and Robot State")
+                # Check for controller disconnection
+                if self.button_states is None:
+                    logging.error("Controller is disconnected. Stopping robot.")
+                    self.emergency_stop()
+                    break
 
-        # Gait initialization and selection
-        gait_list = [gait_1, gait_2, gait_3, gait_4]
-        gait_init_list = [gait_init_1, gait_init_2, gait_init_3, gait_init_4]
-        current_gait_index = 0
-        total_gaits = len(gait_list)
+                # Emergency stop using Circle button
+                if self.button_states['circle']:
+                    self.emergency_stop_activated = True
+                    self.emergency_stop()
 
-        wheg_rpm = 0  # No motion at start
-        current_gait = gait_list[current_gait_index]
-        previous_gait = None
-        emergency_stop_activated = False
-        report_timer = time.time()
+                # Resume control after emergency stop with X button
+                if self.button_states['x'] and self.emergency_stop_activated:
+                    self.emergency_stop_activated = False
+                    logging.info("Emergency Stop Deactivated. Resuming control...")
 
-        # Set the right side whegs to reverse
-        dynamixel.set_drive_mode_group('Right_Whegs', True)
-        dynamixel.set_drive_mode_group('Left_Whegs', False)
-        # Set position limits for the pivot motors
-        # dynamixel.set_position_limits_group('Pivot_Group', config['position_limits']['Hinges']['min_degrees'], config['position_limits']['Hinges']['max_degrees'])
+                motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
 
-        # Main loop
-        while True:
-            button_states = ps4_controller.get_button_input()
+                if not self.emergency_stop_activated:
+                    self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
+                    self.dpad_input = self.ps4_controller.get_dpad_input()
+                    logging.debug(f"Trigger inputs: L2={self.l2_trigger}, R2={self.r2_trigger}")
+                    logging.debug(f"D-Pad input: {self.dpad_input}")
 
-            # Check for controller disconnection
-            if button_states is None:
-                logging.error("Controller is disconnected. Stopping robot.")
-                emergency_stop(dynamixel)
-                break
+                    # Adjust the speed of the whegs based on the right trigger
+                    wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
 
-            # Emergency stop using Circle button
-            if button_states['circle']:
-                emergency_stop_activated = True
-                emergency_stop(dynamixel)
+                    # Gait selection with Triangle and Square buttons
+                    if self.button_states['triangle']:
+                        self.current_gait_index = (self.current_gait_index + 1) % self.total_gaits
+                        self.gait_init_methods[self.current_gait_index]()
+                    elif self.button_states['square']:
+                        self.current_gait_index = (self.current_gait_index - 1) % self.total_gaits
+                        self.gait_init_methods[self.current_gait_index]()
 
-            # Resume control after emergency stop with X button
-            if button_states['x'] and emergency_stop_activated:
-                emergency_stop_activated = False
-                logging.info("Emergency Stop Deactivated. Resuming control...")
+                self.gait_methods[self.current_gait_index](wheg_rpm, self.button_states, self.dpad_input)
 
-            motor_positions = dynamixel.bulk_read_group('All_Motors', ['present_position'])
+                # Report motor positions every 5 seconds
+                current_time = time.time()
+                if current_time - report_timer >= 5:
+                    self.log(motor_positions, self.l2_trigger, self.r2_trigger, self.button_states, self.dpad_input)
+                    report_timer = current_time
 
-            if not emergency_stop_activated:
-                l2_trigger, r2_trigger = ps4_controller.get_trigger_input()
-                dpad_input = ps4_controller.get_dpad_input()
-                logging.debug(f"Trigger inputs: L2={l2_trigger}, R2={r2_trigger}")
-                logging.debug(f"D-Pad input: {dpad_input}")
+                time.sleep(0.1)
 
-                # Adjust the speed of the whegs based on the right trigger
-                wheg_rpm = adjust_wheg_speed(r2_trigger, wheg_rpm)
+        except KeyboardInterrupt:
+            logging.info("Terminating program...")
 
-                # Gait selection with Triangle and Square buttons
-                if button_states['triangle']:
-                    current_gait_index = (current_gait_index + 1) % total_gaits
-                    current_gait = gait_list[current_gait_index]
-                elif button_states['square']:
-                    current_gait_index = (current_gait_index - 1) % total_gaits
-                    current_gait = gait_list[current_gait_index]
-
-            # If the gait has changed, initialize the new gait
-            if previous_gait != current_gait:
-                logging.info(f"Switching to new gait: {current_gait_index}")
-                gait_init_list[current_gait_index](dynamixel)
-                # Reset the wheg RPM to 0 when switching gaits
-                wheg_rpm = 0
-
-            previous_gait = current_gait
-            current_gait(dynamixel, wheg_rpm, button_states, dpad_input, robot_state)
-
-            # Report motor positions every 5 seconds
-            current_time = time.time()
-            if current_time - report_timer >= 5:
-                robot_state.log(motor_positions, l2_trigger, r2_trigger, button_states, dpad_input)
-                report_timer = current_time
-
-            time.sleep(0.1)
-
-    except KeyboardInterrupt:
-        logging.info("Terminating program...")
-
-    finally:
-        # Safely stop all motors
-        dynamixel.set_velocity_group('All_Motors', {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0})
-        dynamixel.set_position_group('All_Motors', 180)
-        ps4_controller.close()
-        dynamixel.close()
-        logging.info("Shutdown complete.")
+        finally:
+            # Safely stop all motors
+            self.dynamixel.set_velocity_group('All_Motors', {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0})
+            self.dynamixel.set_position_group('All_Motors', 180)
+            self.ps4_controller.close()
+            self.dynamixel.close()
+            logging.info("Shutdown complete.")
 
 if __name__ == "__main__":
-    main()
+    robot = FLIKRobot()
+    robot.run()
+    
