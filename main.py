@@ -197,7 +197,9 @@ class FLIKRobot:
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 1
         logging.info(f"Initialised Gait 1, waiting for {wait_time} seconds")
-        return wait_time
+        await asyncio.sleep(wait_time)
+        self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
+        return
 
     async def gait_init_2(self):
         logging.info("Initialising Gait 2")
@@ -214,7 +216,9 @@ class FLIKRobot:
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 1
         logging.info(f"Initialised Gait 2, waiting for {wait_time} seconds")
-        return wait_time
+        await asyncio.sleep(wait_time)
+        self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
+        return
 
     async def gait_init_3(self):      
         logging.info("Initialsing Gait 3")
@@ -223,7 +227,9 @@ class FLIKRobot:
         self.set_position_group('Pivot_Group', 180)
         wait_time = 1
         logging.info(f"Initialised Gait 3, waiting for {wait_time} seconds")
-        return wait_time
+        await asyncio.sleep(wait_time)
+        self.set_operating_mode_group('Wheg_Group', 'multi_turn')
+        return
 
     async def gait_init_4(self):
         logging.info("Initialising Gait 4")
@@ -232,7 +238,9 @@ class FLIKRobot:
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 1
         logging.info(f"Initialised Gait 4, waiting for {wait_time} seconds")
-        return wait_time
+        await asyncio.sleep(wait_time)
+        self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
+        return
         
     async def gait_1(self):
         """Execute Gait 1 and return how long to wait before the next step."""
@@ -248,7 +256,7 @@ class FLIKRobot:
 
             # Calculate wait time based on RPM (example formula: degrees moved / (6 * RPM))
             wait_time = 180 / (6 * self.wheg_rpm)
-            logging.info(f"Gait 1 step executed at {self.wheg_rpm:.2f}, wait for {wait_time:.2f} seconds")
+            logging.info(f"Gait 1 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
 
@@ -368,9 +376,7 @@ class FLIKRobot:
                 if self.gait_change_requested:
                     # Initialise the new gait (with a 2-second wait)
                     init_gait_function = self.gait_init_methods[self.next_gait_index]
-                    wait_time = await init_gait_function()  # Initialize the new gait
-                    await asyncio.sleep(wait_time)  # Wait for initialisation
-
+                    await init_gait_function()  # Initialise the new gait
                     # Update current gait index
                     self.current_gait_index = self.next_gait_index
                     self.gait_change_requested = False  # Reset the request flag
