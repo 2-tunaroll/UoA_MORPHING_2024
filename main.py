@@ -142,6 +142,7 @@ class FLIKRobot:
         # Implement smooth transition to target RPM
         if target_rpm > self.wheg_rpm:
             self.wheg_rpm = min(self.wheg_rpm + self.SMOOTHNESS, target_rpm)
+            self.wheg_rpm = max(self.wheg_rpm, self.MIN_RPM)
         else:
             self.wheg_rpm = max(self.wheg_rpm - self.SMOOTHNESS, target_rpm)
         if trigger_value == -1.0: # Low trigger value, ensure velocity is 0
