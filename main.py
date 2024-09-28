@@ -432,36 +432,46 @@ class FLIKRobot:
 
                     # Ensure all values are converted to strings to avoid unsupported format errors
                     logging.info(f"{motor_id:<10}{str(position):<20}{str(velocity):<25}{str(load):<10}")
-                    
+
                 # Check for hardware errors and log them
                 error_detected = False
                 reboot_id = None
-                for motor_id, error_status in hardware_errors.items():
-                    if error_status != 0:  # Non-zero error status indicates a hardware error
-                        error_detected = True
-                        logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
-                        reboot_id = motor_id
-                        # Decode the hardware error based on the error status bits
-                        if error_status & 0b00000001:  # Bit 0 - Input Voltage Error
-                            logging.error(f"Motor {motor_id}: Input Voltage Error detected.")
-                        if error_status & 0b00000100:  # Bit 2 - Overheating Error
-                            logging.error(f"Motor {motor_id}: Overheating Error detected.")
-                        if error_status & 0b00001000:  # Bit 3 - Motor Encoder Error
-                            logging.error(f"Motor {motor_id}: Motor Encoder Error detected.")
-                        if error_status & 0b00010000:  # Bit 4 - Electrical Shock Error
-                            logging.error(f"Motor {motor_id}: Electrical Shock Error detected.")
-                        if error_status & 0b00100000:  # Bit 5 - Overload Error
-                            logging.error(f"Motor {motor_id}: Overload Error detected.")
+
+                # Ensure hardware_errors contains valid data
+                if hardware_errors:
+                    for motor_id, error_status_dict in hardware_errors.items():
+                        error_status = error_status_dict.get('hardware_error_status', 0)
+                        if error_status != 0:  # Non-zero error status indicates a hardware error
+                            error_detected = True
+                            logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
+                            reboot_id = motor_id
+                            
+                            # Decode the hardware error based on the error status bits
+                            if error_status & 0b00000001:  # Bit 0 - Input Voltage Error
+                                logging.error(f"Motor {motor_id}: Input Voltage Error detected.")
+                            if error_status & 0b00000100:  # Bit 2 - Overheating Error
+                                logging.error(f"Motor {motor_id}: Overheating Error detected.")
+                            if error_status & 0b00001000:  # Bit 3 - Motor Encoder Error
+                                logging.error(f"Motor {motor_id}: Motor Encoder Error detected.")
+                            if error_status & 0b00010000:  # Bit 4 - Electrical Shock Error
+                                logging.error(f"Motor {motor_id}: Electrical Shock Error detected.")
+                            if error_status & 0b00100000:  # Bit 5 - Overload Error
+                                logging.error(f"Motor {motor_id}: Overload Error detected.")
 
                 # If any hardware errors are detected, reset motors and change gait
-                if error_detected:
-                    logging.warning("Hardware error detected! Resetting motors and switching to gait 0...")
-                    self.dynamixel.reboot_motor(reboot_id)
-                    self.current_gait_index = 0  # Change back to gait 0
-                    self.gait_change_requested = True
-                    logging.info("Motors reset, and gait changed to 0.")
-                    # Wait for the specified log_interval before the next report
-                    await asyncio.sleep(log_interval)
+                if error_detected and reboot_id is not None:
+                    logging.warning(f"Hardware error detected on motor {reboot_id}. Rebooting motor and resetting gait...")
+                    reboot_success = self.dynamixel.reboot_motor(reboot_id)  # Reboot the motor
+
+                    if reboot_success:
+                        self.current_gait_index = 0  # Change back to gait 0
+                        self.gait_change_requested = True
+                        logging.info(f"Motor {reboot_id} reset, and gait changed to 0.")
+                    else:
+                        logging.error(f"Failed to reboot motor {reboot_id}. Check the motor connection or configuration.")
+
+                # Wait for the specified log_interval before the next report
+                await asyncio.sleep(log_interval)
 
             except Exception as e:
                 logging.error(f"Error while reporting robot states: {e}")
