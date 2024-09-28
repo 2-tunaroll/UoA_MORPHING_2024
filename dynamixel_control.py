@@ -464,17 +464,17 @@ class DynamixelController:
         except Exception as e:
             logging.error(f"Failed to set positions for group '{group_name}': {e}")
 
-    def set_velocity_group(self, group_name, velocities_dict):
+    def set_velocity_group(self, group_name, velocities):
         """
         Set target velocities for a group of motors.
-        
+
         :param group_name: The motor group name (from config)
-        :param velocities_dict: Dictionary with motor_id as key and target velocity as value.
+        :param velocities: Dictionary with motor_id as key and target velocity as value, or a single integer to set the same velocity for all motors.
         """
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
-        
+
         # Ensure the group is in velocity control mode
         self.set_operating_mode_group(group_name, 'velocity')
 
@@ -487,12 +487,23 @@ class DynamixelController:
             logging.error(f"Hard velocity limit not found in config.yaml")
             return
 
+        # If velocities is an integer, set the same velocity for all motors in the group
+        if isinstance(velocities, int):
+            velocities_dict = {motor_id: velocities for motor_id in self.motor_groups[group_name]}
+        elif isinstance(velocities, dict):
+            velocities_dict = velocities
+        else:
+            logging.error(f"Invalid velocities input: must be an int or dict, got {type(velocities)}")
+            return
+
+        # Check if any velocity exceeds the hard velocity limit and cap them if necessary
         for motor_id, velocity in velocities_dict.items():
             if velocity > hard_velocity_limit:
                 logging.warning(f"Velocity {velocity} for motor {motor_id} exceeds hard limit {hard_velocity_limit}. Limiting to {hard_velocity_limit}.")
                 velocities_dict[motor_id] = hard_velocity_limit
 
         try:
+            # Write the velocity values to the motors
             self.sync_write_group(group_name, 'goal_velocity', velocities_dict)
             logging.info(f"Target velocities set for group {group_name}: {velocities_dict}")
         except Exception as e:
