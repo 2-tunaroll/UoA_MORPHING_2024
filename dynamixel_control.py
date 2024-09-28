@@ -700,3 +700,36 @@ class DynamixelController:
             logging.info("Port closed successfully.")
         except Exception as e:
             logging.error(f"Failed to close the port: {e}")
+
+    def reboot_motor(self, motor_id):
+        """
+        Reboot a specific motor and re-enable torque.
+        
+        :param motor_id: The ID of the motor to reboot.
+        :return: True if successful, False if an error occurs.
+        """
+        try:
+            # Send the reboot instruction to the motor
+            result, error = self.packet_handler.reboot(self.port_handler, motor_id)
+            if result != 0:
+                # Log the error if the reboot command fails
+                logging.error(f"Failed to reboot motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+                return False
+
+            logging.info(f"Motor {motor_id} successfully rebooted.")
+
+            # Re-enable torque after reboot
+            torque_enable_address = 64  # Address of Torque Enable in Dynamixel
+            torque_enable_value = 1      # Value to enable torque
+
+            result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, torque_enable_address, torque_enable_value)
+            if result != 0:
+                logging.error(f"Failed to re-enable torque on motor {motor_id}: {self.packet_handler.getRxPacketError(error)}")
+                return False
+
+            logging.info(f"Torque successfully re-enabled on motor {motor_id}.")
+            return True
+
+        except Exception as e:
+            logging.error(f"Error rebooting motor {motor_id}: {e}")
+            return False
