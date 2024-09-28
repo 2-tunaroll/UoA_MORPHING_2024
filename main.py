@@ -198,11 +198,13 @@ class FLIKRobot:
                     logging.info(f"Front pivot angle set to {self.front_pivot_angle} degrees (ticks: {self.front_pivot_angle})")
                     logging.info(f"Rear pivot angle set to {self.rear_pivot_angle} degrees (ticks: {self.rear_pivot_angle})")
 
-                    await asyncio.sleep(0.25) #Control responsiveness
-            
+                    await asyncio.sleep(0.5) 
+                    
             except Exception as e:
                 logging.error(f"Error controlling pivots: {e}")
-                    
+            
+            await asyncio.sleep(0.25) #Control responsiveness
+        
     # Define the initialization for each gait (for whegs only, pivots are disabled)
     async def gait_init_1(self):
         logging.info("Initialising Gait 1")
