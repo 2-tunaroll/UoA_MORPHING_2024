@@ -94,9 +94,11 @@ class FLIKRobot:
         self.pivot_step = self.config['pivot_parameters']['pivot_step']
         self.wheg_rpm = self.config['wheg_parameters']['min_rpm']
         self.current_gait_index = 0
+        self.next_gait_index = 0
         self.total_gaits = len(self.config['gaits'])
         self.emergency_stop_activated = False
         self.report_timer = time.time()
+        self.gait_change_requested = True
 
         # Gait parameters
         self.odd_even = 0
@@ -186,13 +188,16 @@ class FLIKRobot:
         logging.info(f"Rear pivot angle set to {self.rear_pivot_angle} degrees (ticks: {self.rear_pivot_angle})")
         
     # Define the initialization for each gait (for whegs only, pivots are disabled)
-    def gait_init_1(self):
+    async def gait_init_1(self):
         logging.info("Initialising Gait 1")
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
+        wait_time = 1
+        logging.info(f"Initialised Gait 1, waiting for {wait_time} seconds")
+        return wait_time
 
-    def gait_init_2(self):
+    async def gait_init_2(self):
         logging.info("Initialising Gait 2")
         self.wheg_rpm = 0
         positions = { # Setup dict with initial position for each wheg
@@ -205,165 +210,230 @@ class FLIKRobot:
         }
         self.dynamixel.set_position_group('Wheg_Group', positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
+        wait_time = 1
+        logging.info(f"Initialised Gait 2, waiting for {wait_time} seconds")
+        return wait_time
 
-    def gait_init_3(self):      
+    async def gait_init_3(self):      
         logging.info("Initialsing Gait 3")
         self.wheg_rpm = 0
         self.set_position_group('Wheg_Group', 180)
         self.set_position_group('Pivot_Group', 180)
+        wait_time = 1
+        logging.info(f"Initialised Gait 3, waiting for {wait_time} seconds")
+        return wait_time
 
-
-    def gait_init_4(self):
+    async def gait_init_4(self):
         logging.info("Initialising Gait 4")
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
-
+        wait_time = 1
+        logging.info(f"Initialised Gait 4, waiting for {wait_time} seconds")
+        return wait_time
         
-    # Define multiple gaits (for whegs only, pivots are disabled)
-    def gait_1(self, wheg_rpm, button_states, dpad_input):
+    async def gait_1(self):
+        """Execute Gait 1 and return how long to wait before the next step."""
         logging.debug("Executing Gait 1")
-
-        if wheg_rpm != 0:
-            # Set the velocity limit for all whegs based on controller input
-            self.dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
-
-            # Increase the position of the whegs in groups
-            increment = 180 # Increment by 180 degrees
+        self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
+        if self.wheg_rpm != 0:
+        
+            # Set the velocity limit for all whegs
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
+            increment = 180  # Example movement angle
             self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-        # Control pivots using the D-pad
-        self.control_pivots_with_dpad(dpad_input)
+            # Calculate wait time based on RPM (example formula: degrees moved / (6 * RPM))
+            wait_time = 180 / (6 * self.wheg_rpm)
+            logging.info(f"Gait 1 step executed, wait for {wait_time:.2f} seconds")
+            return wait_time
+        return 0  # No movement, no wait time
 
-    def gait_2(self, wheg_rpm, button_states, dpad_input):
+    async def gait_2(self):
+        """Execute Gait 2 and return how long to wait before the next step."""
         logging.debug("Executing Gait 2")
-        
-        if wheg_rpm != 0:
-            # Fast rpm based on the formula fastRPM = slowRPM*(fast_ang/slow_ang), use the odd_even variable to alternate between the two whegs letting the robot complete half cycles while checking for speed
-            if self.odd_even % 2 == 0:
-                logging.debug(f"Odd gait cycle")
-                rpm_1 = wheg_rpm
-                rpm_2 = wheg_rpm*(self.gait_parameters['gait_2']['fast_ang']/self.gait_parameters['gait_2']['slow_ang'])
-                inc_1 = self.gait_parameters['gait_2']['slow_ang']
-                inc_2 = self.gait_parameters['gait_2']['fast_ang']
-            else: 
-                logging.debug(f"Even gait cycle")
-                rpm_1 = wheg_rpm*(self.gait_parameters['gait_2']['fast_ang']/self.gait_parameters['gait_2']['slow_ang'])
-                rpm_2 = wheg_rpm
-                inc_1 = self.gait_parameters['gait_2']['fast_ang']
-                inc_2 = self.gait_parameters['gait_2']['slow_ang']
-        
-            # Setup dict with initiaial profile velocities of each wheg
+        self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
+        if self.wheg_rpm != 0:
+            # Example RPM-based alternating gait logic
+            if self.robot_state.odd_even % 2 == 0:
+                rpm_1 = self.wheg_rpm
+                rpm_2 = self.wheg_rpm * (self.robot_state.gait_parameters['gait_2']['fast_ang'] / self.robot_state.gait_parameters['gait_2']['slow_ang'])
+                inc_1 = self.robot_state.gait_parameters['gait_2']['slow_ang']
+                inc_2 = self.robot_state.gait_parameters['gait_2']['fast_ang']
+            else:
+                rpm_1 = self.wheg_rpm * (self.robot_state.gait_parameters['gait_2']['fast_ang'] / self.robot_state.gait_parameters['gait_2']['slow_ang'])
+                rpm_2 = self.wheg_rpm
+                inc_1 = self.robot_state.gait_parameters['gait_2']['fast_ang']
+                inc_2 = self.robot_state.gait_parameters['gait_2']['slow_ang']
+
+            # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
-            self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)  # Set velocity based on input
-            # Setup dict with the position increment for each wheg
             increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
             self.dynamixel.increment_group_position('Wheg_Group', increments)
-            # Wait based on the formula time = Degrees/6*RPM
-            wait_time = self.gait_parameters['gait_2']['slow_ang']/(6*wheg_rpm)
-            logging.info(f"Waiting for rotation {wait_time} seconds at {wheg_rpm} RPM")
-            time.sleep(wait_time)
-            self.odd_even += 1
 
-        # Control pivots using the D-pad
-        self.control_pivots_with_dpad(dpad_input)
+            # Calculate wait time
+            wait_time = inc_1 / (6 * self.wheg_rpm)
+            self.robot_state.odd_even += 1
+            logging.info(f"Gait 2 step executed, wait for {wait_time:.2f} seconds")
+            return wait_time
+        return 0  # No movement, no wait time
 
-    def gait_3(self, wheg_rpm, button_states, dpad_input):
+    async def gait_3(self):
+        """Execute Gait 3 and return how long to wait before the next step."""
         logging.debug("Executing Gait 3")
-
-        if wheg_rpm != 0:
-            # Set the velocity limit for all whegs based on controller input
-            self.dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
-
-            # Increase the position of the whegs in groups
-            increment = 180 # Increment by 180 degrees
+        self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
+        if self.wheg_rpm != 0:
+            # Set the velocity limit for all whegs
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
+            increment = 180  # Example movement angle
             self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-        # Control pivots using the D-pad
-        self.control_pivots_with_dpad(dpad_input)
+            # Calculate wait time
+            wait_time = 180 / (6 * self.wheg_rpm)
+            logging.info(f"Gait 3 step executed, wait for {wait_time:.2f} seconds")
+            return wait_time
+        return 0  # No movement, no wait time
 
-    def gait_4(self, wheg_rpm, button_states, dpad_input):
+    async def gait_4(self):
+        """Execute Gait 4 and return how long to wait before the next step."""
         logging.debug("Executing Gait 4")
-        
-        if wheg_rpm != 0:
-            # Set the velocity limit for all whegs based on controller input
-            self.dynamixel.set_group_profile_velocity('Wheg_Group', wheg_rpm)  # Set velocity based on input
-
-            # Increase the position of the whegs in groups
-            increment = 180 # Increment by 180 degrees
+        self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
+        if self.wheg_rpm != 0:
+            # Set the velocity limit for all whegs
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
+            increment = 180  # Example movement angle
             self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-        # Control pivots using the D-pad
-        self.control_pivots_with_dpad(dpad_input)
+            # Calculate wait time
+            wait_time = 180 / (6 * self.wheg_rpm)
+            logging.info(f"Gait 4 step executed, wait for {wait_time:.2f} seconds")
+            return wait_time
+        return 0  # No movement, no wait time
 
-    # Emergency stop function
-    def emergency_stop(self):
-        logging.warning("Emergency stop activated")
-        self.dynamixel.set_group_velocity('All_Motors', 0)  # Stop all motors
+    async def async_emergency_stop(self):
+        """Asynchronously stop all motors during an emergency."""
+        logging.warning("Emergency stop activated! Stopping all motors asynchronously.")
+        self.dynamixel.set_group_velocity('All_Motors', 0)  # Stop all motors immediately
+        await asyncio.sleep(0.01)  # Let other tasks run (non-blocking)
 
+    async def check_inputs(self):
+        """Asynchronously check for controller inputs, including gait change."""
+        while True:
+            self.button_states = self.ps4_controller.get_button_input()
+            self.dpad_input = self.ps4_controller.get_dpad_input()
+            self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
 
-    def run(self):
-        try:
-            while True:
-                self.button_states = self.ps4_controller.get_button_input()
+            # Check for emergency stop (Circle button)
+            if 'circle' in self.button_states and self.button_states['circle']:
+                self.emergency_stop_activated = True
+                await self.async_emergency_stop()
 
-                # Check for controller disconnection
-                if self.button_states is None:
-                    logging.error("Controller is disconnected. Stopping robot.")
-                    self.emergency_stop()
-                    break
+            # Optionally, resume control after emergency stop (X button)
+            if 'x' in self.button_states and self.button_states['x'] and self.emergency_stop_activated:
+                self.emergency_stop_activated = False
+                logging.info("Emergency Stop Deactivated. Resuming control...")
 
-                # Emergency stop using Circle button
-                if self.button_states['circle']:
-                    self.emergency_stop_activated = True
-                    self.emergency_stop()
+            # Monitor Triangle (increase gait) and Square (decrease gait) buttons for gait change
+            if  self.button_states['triangle']:
+                self.next_gait_index = (self.current_gait_index + 1) % len(self.gait_methods)
+                self.gait_change_requested = True  # Request a gait change
+                logging.info(f"Triangle pressed. Preparing to change to next gait: {self.next_gait_index}")
 
-                # Resume control after emergency stop with X button
-                if self.button_states['x'] and self.emergency_stop_activated:
-                    self.emergency_stop_activated = False
-                    logging.info("Emergency Stop Deactivated. Resuming control...")
+            if  self.button_states['square']:
+                self.next_gait_index = (self.current_gait_index - 1) % len(self.gait_methods)
+                self.gait_change_requested = True  # Request a gait change
+                logging.info(f"Square pressed. Preparing to change to previous gait: {self.next_gait_index}")
 
+            # Check for controller disconnection
+            if self.button_states is None:
+                logging.error("Controller is disconnected. Stopping robot.")
+                self.emergency_stop()
+                break
+
+            await asyncio.sleep(0.01)  # Non-blocking wait to continue checking inputs
+
+    async def execute_gait(self):
+        """Execute the current gait asynchronously, adding a 2-second wait for initialization."""
+        while True:
+            if not self.emergency_stop_activated:
+                # Get the current gait function and execute it
+                gait_function = self.gait_methods[self.current_gait_index]
+                wait_time = await gait_function()
+
+                # Check if a gait change has been requested
+                if self.gait_change_requested:
+                    logging.info(f"Gait change requested. Switching to gait {self.next_gait_index}.")
+
+                    # Initialize the new gait (with a 2-second wait)
+                    init_gait_function = self.gait_init_methods[self.next_gait_index]
+                    wait_time = await init_gait_function()  # Initialize the new gait
+                    logging.info(f"Gait {self.next_gait_index} initialized. Waiting for {wait_time} seconds...")
+                    await asyncio.sleep(wait_time)  # Wait for initialisation
+
+                    # Update current gait index
+                    self.current_gait_index = self.next_gait_index
+                    self.gait_change_requested = False  # Reset the request flag
+                    logging.info(f"New gait {self.current_gait_index} is now active.")
+
+                if wait_time > 0:
+                    logging.info(f"Waiting for {wait_time:.2f} seconds before next gait step")
+                    await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
+            else:
+                logging.info("Emergency stop activated, gait execution paused.")
+
+            await asyncio.sleep(0.01)  # Small sleep to allow other tasks to run
+
+    async def report_states(self, log_interval=5):
+        """
+        Asynchronously collect and log critical information from the robot using bulk read.
+        
+        :param log_interval: Time (in seconds) between each report logging.
+        """
+        while True:
+            try:
+                # Perform a bulk read to gather critical motor information (e.g., positions, velocities)
                 motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
+                motor_velocities = self.dynamixel.bulk_read_group('All_Motors', ['present_velocity'])
+                
+                # Optionally, you can include other states like motor loads
+                motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
 
-                if not self.emergency_stop_activated:
-                    self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
-                    self.dpad_input = self.ps4_controller.get_dpad_input()
-                    logging.debug(f"Trigger inputs: L2={self.l2_trigger}, R2={self.r2_trigger}")
-                    logging.debug(f"D-Pad input: {self.dpad_input}")
+                # Log the collected data
+                logging.info(f"Motor Positions: {motor_positions}")
+                logging.info(f"Motor Velocities: {motor_velocities}")
+                logging.info(f"Motor Loads: {motor_loads}")
 
-                    # Adjust the speed of the whegs based on the right trigger
-                    wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
+                # Wait for the specified log_interval before the next report
+                await asyncio.sleep(log_interval)
 
-                    # Gait selection with Triangle and Square buttons
-                    if self.button_states['triangle']:
-                        self.current_gait_index = (self.current_gait_index + 1) % self.total_gaits
-                        self.gait_init_methods[self.current_gait_index]()
-                    elif self.button_states['square']:
-                        self.current_gait_index = (self.current_gait_index - 1) % self.total_gaits
-                        self.gait_init_methods[self.current_gait_index]()
+            except Exception as e:
+                logging.error(f"Error while reporting robot states: {e}")
+                # In case of an error, wait briefly before retrying
+                await asyncio.sleep(1)
 
-                self.gait_methods[self.current_gait_index](wheg_rpm, self.button_states, self.dpad_input)
-
-                # Report motor positions every 5 seconds
-                current_time = time.time()
-                if current_time - report_timer >= 5:
-                    self.log(motor_positions, self.l2_trigger, self.r2_trigger, self.button_states, self.dpad_input)
-                    report_timer = current_time
-
-                time.sleep(0.1)
-
+    async def main_loop(self):
+        """Main loop to run the asynchronous tasks, with safe shutdown on KeyboardInterrupt."""
+        try:
+            await asyncio.gather(
+                self.check_inputs(),    # Run input checking
+                self.execute_gait(),    # Run gait execution
+                self.report_states(5)   # Log states every 5 seconds (customizable interval)
+            )
+        
         except KeyboardInterrupt:
             logging.info("Terminating program...")
 
         finally:
-            # Safely stop all motors
-            self.dynamixel.set_velocity_group('All_Motors', {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0})
-            self.dynamixel.set_position_group('All_Motors', 180)
-            self.ps4_controller.close()
-            self.dynamixel.close()
+            # Safely stop all motors and close connections
+            logging.info("Initiating safe shutdown...")
+            self.dynamixel.set_velocity_group('All_Motors', {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0})  # Stop all motors
+            self.dynamixel.set_position_group('All_Motors', 180)  # Reset motor positions
+            self.ps4_controller.close()  # Close the PS4 controller connection
+            self.dynamixel.close()  # Close the Dynamixel controller connection
             logging.info("Shutdown complete.")
 
 if __name__ == "__main__":
     robot = FLIKRobot()
-    robot.run()
-    
+    robot.main_loop()
+
