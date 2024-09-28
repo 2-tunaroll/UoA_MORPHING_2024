@@ -363,12 +363,9 @@ class FLIKRobot:
 
                 # Check if a gait change has been requested
                 if self.gait_change_requested:
-                    logging.info(f"Gait change requested. Switching to gait {self.next_gait_index}.")
-
-                    # Initialize the new gait (with a 2-second wait)
+                    # Initialise the new gait (with a 2-second wait)
                     init_gait_function = self.gait_init_methods[self.next_gait_index]
                     wait_time = await init_gait_function()  # Initialize the new gait
-                    logging.info(f"Gait {self.next_gait_index} initialized. Waiting for {wait_time} seconds...")
                     await asyncio.sleep(wait_time)  # Wait for initialisation
 
                     # Update current gait index

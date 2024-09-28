@@ -17,9 +17,9 @@ motor_ids:
     REAR_PIVOT: 8
 
 wheg_parameters:
-  max_rpm: 15 # Maximum RPM for the wheg motors
+  max_rpm: 10 # Maximum RPM for the wheg motors
   min_rpm: 0   # Minimum RPM for the wheg motors
-  smoothness: 2.5  # Speed increase smoothness
+  smoothness: 2  # Speed increase smoothness
   initial_rpm: 0  # Initial speed for wheg motors
 
 pivot_parameters:
@@ -46,9 +46,9 @@ reporting:
   motor_position_interval: 5  # Seconds between logging motor positions
 
 velocity_limits:
-  Wheg_Group: 400  # Velocity limit for Wheg_Group
+  Wheg_Group: 200  # Velocity limit for Wheg_Group
   Pivot_Group: 20 # Velocity limit for Pivot_Group
-  All_Motors: 400
+  All_Motors: 200
 
 profile_velocities:
   Wheg_Group: 200  # Profile velocity for Wheg_Group
@@ -143,6 +143,9 @@ control_table: # Control table values for XC330 and XL430 from https://emanual.r
   status_return_level:
     address: 68
     length: 1
+  present_load:
+    address: 126
+    length: 2
 motor_groups: # Motor groups that can be controlled with sync and bulk write
   Pivot_Group: 
     - FRONT_PIVOT
