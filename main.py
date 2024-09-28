@@ -248,7 +248,7 @@ class FLIKRobot:
 
             # Calculate wait time based on RPM (example formula: degrees moved / (6 * RPM))
             wait_time = 180 / (6 * self.wheg_rpm)
-            logging.info(f"Gait 1 step executed, wait for {wait_time:.2f} seconds")
+            logging.info(f"Gait 1 step executed at {self.wheg_rpm:.2f}, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
 
