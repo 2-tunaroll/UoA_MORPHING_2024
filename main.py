@@ -435,5 +435,5 @@ class FLIKRobot:
 
 if __name__ == "__main__":
     robot = FLIKRobot()
-    robot.main_loop()
+    asyncio.run(robot.main_loop())
 
