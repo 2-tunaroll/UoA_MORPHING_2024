@@ -17,9 +17,9 @@ motor_ids:
     REAR_PIVOT: 8
 
 wheg_parameters:
-  max_rpm: 100 # Maximum RPM for the wheg motors
-  min_rpm: 15  # Minimum RPM for the wheg motors
-  smoothness: 5  # Speed increase smoothness
+  max_rpm: 50 # Maximum RPM for the wheg motors
+  min_rpm: 5  # Minimum RPM for the wheg motors
+  smoothness: 2  # Speed increase smoothness
   initial_rpm: 0  # Initial speed for wheg motors
 
 pivot_parameters:
@@ -51,12 +51,12 @@ velocity_limits:
   All_Motors: 200
 
 profile_velocities:
-  Wheg_Group: 15  # Profile velocity for Wheg_Group
-  Pivot_Group: 15 # Profile velocity for Pivot_Group
-  All_Motors: 15
+  Wheg_Group: 5  # Profile velocity for Wheg_Group
+  Pivot_Group: 5 # Profile velocity for Pivot_Group
+  All_Motors: 5
 
-hard_velocity_limit: 400  # The maximum velocity limit for any motor
-hard_profile_velocity_limit: 400  # The maximum profile velocity limit for any motor
+hard_velocity_limit: 100  # The maximum velocity limit for any motor
+hard_profile_velocity_limit: 100  # The maximum profile velocity limit for any motor
 
 position_limits:
   Hinges:
