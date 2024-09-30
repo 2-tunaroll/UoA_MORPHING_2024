@@ -327,7 +327,7 @@ class FLIKRobot:
                         wait_time = 3 # Wait for 3 seconds to allow for resetting the gait
                         logging.critical("Motors are not moving, reseting positions, and waiting for 3 seconds.")
                         self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
-                        return   # Wait for 3 second to allow for resetting the gait
+                        return wait_time  # Wait for 3 second to allow for resetting the gait
                     else:
                         logging.info("Motors are moving. Continuing with the gait.")
                         return 0.5  # No wait time, motors are moving correctly
