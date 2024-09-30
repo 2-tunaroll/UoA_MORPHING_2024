@@ -399,7 +399,7 @@ class FLIKRobot:
                     # Update current gait index
                     self.current_gait_index = self.next_gait_index
                     self.gait_change_requested = False  # Reset the request flag
-                    logging.info(f"New gait {self.current_gait_index} is now active.")
+                    logging.info(f"New gait {self.current_gait_index + 1} is now active.")
 
                 if wait_time > 0:
                     logging.info(f"Waiting for {wait_time:.2f} seconds before next gait step")
