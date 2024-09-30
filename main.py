@@ -143,6 +143,7 @@ class FLIKRobot:
         if target_rpm > self.wheg_rpm:
             self.wheg_rpm = min(self.wheg_rpm + self.SMOOTHNESS, target_rpm)
             self.wheg_rpm = max(self.wheg_rpm, self.MIN_RPM)
+            self.wehg_rpm = min(self.wheg_rpm, self.MAX_RPM)
         else:
             self.wheg_rpm = max(self.wheg_rpm - self.SMOOTHNESS, target_rpm)
         if trigger_value == -1.0: # Low trigger value, ensure velocity is 0
@@ -303,7 +304,7 @@ class FLIKRobot:
             # Calculate wait time
             wait_time = inc_1 / (6 * rpm_1)
             self.odd_even += 1
-            logging.info(f"Gait 2 step executed, wait for {wait_time:.2f} seconds")
+            logging.info(f"Gait 2 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
 
