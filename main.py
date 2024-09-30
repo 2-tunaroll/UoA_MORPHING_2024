@@ -363,7 +363,7 @@ class FLIKRobot:
 
             # Example alternating gait logic for three sets of whegs
             if self.odd_even % 3 == 0:
-                rpm_1 = self.wheg_rpm*(self.gait3_params['fast_ang'] / (self.gait3_params['slow_ang']*2))
+                rpm_1 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
                 rpm_2 = self.wheg_rpm
                 rpm_3 = self.wheg_rpm
                 inc_1 = self.gait3_params['fast_ang']
@@ -371,7 +371,7 @@ class FLIKRobot:
                 inc_3 = self.gait3_params['slow_ang']
             elif self.odd_even % 3 == 1:
                 rpm_1 = self.wheg_rpm
-                rpm_2 = self.wheg_rpm*(self.gait3_params['fast_ang'] / (self.gait3_params['slow_ang']*2))
+                rpm_2 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
                 rpm_3 = self.wheg_rpm
                 inc_1 = self.gait3_params['slow_ang']
                 inc_2 = self.gait3_params['fast_ang']
@@ -379,7 +379,7 @@ class FLIKRobot:
             else:
                 rpm_1 = self.wheg_rpm
                 rpm_2 = self.wheg_rpm
-                rpm_3 = self.wheg_rpm*(self.gait3_params['fast_ang'] / (self.gait3_params['slow_ang']*2))
+                rpm_3 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
                 inc_1 = self.gait3_params['slow_ang']
                 inc_2 = self.gait3_params['slow_ang']
                 inc_3 = self.gait3_params['fast_ang']
