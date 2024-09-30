@@ -57,8 +57,8 @@ gaits:
     min_rpm: 1
     max_rpm: 10
     smoothness: 2
-    tolerance: 5
-    delay: 0.1
+    tolerance: 10
+    delay: 0.025
 
 reporting:
   motor_position_interval: 10  # Seconds between logging motor positions
