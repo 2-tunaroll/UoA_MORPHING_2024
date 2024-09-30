@@ -77,7 +77,8 @@ class FLIKRobot:
     
     def reverse_direction(self):
         # Reverse the direction of the whegs
-        self.dynamixel.set_drive_mode_group('All_Whegs', not self.dynamixel.get_drive_mode_group('All_Whegs'))
+        current_direction = self.dynamixel.bulk_read_group('All_Whegs', ['drive_mode'])
+        self.dynamixel.set_drive_mode_group('All_Whegs', current_direction)
         logging.warning("Reversed the direction of all whegs")
         self.direction_change_requested = False
 
