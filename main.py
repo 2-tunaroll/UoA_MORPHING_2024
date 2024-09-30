@@ -316,14 +316,14 @@ class FLIKRobot:
                     for motor_id, pos_data in new_positions.items()
                 }
 
-            # Check if the motors are still moving
-            if all(abs(new_positions[motor_id] - current_positions[motor_id]) == 0 for motor_id in new_positions.keys()):
-                logging.critical("Motors are not moving. Resetting the gait.")
-                self.gait_change_requested = True
-                return 1  # Wait for 1 second to allow for resetting the gait
-            else:
-                logging.info("Motors are moving. Continuing with the gait.")
-                return 0  # No wait time, motors are moving correctly
+                # Check if the motors are still moving
+                if all(abs(new_positions[motor_id] - current_positions[motor_id]) == 0 for motor_id in new_positions.keys()):
+                    logging.critical("Motors are not moving. Resetting the gait.")
+                    self.gait_change_requested = True
+                    return 1  # Wait for 1 second to allow for resetting the gait
+                else:
+                    logging.info("Motors are moving. Continuing with the gait.")
+                    return 0  # No wait time, motors are moving correctly
 
             # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
@@ -399,12 +399,12 @@ class FLIKRobot:
             if  self.button_states['triangle']:
                 self.next_gait_index = (self.current_gait_index + 1) % len(self.gait_methods)
                 self.gait_change_requested = True  # Request a gait change
-                logging.info(f"Triangle pressed. Preparing to change to next gait: {self.next_gait_index}")
+                logging.info(f"Triangle pressed. Preparing to change to next gait: {self.next_gait_index+1}")
 
             if  self.button_states['square']:
                 self.next_gait_index = (self.current_gait_index - 1) % len(self.gait_methods)
                 self.gait_change_requested = True  # Request a gait change
-                logging.info(f"Square pressed. Preparing to change to previous gait: {self.next_gait_index}")
+                logging.info(f"Square pressed. Preparing to change to previous gait: {self.next_gait_index+1}")
 
             # Check for controller disconnection
             if self.button_states is None:
