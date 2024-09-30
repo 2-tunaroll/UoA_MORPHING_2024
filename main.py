@@ -538,7 +538,7 @@ class FLIKRobot:
                 hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
 
                 # Logging system with load conversion
-                logging.info(f"{'Motor':<10}{'Position (ticks)':<20}{'Position (degrees)':<25}{'Velocity (RPM)':<20}{'Load (%)':<10}")
+                logging.info(f"{'Motor':<10}{'Position (degrees)':<25}{'Velocity (RPM)':<20}{'Load (%)':<10}")
 
                 for motor_id in motor_positions.keys():
                     position_ticks = motor_positions[motor_id].get('present_position', 'N/A')
@@ -547,13 +547,13 @@ class FLIKRobot:
 
                     # Convert position from ticks to degrees
                     if isinstance(position_ticks, (int, float)):
-                        position_degrees = (position_ticks * 360) / 4096
+                        position_degrees = ((position_ticks * 360) / 4096) % 359
                     else:
                         position_degrees = 'N/A'
 
                     # Convert velocity from ticks/sec to RPM
                     if isinstance(velocity, (int, float)):
-                        velocity_rpm = (velocity * 60) / 4096
+                        velocity_rpm = (velocity * 0.229)
                     else:
                         velocity_rpm = 'N/A'
 
@@ -567,7 +567,7 @@ class FLIKRobot:
                         load_signed = 'N/A'
 
                     # Log the motor information
-                    logging.info(f"{motor_id:<10}{position_ticks:<20}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_signed:<10}")
+                    logging.info(f"{motor_id:<10}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_signed:<10}")
 
                 # Check for hardware errors and log them
                 error_detected = False

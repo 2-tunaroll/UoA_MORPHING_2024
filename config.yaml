@@ -49,16 +49,16 @@ gaits:
     tolerance: 3 # This is in degrees, whegs must be within  this marging of positions before continuing with the next itteration
     delay: 0.25 # This is the addition wait time in seconds to allow for motors to finish moving
   gait_3:
-    fast_ang: 300
-    slow_ang: 30
+    fast_ang: 280
+    slow_ang: 40
     low_pos: 150
     mid_pos: 180
     high_pos: 210
     min_rpm: 1
-    max_rpm: 5
+    max_rpm: 10
     smoothness: 1
-    tolerance: 3
-    delay: 0.25
+    tolerance: 5
+    delay: 0.05
 
 reporting:
   motor_position_interval: 10  # Seconds between logging motor positions
