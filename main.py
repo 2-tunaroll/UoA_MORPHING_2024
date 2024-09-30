@@ -311,7 +311,7 @@ class FLIKRobot:
                 ):
                     logging.warning(f"Motors are not in the correct positions for Gait 2. Positions: {current_positions}")
                     logging.warning("Waiting for 1 second before checking for movement")
-                    await asyncio.sleep(0.01)
+                    await asyncio.sleep(0.1)
 
                     # Get the current motor positions again after waiting
                     new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
@@ -466,17 +466,35 @@ class FLIKRobot:
                 motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
                 hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
 
-                # Log the motor data in a table format
-                logging.info(f"\n{'Motor':<10}{'Position (ticks)':<20}{'Velocity (ticks/sec)':<25}{'Load (%)':<10}")
+                # Logging system with load conversion
+                logging.info(f"\n{'Motor':<10}{'Position (ticks)':<20}{'Position (degrees)':<25}{'Velocity (RPM)':<20}{'Load (%)':<10}")
 
                 for motor_id in motor_positions.keys():
-                    # Extract the actual values from the dictionaries
-                    position = motor_positions[motor_id].get('present_position', 'N/A')
+                    position_ticks = motor_positions[motor_id].get('present_position', 'N/A')
                     velocity = motor_velocities[motor_id].get('present_velocity', 'N/A')
                     load = motor_loads[motor_id].get('present_load', 'N/A') if motor_loads else 'N/A'
 
-                    # Log the values with proper formatting
-                    logging.info(f"{motor_id:<10}{position:<20}{velocity:<25}{load:<10}")
+                    # Convert position from ticks to degrees
+                    if isinstance(position_ticks, (int, float)):
+                        position_degrees = (position_ticks * 360) / 4096
+                    else:
+                        position_degrees = 'N/A'
+
+                    # Convert velocity from ticks/sec to RPM
+                    if isinstance(velocity, (int, float)):
+                        velocity_rpm = (velocity * 60) / 4096
+                    else:
+                        velocity_rpm = 'N/A'
+
+                    # Convert load to signed 16-bit
+                    if isinstance(load, (int, float)):
+                        if load > 32767:
+                            load_signed = load - 65536
+                    else:
+                        load_signed = 'N/A'
+
+                    # Log the motor information
+                    logging.info(f"{motor_id:<10}{position_ticks:<20}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_signed:<10}")
 
                 # Check for hardware errors and log them
                 error_detected = False
