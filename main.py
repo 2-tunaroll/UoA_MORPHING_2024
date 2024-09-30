@@ -426,10 +426,6 @@ class FLIKRobot:
         while True:
             if not self.emergency_stop_activated:
 
-                # Get the current gait function and execute it
-                gait_function = self.gait_methods[self.current_gait_index]
-                wait_time = await gait_function()
-
                 # Check if a gait change has been requested
                 if self.gait_change_requested:
                     # Initialise the new gait (with a 2-second wait)
@@ -439,6 +435,10 @@ class FLIKRobot:
                     self.current_gait_index = self.next_gait_index
                     logging.info(f"New gait {self.current_gait_index + 1} is now active.")
 
+                # Get the current gait function and execute it
+                gait_function = self.gait_methods[self.current_gait_index]
+                wait_time = await gait_function()
+                
                 if wait_time > 0:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
