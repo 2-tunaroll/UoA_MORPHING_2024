@@ -104,6 +104,7 @@ class FLIKRobot:
         self.odd_even = 0
         self.gait_parameters = {}
         self.gait2_params = self.config['gaits'].get('gait_2', {})
+        self.gait3_params = self.config['gaits'].get('gait_3', {})
 
         self.gait_init_methods = {
             0: self.gait_init_1,
@@ -225,6 +226,7 @@ class FLIKRobot:
         self.LOW_POS = self.gait2_params['low_pos']
         self.HIGH_POS = self.gait2_params['high_pos']
         self.TOLERANCE = self.gait2_params['tolerance']
+        self.odd_even = 0
         self.wheg_rpm = 0
         self.positions = { 1: self.LOW_POS, 2: self.HIGH_POS, 3: self.LOW_POS, 4: self.HIGH_POS, 5: self.LOW_POS, 6: self.HIGH_POS }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
@@ -239,7 +241,9 @@ class FLIKRobot:
         logging.info("Initialsing Gait 3")
         self.gait_change_requested = False  # Reset the request flag
         self.wheg_rpm = 0
-        self.set_position_group('Wheg_Group', 180)
+        self.odd_even = 0
+        self.positions = { 1: self.gait3_params['high_pos'], 2: self.gait2_params['mid_pos'], 3: self.gait3_params['low_pos'], 4: self.gait3_params['high_pos'], 5: self.gait3_params['mid_pos'], 6: self.gait3_params['low_pos']}
+        self.set_position_group('Wheg_Group', self.positions)
         self.set_position_group('Pivot_Group', 180)
         wait_time = 3
         logging.info(f"Initialised Gait 3, waiting for {wait_time} seconds")
@@ -350,17 +354,84 @@ class FLIKRobot:
         """Execute Gait 3 and return how long to wait before the next step."""
         logging.debug("Executing Gait 3")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm > 1 and self.gait_change_requested == False:
         
-            # Set the velocity limit for all whegs
-            self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
-            increment = 360  # Example movement angle
-            self.dynamixel.increment_group_position('Wheg_Group', increment)
+        if self.wheg_rpm > 1 and self.gait_change_requested == False:
 
-            # Calculate wait time based on RPM (example formula: degrees moved / (6 * RPM))
-            wait_time = increment / (6 * self.wheg_rpm)
-            logging.info(f"Gait 3 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
+            # Example alternating gait logic for three sets of whegs
+            if self.odd_even % 3 == 0:
+                rpm_1 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
+                rpm_2 = self.wheg_rpm
+                rpm_3 = self.wheg_rpm
+                inc_1 = self.gait3_params['fast_ang']
+                inc_2 = self.gait3_params['slow_ang']
+                inc_3 = self.gait3_params['slow_ang']
+            elif self.odd_even % 3 == 1:
+                rpm_1 = self.wheg_rpm
+                rpm_2 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
+                rpm_3 = self.wheg_rpm
+                inc_1 = self.gait3_params['slow_ang']
+                inc_2 = self.gait3_params['fast_ang']
+                inc_3 = self.gait3_params['slow_ang']
+            else:
+                rpm_1 = self.wheg_rpm
+                rpm_2 = self.wheg_rpm
+                rpm_3 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
+                inc_1 = self.gait3_params['slow_ang']
+                inc_2 = self.gait3_params['slow_ang']
+                inc_3 = self.gait3_params['fast_ang']
+            
+            # Get the current motor positions
+            current_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+
+            # Convert the positions from dict to degrees by extracting the 'present_position' key from the dict
+            current_positions = {
+                motor_id: (pos_data['present_position'] * (360 / 4096)) % 359
+                for motor_id, pos_data in current_positions.items()
+            }
+
+            # Check if all motors are within the tolerance on even steps
+            if self.odd_even % 3 == 0:
+                if not all(
+                    abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
+                    for motor_id in current_positions.keys()
+                ):
+                    logging.warning(f"Motors are not in the correct positions for Gait 3. Positions: {current_positions}")
+                    logging.warning("Waiting for 1 second before checking for movement")
+                    await asyncio.sleep(0.1)
+
+                    # Get the current motor positions again after waiting
+                    new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+
+                    # Convert the positions from dict to degrees
+                    new_positions = {
+                        motor_id: (pos_data['present_position'] * (360 / 4096)) % 359
+                        for motor_id, pos_data in new_positions.items()
+                    }
+
+                    # Check if the motors are still moving
+                    if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 1 for motor_id in new_positions.keys()):
+                        wait_time = 3  # Wait for 3 seconds to allow for resetting the gait
+                        logging.critical("Motors are not moving, resetting positions, and waiting for 3 seconds.")
+                        self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
+                        await asyncio.sleep(3)  # Wait for 3 second to allow for resetting the gait
+                        self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
+                    else:
+                        logging.info("Motors are moving. Continuing with the gait.")
+                        return 0.5  # No wait time, motors are moving correctly
+
+            # Set profile velocities for all whegs
+            velocities = {1: rpm_1, 2: rpm_2, 3: rpm_3, 4: rpm_1, 5: rpm_2, 6: rpm_3}
+            increments = {1: inc_1, 2: inc_2, 3: inc_3, 4: inc_1, 5: inc_2, 6: inc_3}
+
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
+            self.dynamixel.increment_group_position('Wheg_Group', increments)
+
+            # Calculate wait time based on the largest movement (300 degrees)
+            wait_time = (self.gait3_params['slow_angle'] / (6 * self.wheg_rpm)) + self.gait3_params['delay']
+            self.odd_even += 1
+            logging.info(f"Gait 3 step executed at {self.wheg_rpm:.2f} RPM, wait for {wait_time:.2f} seconds")
             return wait_time
+
         return 0  # No movement, no wait time
 
     async def gait_4(self):
