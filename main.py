@@ -396,7 +396,7 @@ class FLIKRobot:
             # Check if all motors are within the tolerance on even steps
             if self.odd_even % 3 == 0:
                 if not all(
-                    abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
+                    abs(current_positions[motor_id] - self.positions[motor_id]) < self.gait3_params['tolerance'] 
                     for motor_id in current_positions.keys()
                 ):
                     logging.warning(f"Motors are not in the correct positions for Gait 3. Positions: {current_positions}")
