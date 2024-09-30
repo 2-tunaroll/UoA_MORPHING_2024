@@ -222,7 +222,7 @@ class FLIKRobot:
         self.SMOOTHNESS = self.gait2_params['smoothness']
         self.LOW_POS = self.gait2_params['low_pos']
         self.HIGH_POS = self.gait2_params['high_pos']
-        self.TOLERANCE = self.gait2_params['tolerance']/100.0
+        self.TOLERANCE = self.gait2_params['tolerance']
         self.wheg_rpm = 0
         self.positions = { 1: self.LOW_POS, 2: self.HIGH_POS, 3: self.LOW_POS, 4: self.HIGH_POS, 5: self.LOW_POS, 6: self.HIGH_POS }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
