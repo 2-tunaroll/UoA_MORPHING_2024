@@ -75,6 +75,12 @@ class FLIKRobot:
         self.dynamixel.set_drive_mode_group('Left_Whegs', False)
         logging.info("Set the right side whegs to reverse direction")
     
+    def reverse_direction(self):
+        # Reverse the direction of the whegs
+        self.dynamixel.set_drive_mode_group('All_Whegs', not self.dynamixel.get_drive_mode_group('All_Whegs'))
+        logging.warning("Reversed the direction of all whegs")
+        self.direction_change_requested = False
+
     def setup_pivots(self):
         # Set position limits for the pivot motors
         self.dynamixel.set_position_limits_group('Pivot_Group', self.config['position_limits']['Hinges']['min_degrees'], self.config['position_limits']['Hinges']['max_degrees'])
@@ -99,6 +105,7 @@ class FLIKRobot:
         self.emergency_stop_activated = False
         self.report_timer = time.time()
         self.gait_change_requested = True
+        self.direction_change_requested = False
         self.allow_pivot_control = True
         # Gait parameters
         self.odd_even = 0
@@ -490,6 +497,10 @@ class FLIKRobot:
                 self.next_gait_index = (self.current_gait_index - 1) % len(self.gait_methods)
                 self.gait_change_requested = True  # Request a gait change
                 logging.info(f"Square pressed. Preparing to change to previous gait: {self.next_gait_index+1}")
+            
+            if  self.button_states['share']:
+                self.direction_change_requested = True # Request a direction change
+                logging.info(f"Share pressed. Reversing the direction of the whegs")
 
             # Check for controller disconnection
             if self.button_states is None:
@@ -516,6 +527,10 @@ class FLIKRobot:
                     # Update current gait index
                     self.current_gait_index = self.next_gait_index
                     logging.info(f"New gait {self.current_gait_index + 1} is now active.")
+                
+                if self.direction_change_requested:
+                    self.reverse_direction()
+                    logging.info("Direction of whegs reversed.")
 
                 if wait_time > 0:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
