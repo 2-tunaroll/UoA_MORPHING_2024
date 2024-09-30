@@ -76,17 +76,27 @@ class FLIKRobot:
         logging.info("Set the right side whegs to reverse direction")
     
     def reverse_direction(self):
-        # Reverse the direction of the whegs
+        # Read the current drive mode for all whegs
         direction = self.dynamixel.bulk_read_group('All_Whegs', ['drive_mode'])
+        
+        # Log the structure of the direction data to debug
+        logging.debug(f"Direction data: {direction}")
 
-        # Reverse the direction for each motor (0 -> 1, 1 -> 0)
-        reversed_direction = {motor_id: 0 if drive_mode['drive_mode'] == 1 else 1 
-                            for motor_id, drive_mode in direction.items()}
+        # Ensure the correct extraction of drive mode values
+        try:
+            # Reverse the direction for each motor (0 -> 1, 1 -> 0)
+            reversed_direction = {
+                motor_id: 0 if drive_mode.get('drive_mode', 0) == 1 else 1 
+                for motor_id, drive_mode in direction.items()
+            }
 
-        # Set the reversed drive mode for each motor
-        self.dynamixel.set_drive_mode_group('All_Whegs', reversed_direction)
+            # Set the reversed drive mode for each motor
+            self.dynamixel.set_drive_mode_group('All_Whegs', reversed_direction)
+            logging.warning("Reversed the direction of all whegs")
 
-        logging.warning("Reversed the direction of all whegs")
+        except Exception as e:
+            logging.error(f"Failed to reverse direction: {e}")
+        
         self.direction_change_requested = False
 
     def setup_pivots(self):
