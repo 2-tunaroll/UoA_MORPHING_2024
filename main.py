@@ -77,7 +77,7 @@ class FLIKRobot:
     
     def reverse_direction(self):
         # Read the current drive mode for all whegs
-        direction = self.dynamixel.bulk_read_group('All_Whegs', ['drive_mode'])
+        direction = self.dynamixel.bulk_read_group('All_Motors', ['drive_mode'])
         
         # Log the structure of the direction data to debug
         logging.debug(f"Direction data: {direction}")
