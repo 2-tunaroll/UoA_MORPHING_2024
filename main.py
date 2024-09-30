@@ -538,7 +538,7 @@ class FLIKRobot:
                 hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
 
                 # Logging system with load conversion
-                logging.info(f"\n{'Motor':<10}{'Position (ticks)':<20}{'Position (degrees)':<25}{'Velocity (RPM)':<20}{'Load (%)':<10}")
+                logging.info(f"{'Motor':<10}{'Position (ticks)':<20}{'Position (degrees)':<25}{'Velocity (RPM)':<20}{'Load (%)':<10}")
 
                 for motor_id in motor_positions.keys():
                     position_ticks = motor_positions[motor_id].get('present_position', 'N/A')
@@ -561,6 +561,8 @@ class FLIKRobot:
                     if isinstance(load, (int, float)):
                         if load > 32767:
                             load_signed = load - 65536
+                        else:
+                            load_signed = load
                     else:
                         load_signed = 'N/A'
 
