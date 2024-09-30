@@ -220,7 +220,7 @@ class FLIKRobot:
         logging.info("Initialising Gait 2")
         # Update the min and max RPM for this gait:
         self.MIN_RPM = 1
-        self.MAX_RPM = 10
+        self.MAX_RPM = 5
         self.SMOOTHNESS = 0.5
         self.wheg_rpm = 0
         positions = { # Setup dict with initial position for each wheg
