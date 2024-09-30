@@ -294,7 +294,7 @@ class FLIKRobot:
 
             # Convert the positions from dict to degrees by extracting the 'present_position' key from the dict
             current_positions = {
-                motor_id: pos_data['present_position'] * (360 / 4096) 
+                motor_id: (pos_data['present_position'] * (360 / 4096))%360
                 for motor_id, pos_data in current_positions.items()
             }
 
@@ -312,7 +312,7 @@ class FLIKRobot:
 
                 # Convert the positions from dict to degrees
                 new_positions = {
-                    motor_id: pos_data['present_position'] * (360 / 4096) 
+                    motor_id: (pos_data['present_position'] * (360 / 4096))%360
                     for motor_id, pos_data in new_positions.items()
                 }
 
