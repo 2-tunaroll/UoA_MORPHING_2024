@@ -240,6 +240,10 @@ class FLIKRobot:
     async def gait_init_3(self):      
         logging.info("Initialsing Gait 3")
         self.gait_change_requested = False  # Reset the request flag
+        # Update the min, max and smoothness for this gait
+        self.MIN_RPM = self.gait3_params['min_rpm']
+        self.MAX_RPM = self.gait3_params['max_rpm']
+        self.SMOOTHNESS = self.gait3_params['smoothness']
         self.wheg_rpm = 0
         self.odd_even = 0
         self.positions = { 1: self.gait3_params['high_pos'], 2: self.gait3_params['mid_pos'], 3: self.gait3_params['low_pos'], 4: self.gait3_params['high_pos'], 5: self.gait3_params['mid_pos'], 6: self.gait3_params['low_pos']}
