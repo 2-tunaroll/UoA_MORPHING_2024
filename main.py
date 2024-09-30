@@ -340,7 +340,7 @@ class FLIKRobot:
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time
-            wait_time = (inc_1 / (6 * rpm_1))+0.2
+            wait_time = (inc_1 / (6 * rpm_1))
             self.odd_even += 1
             logging.info(f"Gait 2 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
