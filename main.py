@@ -427,7 +427,7 @@ class FLIKRobot:
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time based on the largest movement (300 degrees)
-            wait_time = (self.gait3_params['slow_angle'] / (6 * self.wheg_rpm)) + self.gait3_params['delay']
+            wait_time = (self.gait3_params['slow_ang'] / (6 * self.wheg_rpm)) + self.gait3_params['delay']
             self.odd_even += 1
             logging.info(f"Gait 3 step executed at {self.wheg_rpm:.2f} RPM, wait for {wait_time:.2f} seconds")
             return wait_time
