@@ -426,13 +426,15 @@ class FLIKRobot:
 
                 # Log the motor data in a table format
                 logging.info(f"\n{'Motor':<10}{'Position (ticks)':<20}{'Velocity (ticks/sec)':<25}{'Load (%)':<10}")
-                for motor_id in motor_positions.keys():
-                    position = motor_positions.get(motor_id, 'N/A')
-                    velocity = motor_velocities.get(motor_id, 'N/A')
-                    load = motor_loads.get(motor_id, 'N/A') if motor_loads else 'N/A'
 
-                    # Ensure all values are converted to strings to avoid unsupported format errors
-                    logging.info(f"{motor_id:<10}{str(position):<20}{str(velocity):<25}{str(load):<10}")
+                for motor_id in motor_positions.keys():
+                    # Extract the actual values from the dictionaries
+                    position = motor_positions[motor_id].get('present_position', 'N/A')
+                    velocity = motor_velocities[motor_id].get('present_velocity', 'N/A')
+                    load = motor_loads[motor_id].get('present_load', 'N/A') if motor_loads else 'N/A'
+
+                    # Log the values with proper formatting
+                    logging.info(f"{motor_id:<10}{position:<20}{velocity:<25}{load:<10}")
 
                 # Check for hardware errors and log them
                 error_detected = False
