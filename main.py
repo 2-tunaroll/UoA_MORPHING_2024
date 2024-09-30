@@ -319,10 +319,10 @@ class FLIKRobot:
                     }
 
                     # Check if the motors are still moving
-                    if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 0.1 for motor_id in new_positions.keys()):
+                    if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 1 for motor_id in new_positions.keys()):
                         logging.critical("Motors are not moving, reset positions")
                         self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
-                        return 3  # Wait for 3 second to allow for resetting the gait
+                        return 0.5  # Wait for 0.5 second to allow for resetting the gait
                     else:
                         logging.info("Motors are moving. Continuing with the gait.")
                         return 0.5  # No wait time, motors are moving correctly
@@ -429,14 +429,14 @@ class FLIKRobot:
                     self.current_gait_index = self.next_gait_index
                     self.gait_change_requested = False  # Reset the request flag
                     logging.info(f"New gait {self.current_gait_index + 1} is now active.")
+                else:
+                    # Get the current gait function and execute it
+                    gait_function = self.gait_methods[self.current_gait_index]
+                    wait_time = await gait_function()
 
-                # Get the current gait function and execute it
-                gait_function = self.gait_methods[self.current_gait_index]
-                wait_time = await gait_function()
-
-                if wait_time > 0:
-                    logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
-                    await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
+                    if wait_time > 0:
+                        logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
+                        await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
             else:
                 logging.info("Emergency stop activated, gait execution paused.")
 
