@@ -205,6 +205,7 @@ class FLIKRobot:
     # Define the initialization for each gait (for whegs only, pivots are disabled)
     async def gait_init_1(self):
         logging.info("Initialising Gait 1")
+        self.gait_change_requested = False  # Reset the request flag
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
@@ -216,6 +217,7 @@ class FLIKRobot:
 
     async def gait_init_2(self):
         logging.info("Initialising Gait 2")
+        self.gait_change_requested = False  # Reset the request flag
         # Update the min and max RPM for this gait:
         self.MIN_RPM = self.gait2_params['min_rpm']
         self.MAX_RPM = self.gait2_params['max_rpm']
@@ -235,6 +237,7 @@ class FLIKRobot:
 
     async def gait_init_3(self):      
         logging.info("Initialsing Gait 3")
+        self.gait_change_requested = False  # Reset the request flag
         self.wheg_rpm = 0
         self.set_position_group('Wheg_Group', 180)
         self.set_position_group('Pivot_Group', 180)
@@ -246,6 +249,7 @@ class FLIKRobot:
 
     async def gait_init_4(self):
         logging.info("Initialising Gait 4")
+        self.gait_change_requested = False  # Reset the request flag
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
@@ -322,7 +326,7 @@ class FLIKRobot:
                     if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 1 for motor_id in new_positions.keys()):
                         logging.critical("Motors are not moving, reset positions")
                         self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
-                        return 0.5  # Wait for 0.5 second to allow for resetting the gait
+                        return 0.5  # Wait for 3 second to allow for resetting the gait
                     else:
                         logging.info("Motors are moving. Continuing with the gait.")
                         return 0.5  # No wait time, motors are moving correctly
@@ -420,6 +424,11 @@ class FLIKRobot:
         """Execute the current gait asynchronously, adding a 2-second wait for initialization."""
         while True:
             if not self.emergency_stop_activated:
+
+                # Get the current gait function and execute it
+                gait_function = self.gait_methods[self.current_gait_index]
+                wait_time = await gait_function()
+
                 # Check if a gait change has been requested
                 if self.gait_change_requested:
                     # Initialise the new gait (with a 2-second wait)
@@ -427,16 +436,11 @@ class FLIKRobot:
                     await init_gait_function()  # Initialise the new gait
                     # Update current gait index
                     self.current_gait_index = self.next_gait_index
-                    self.gait_change_requested = False  # Reset the request flag
                     logging.info(f"New gait {self.current_gait_index + 1} is now active.")
-                else:
-                    # Get the current gait function and execute it
-                    gait_function = self.gait_methods[self.current_gait_index]
-                    wait_time = await gait_function()
 
-                    if wait_time > 0:
-                        logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
-                        await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
+                if wait_time > 0:
+                    logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
+                    await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
             else:
                 logging.info("Emergency stop activated, gait execution paused.")
 
