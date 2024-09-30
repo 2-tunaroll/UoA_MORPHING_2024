@@ -298,32 +298,34 @@ class FLIKRobot:
                 for motor_id, pos_data in current_positions.items()
             }
 
-            # Check if not all motors are within the tolerance
-            if not all(
-                abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
-                for motor_id in current_positions.keys()
-            ):
-                logging.warning(f"Motors are not in the correct positions for Gait 2. Positions: {current_positions}")
-                logging.warning("Waiting for 1 second before checking for movement")
-                await asyncio.sleep(1)
+            # On even steps
+            if self.odd_even % 2 == 0:
+                # Check if not all motors are within the tolerance
+                if not all(
+                    abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
+                    for motor_id in current_positions.keys()
+                ):
+                    logging.warning(f"Motors are not in the correct positions for Gait 2. Positions: {current_positions}")
+                    logging.warning("Waiting for 1 second before checking for movement")
+                    await asyncio.sleep(0.01)
 
-                # Get the current motor positions again after waiting
-                new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+                    # Get the current motor positions again after waiting
+                    new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
 
-                # Convert the positions from dict to degrees
-                new_positions = {
-                    motor_id: (pos_data['present_position'] * (360 / 4096))%360
-                    for motor_id, pos_data in new_positions.items()
-                }
+                    # Convert the positions from dict to degrees
+                    new_positions = {
+                        motor_id: (pos_data['present_position'] * (360 / 4096))%360
+                        for motor_id, pos_data in new_positions.items()
+                    }
 
-                # Check if the motors are still moving
-                if all(abs(new_positions[motor_id] - current_positions[motor_id]) == 0 for motor_id in new_positions.keys()):
-                    logging.critical("Motors are not moving. Resetting the gait.")
-                    self.gait_change_requested = True
-                    return 1  # Wait for 1 second to allow for resetting the gait
-                else:
-                    logging.info("Motors are moving. Continuing with the gait.")
-                    return 0  # No wait time, motors are moving correctly
+                    # Check if the motors are still moving
+                    if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 0.1 for motor_id in new_positions.keys()):
+                        logging.critical("Motors are not moving, reset positions")
+                        self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
+                        return 3  # Wait for 3 second to allow for resetting the gait
+                    else:
+                        logging.info("Motors are moving. Continuing with the gait.")
+                        return 0.5  # No wait time, motors are moving correctly
 
             # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
