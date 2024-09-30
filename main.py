@@ -242,7 +242,7 @@ class FLIKRobot:
         self.gait_change_requested = False  # Reset the request flag
         self.wheg_rpm = 0
         self.odd_even = 0
-        self.positions = { 1: self.gait3_params['high_pos'], 2: self.gait2_params['mid_pos'], 3: self.gait3_params['low_pos'], 4: self.gait3_params['high_pos'], 5: self.gait3_params['mid_pos'], 6: self.gait3_params['low_pos']}
+        self.positions = { 1: self.gait3_params['high_pos'], 2: self.gait3_params['mid_pos'], 3: self.gait3_params['low_pos'], 4: self.gait3_params['high_pos'], 5: self.gait3_params['mid_pos'], 6: self.gait3_params['low_pos']}
         self.set_position_group('Wheg_Group', self.positions)
         self.set_position_group('Pivot_Group', 180)
         wait_time = 3
