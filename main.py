@@ -341,7 +341,7 @@ class FLIKRobot:
             wait_time = inc_1 / (6 * rpm_1)
             self.odd_even += 1
             logging.info(f"Gait 2 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
-            return wait_time
+            return wait_time+0.2
         return 0  # No movement, no wait time
 
     async def gait_3(self):
