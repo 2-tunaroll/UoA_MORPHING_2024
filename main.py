@@ -103,9 +103,7 @@ class FLIKRobot:
         # Gait parameters
         self.odd_even = 0
         self.gait_parameters = {}
-        self.gait_parameters['gait_2'] = {}
-        self.gait_parameters['gait_2']['slow_ang'] = self.config['gaits']['gait_2']['slow_ang']
-        self.gait_parameters['gait_2']['fast_ang'] = self.config['gaits']['gait_2']['fast_ang']
+        self.gait2_params = self.config['gaits'].get('gait_2', {})
 
         self.gait_init_methods = {
             0: self.gait_init_1,
@@ -219,9 +217,9 @@ class FLIKRobot:
     async def gait_init_2(self):
         logging.info("Initialising Gait 2")
         # Update the min and max RPM for this gait:
-        self.MIN_RPM = 1
-        self.MAX_RPM = 5
-        self.SMOOTHNESS = 0.5
+        self.MIN_RPM = self.gait2_params['min_rpm']
+        self.MAX_RPM = self.gait2_params['max_rpm']
+        self.SMOOTHNESS = self.gait2_params['smoothness']
         self.wheg_rpm = 0
         positions = { # Setup dict with initial position for each wheg
             1: 160,
@@ -286,14 +284,14 @@ class FLIKRobot:
             # Example RPM-based alternating gait logic
             if self.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
-                rpm_2 = self.wheg_rpm * (self.gait_parameters['gait_2']['fast_ang'] / self.gait_parameters['gait_2']['slow_ang'])
-                inc_1 = self.gait_parameters['gait_2']['slow_ang']
-                inc_2 = self.gait_parameters['gait_2']['fast_ang']
+                rpm_2 = self.wheg_rpm * (self.gait2_params['fast_ang'] / self.gait2_params['slow_ang'])
+                inc_1 = self.gait2_params['slow_ang']
+                inc_2 = self.gait2_params['fast_ang']
             else:
-                rpm_1 = self.wheg_rpm * (self.gait_parameters['gait_2']['fast_ang'] / self.gait_parameters['gait_2']['slow_ang'])
+                rpm_1 = self.wheg_rpm * (self.gait2_params['fast_ang'] / self.gait2_params['slow_ang'])
                 rpm_2 = self.wheg_rpm
-                inc_1 = self.gait_parameters['gait_2']['fast_ang']
-                inc_2 = self.gait_parameters['gait_2']['slow_ang']
+                inc_1 = self.gait2_params['fast_ang']
+                inc_2 = self.gait2_params['slow_ang']
 
             # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}

@@ -41,6 +41,9 @@ gaits:
   gait_2:
     slow_ang: 40
     fast_ang: 320
+    min_rpm: 1
+    max_rpm: 4.5 # This max value has been tested, greater than this the whegs do not have enough time to get around in multi-turn mode
+    smoothness: 0.5
 
 reporting:
   motor_position_interval: 5  # Seconds between logging motor positions
