@@ -298,7 +298,7 @@ class FLIKRobot:
 
             # Convert the positions from dict to degrees by extracting the 'present_position' key from the dict
             current_positions = {
-                motor_id: (pos_data['present_position'] * (360 / 4096))%360
+                motor_id: (pos_data['present_position'] * (360 / 4096))%359
                 for motor_id, pos_data in current_positions.items()
             }
 
@@ -318,7 +318,7 @@ class FLIKRobot:
 
                     # Convert the positions from dict to degrees
                     new_positions = {
-                        motor_id: (pos_data['present_position'] * (360 / 4096))%360
+                        motor_id: (pos_data['present_position'] * (360 / 4096))%359
                         for motor_id, pos_data in new_positions.items()
                     }
 
@@ -338,10 +338,10 @@ class FLIKRobot:
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time
-            wait_time = inc_1 / (6 * rpm_1)
+            wait_time = (inc_1 / (6 * rpm_1))+0.2
             self.odd_even += 1
             logging.info(f"Gait 2 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
-            return wait_time+0.2
+            return wait_time
         return 0  # No movement, no wait time
 
     async def gait_3(self):
