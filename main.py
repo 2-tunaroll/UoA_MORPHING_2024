@@ -91,7 +91,7 @@ class FLIKRobot:
             }
 
             # Set the reversed drive mode for each motor
-            self.dynamixel.set_drive_mode_group('All_Whegs', reversed_direction)
+            self.dynamixel.set_drive_mode_group('All_Motors', reversed_direction)
             logging.warning("Reversed the direction of all whegs")
 
         except Exception as e:
