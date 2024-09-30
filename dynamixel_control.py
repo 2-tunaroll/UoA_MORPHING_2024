@@ -348,7 +348,7 @@ class DynamixelController:
         :param group_name: The name of the motor group to set the profile velocity for.
         :param profile_velocity: Optional, can be an integer for all motors or a dictionary with motor IDs as keys and velocities as values.
         """
-        logging.info(f"Setting profile velocity for group {group_name}")
+        logging.debug(f"Setting profile velocity for group {group_name}")
         if group_name not in self.motor_groups:
             logging.error(f"Motor group {group_name} not found")
             return
@@ -567,7 +567,7 @@ class DynamixelController:
         logging.info(f"Incrementing motor positions by {increment_degrees} degrees for group '{group_name}'")
 
         # Ensure the motors are in the correct operating mode
-        logging.info(f"Checking operating mode for motors in group '{group_name}'...")
+        logging.debug(f"Checking operating mode for motors in group '{group_name}'...")
         operating_modes = self.bulk_read_group(group_name, ['operating_mode'])
         if operating_modes is None:
             logging.error(f"Failed to read operating modes for group '{group_name}'")
@@ -581,7 +581,7 @@ class DynamixelController:
                 break  # Set the mode for the entire group and continue
 
         # Read current positions
-        logging.info(f"Reading current positions for motors in group '{group_name}'...")
+        logging.debug(f"Reading current positions for motors in group '{group_name}'...")
         motor_data = self.bulk_read_group(group_name, ['present_position'])
         
         if motor_data is None:
@@ -645,7 +645,7 @@ class DynamixelController:
         # Sync write the new positions
         try:
             self.sync_write_group(group_name, 'goal_position', new_positions)
-            logging.info(f"Motor positions for group '{group_name}' incremented.")
+            logging.debug(f"Motor positions for group '{group_name}' incremented.")
         except Exception as e:
             logging.error(f"Failed to increment motor positions for group '{group_name}': {e}")
 

@@ -220,16 +220,12 @@ class FLIKRobot:
         self.MIN_RPM = self.gait2_params['min_rpm']
         self.MAX_RPM = self.gait2_params['max_rpm']
         self.SMOOTHNESS = self.gait2_params['smoothness']
+        self.LOW_POS = self.gait2_params['low_pos']
+        self.HIGH_POS = self.gait2_params['high_pos']
+        self.TOLERANCE = self.gait2_params['tolerance']/100.0
         self.wheg_rpm = 0
-        positions = { # Setup dict with initial position for each wheg
-            1: 160,
-            2: 200,
-            3: 160,
-            4: 200,
-            5: 160,
-            6: 200,
-        }
-        self.dynamixel.set_position_group('Wheg_Group', positions)
+        self.positions = { 1: self.LOW_POS, 2: self.HIGH_POS, 3: self.LOW_POS, 4: self.HIGH_POS, 5: self.LOW_POS, 6: self.HIGH_POS }
+        self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 3
         logging.info(f"Initialised Gait 2, waiting for {wait_time} seconds")
@@ -292,6 +288,28 @@ class FLIKRobot:
                 rpm_2 = self.wheg_rpm
                 inc_1 = self.gait2_params['fast_ang']
                 inc_2 = self.gait2_params['slow_ang']
+
+            # Get the current motor positons
+            current_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+            # Convert the positions to degrees
+            current_positions = {motor_id: pos * (360/4096) for motor_id, pos in current_positions.items()}
+            # Check if not all motors are within the tolerance
+            if not all(abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE for motor_id in current_positions.keys()):
+                logging.warning(f"Motors are not in the correct positions for Gait 2. Positions {current_positions}")
+                logging.warning(f"Waiting for 1 second before checking for moving")
+                await asyncio.sleep(1)
+                # Get the current motor positions again
+                new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+                # Convert the positions to degrees
+                new_positions = {motor_id: pos * (360/4096) for motor_id, pos in new_positions.items()}
+                # Check if the motors are still moving
+                if all(abs(new_positions[motor_id] - current_positions[motor_id]) == 0 for motor_id in new_positions.keys()):
+                    logging.critical("Motors are not moving. Resetting the gait")
+                    self.gait_change_requested = True
+                    return 1
+                else:
+                    logging.info("Motors are moving. Continuing with the gait")
+                    return 0
 
             # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
@@ -401,7 +419,7 @@ class FLIKRobot:
                     logging.info(f"New gait {self.current_gait_index + 1} is now active.")
 
                 if wait_time > 0:
-                    logging.info(f"Waiting for {wait_time:.2f} seconds before next gait step")
+                    logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
             else:
                 logging.info("Emergency stop activated, gait execution paused.")
