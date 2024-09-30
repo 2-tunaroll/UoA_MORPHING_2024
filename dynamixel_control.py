@@ -363,6 +363,7 @@ class DynamixelController:
         # If no profile_velocity provided, get it from config.yaml
         if profile_velocity is None:
             profile_velocity = self.config.get('profile_velocities', {}).get(group_name, None)
+            logging.info(f"Setting the profile velocity for group {group_name} from config.yaml: {profile_velocity}")
             if profile_velocity is None:
                 logging.error(f"Profile velocity for group {group_name} not found in config.yaml and no value was provided.")
                 return
