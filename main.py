@@ -263,7 +263,7 @@ class FLIKRobot:
         """Execute Gait 1 and return how long to wait before the next step."""
         logging.debug("Executing Gait 1")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm > 1:
+        if self.wheg_rpm > 1 and self.gait_change_requested == False:
         
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
@@ -280,7 +280,7 @@ class FLIKRobot:
         """Execute Gait 2 and return how long to wait before the next step."""
         logging.debug("Executing Gait 2")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm > 1:
+        if self.wheg_rpm > 1 and self.gait_change_requested == False:
             # Example RPM-based alternating gait logic
             if self.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
@@ -349,15 +349,16 @@ class FLIKRobot:
         """Execute Gait 3 and return how long to wait before the next step."""
         logging.debug("Executing Gait 3")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm > 1:
+        if self.wheg_rpm > 1 and self.gait_change_requested == False:
+        
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
-            increment = 180  # Example movement angle
+            increment = 360  # Example movement angle
             self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-            # Calculate wait time
-            wait_time = 180 / (6 * self.wheg_rpm)
-            logging.info(f"Gait 3 step executed, wait for {wait_time:.2f} seconds")
+            # Calculate wait time based on RPM (example formula: degrees moved / (6 * RPM))
+            wait_time = increment / (6 * self.wheg_rpm)
+            logging.info(f"Gait 3 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
 
@@ -365,18 +366,19 @@ class FLIKRobot:
         """Execute Gait 4 and return how long to wait before the next step."""
         logging.debug("Executing Gait 4")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
-        if self.wheg_rpm > 5:
+        if self.wheg_rpm > 1 and self.gait_change_requested == False:
+        
             # Set the velocity limit for all whegs
             self.dynamixel.set_group_profile_velocity('Wheg_Group', self.wheg_rpm)
-            increment = 180  # Example movement angle
+            increment = 360  # Example movement angle
             self.dynamixel.increment_group_position('Wheg_Group', increment)
 
-            # Calculate wait time
-            wait_time = 180 / (6 * self.wheg_rpm)
-            logging.info(f"Gait 4 step executed, wait for {wait_time:.2f} seconds")
+            # Calculate wait time based on RPM (example formula: degrees moved / (6 * RPM))
+            wait_time = increment / (6 * self.wheg_rpm)
+            logging.info(f"Gait 4 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
-
+    
     async def async_emergency_stop(self):
         """Asynchronously stop all motors during an emergency."""
         logging.warning("Emergency stop activated! Stopping all motors asynchronously.")
@@ -426,6 +428,10 @@ class FLIKRobot:
         while True:
             if not self.emergency_stop_activated:
 
+                # Get the current gait function and execute it
+                gait_function = self.gait_methods[self.current_gait_index]
+                wait_time = await gait_function()
+
                 # Check if a gait change has been requested
                 if self.gait_change_requested:
                     # Initialise the new gait (with a 2-second wait)
@@ -435,10 +441,6 @@ class FLIKRobot:
                     self.current_gait_index = self.next_gait_index
                     logging.info(f"New gait {self.current_gait_index + 1} is now active.")
 
-                # Get the current gait function and execute it
-                gait_function = self.gait_methods[self.current_gait_index]
-                wait_time = await gait_function()
-                
                 if wait_time > 0:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
