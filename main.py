@@ -123,6 +123,7 @@ class FLIKRobot:
         self.next_gait_index = 0
         self.total_gaits = len(self.config['gaits'])
         self.emergency_stop_activated = False
+        self.reboot_requested = False
         self.report_timer = time.time()
         self.gait_change_requested = True
         self.direction_change_requested = False
@@ -552,6 +553,10 @@ class FLIKRobot:
                     self.reverse_direction()
                     logging.info("Direction of whegs reversed.")
 
+                if self.reboot_requested:
+                    self.gait_change_requested = True
+                    self.next_gait_index = 0 # Set the next gait index to 0
+
                 if wait_time > 0:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
@@ -637,13 +642,12 @@ class FLIKRobot:
                 if error_detected and reboot_id is not None:
                     logging.warning(f"Hardware error detected on motor {reboot_id}. Rebooting motor and resetting gait...")
                     reboot_success = self.dynamixel.reboot_motor(reboot_id)  # Reboot the motor
-
-                    if reboot_success:
-                        self.next_gait_index = 0  # Change back to gait 0
-                        self.gait_change_requested = True
-                        logging.info(f"Motor {reboot_id} reset, and gait changed to 0.")
-                    else:
-                        logging.error(f"Failed to reboot motor {reboot_id}. Check the motor connection or configuration.")
+                    if reboot_success: # If reboot is successful, request a gait change
+                        logging.info(f"Motor {reboot_id} rebooted successfully.")
+                        self.reboot_requested = True
+                    else: # Emergency stop if reboot fails
+                        logging.warning(f"Warning - Motor {reboot_id} reboot failed. Executing emergency stop.")
+                        self.async_emergency_stop()
 
                 # Wait for the specified log_interval before the next report
                 await asyncio.sleep(log_interval)

@@ -745,33 +745,6 @@ class DynamixelController:
 
             logging.info(f"Motor {motor_id} successfully rebooted.")
 
-            # Set the operating mode back to position control mode for the one motor
-            try:
-                # Set operating mode to 3 (Position Control Mode for most Dynamixel motors)
-                operating_mode_value = 3  # Position Control Mode is usually represented by 3
-
-                # Retrieve the control table address for 'operating_mode' (typically address 11 for XC430, XL430 motors)
-                operating_mode_address = self.control_table.get('operating_mode', {}).get('address', 11)
-
-                # Write the operating mode to the motor
-                result, error = self.packet_handler.write1ByteTxRx(self.port_handler, motor_id, operating_mode_address, operating_mode_value)
-
-                if result != COMM_SUCCESS:
-                    logging.error(f"Failed to set motor {motor_id} to position control mode: {self.packet_handler.getTxRxResult(result)}")
-                elif error != 0:
-                    logging.error(f"Error setting motor {motor_id} to position control mode: {self.packet_handler.getRxPacketError(error)}")
-                else:
-                    logging.info(f"Motor {motor_id} successfully set to position control mode.")
-
-            except Exception as e:
-                logging.error(f"Error setting motor {motor_id} to position control mode: {e}")
-                return True
-            
-            # Enable torque for the motor that had the error after the reboot
-            torque_values = {motor_id: 1}  # Only enable torque for this specific motor
-            self.sync_write_group('All_Motors', 'torque_enable', torque_values)
-            logging.info(f"Torque enabled for motor {motor_id} after handling error.")
-
         except Exception as e:
             logging.error(f"Error rebooting motor {motor_id}: {e}")
             return False
