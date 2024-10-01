@@ -238,7 +238,8 @@ class FLIKRobot:
         if self.reboot_requested:
             logging.info("Reboot requested, resetting torque all motors")
             self.reboot_requested = False
-            await asyncio.sleep(1) # Wait one second before continuing
+            await asyncio.sleep(1) # Wait one second
+            self.dynamixel.torque_on_group('All_Motors')
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
