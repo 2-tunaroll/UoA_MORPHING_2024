@@ -273,7 +273,7 @@ class FLIKRobot:
         self.SMOOTHNESS = self.gait3_params['smoothness']
         self.wheg_rpm = 0
         self.odd_even = 0
-        self.positions = { 1: self.gait3_params['high_pos'], 2: self.gait3_params['mid_pos'], 3: self.gait3_params['low_pos'], 4: self.gait3_params['high_pos'], 5: self.gait3_params['mid_pos'], 6: self.gait3_params['low_pos']}
+        self.positions = { 1: self.gait3_params['high_pos'], 2: self.gait3_params['low_pos'], 3: self.gait3_params['low_pos'], 4: self.gait3_params['high_pos'], 5: self.gait3_params['low_pos'], 6: self.gait3_params['low_pos']}
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 3
@@ -390,25 +390,25 @@ class FLIKRobot:
 
             # Example alternating gait logic for three sets of whegs
             if self.odd_even % 3 == 0:
-                rpm_1 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
+                rpm_1 = self.wheg_rpm
                 rpm_2 = self.wheg_rpm
                 rpm_3 = self.wheg_rpm
                 inc_1 = self.gait3_params['fast_ang']
                 inc_2 = self.gait3_params['slow_ang']
-                inc_3 = self.gait3_params['slow_ang']
+                inc_3 = 0
             elif self.odd_even % 3 == 1:
                 rpm_1 = self.wheg_rpm
-                rpm_2 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
+                rpm_2 = self.wheg_rpm
                 rpm_3 = self.wheg_rpm
-                inc_1 = self.gait3_params['slow_ang']
+                inc_1 = 0
                 inc_2 = self.gait3_params['fast_ang']
                 inc_3 = self.gait3_params['slow_ang']
             else:
                 rpm_1 = self.wheg_rpm
                 rpm_2 = self.wheg_rpm
-                rpm_3 = self.wheg_rpm*(self.gait3_params['fast_ang'] / self.gait3_params['slow_ang'])
+                rpm_3 = self.wheg_rpm
                 inc_1 = self.gait3_params['slow_ang']
-                inc_2 = self.gait3_params['slow_ang']
+                inc_2 = 0
                 inc_3 = self.gait3_params['fast_ang']
             
             # Get the current motor positions
@@ -458,7 +458,7 @@ class FLIKRobot:
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time based on the largest movement (300 degrees)
-            wait_time = (self.gait3_params['slow_ang'] / (6 * self.wheg_rpm)) + self.gait3_params['delay']
+            wait_time = (self.gait3_params['fast_ang'] / (6 * self.wheg_rpm)) + self.gait3_params['delay']
             self.odd_even += 1
             logging.info(f"Gait 3 step executed at {self.wheg_rpm:.2f} RPM, wait for {wait_time:.2f} seconds")
             return wait_time
