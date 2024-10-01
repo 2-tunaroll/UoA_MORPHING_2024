@@ -98,6 +98,7 @@ class FLIKRobot:
             logging.error(f"Failed to reverse direction: {e}")
         
         self.direction_change_requested = False
+        self.gait_change_requested = True
 
     def setup_pivots(self):
         # Set position limits for the pivot motors
