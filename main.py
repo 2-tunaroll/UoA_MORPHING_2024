@@ -77,7 +77,7 @@ class FLIKRobot:
     
     def reverse_direction(self):
         # Read the current drive mode for all whegs
-        direction = self.dynamixel.bulk_read_group('All_Motors', ['drive_mode'])
+        direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
         
         # Log the structure of the direction data to debug
         logging.info(f"Direction data: {direction}")
@@ -91,7 +91,7 @@ class FLIKRobot:
             }
 
             # Set the reversed drive mode for each motor
-            self.dynamixel.set_drive_mode_group('All_Motors', reversed_direction)
+            self.dynamixel.set_drive_mode_group('Wheg_Group', reversed_direction)
             logging.warning("Reversed the direction of all whegs")
 
         except Exception as e:
@@ -101,6 +101,7 @@ class FLIKRobot:
 
     def setup_pivots(self):
         # Set position limits for the pivot motors
+        self.dynamixel.set_drive_mode_group('Pivot_Group', False)
         self.dynamixel.set_position_limits_group('Pivot_Group', self.config['position_limits']['Hinges']['min_degrees'], self.config['position_limits']['Hinges']['max_degrees'])
         logging.info("Set position limits for the pivot motors")
 
