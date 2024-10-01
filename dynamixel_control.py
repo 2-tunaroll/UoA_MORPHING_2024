@@ -745,10 +745,6 @@ class DynamixelController:
 
             logging.info(f"Motor {motor_id} successfully rebooted.")
 
-            # Enable torque for the motor that had the error after the reboot
-            torque_values = {motor_id: 1}  # Only enable torque for this specific motor
-            self.sync_write_group('All_Motors', 'torque_enable', torque_values)
-            logging.info(f"Torque enabled for motor {motor_id} after handling error.")
             # Set the operating mode back to position control mode for the one motor
             try:
                 # Set operating mode to 3 (Position Control Mode for most Dynamixel motors)
@@ -770,6 +766,11 @@ class DynamixelController:
             except Exception as e:
                 logging.error(f"Error setting motor {motor_id} to position control mode: {e}")
                 return True
+            
+            # Enable torque for the motor that had the error after the reboot
+            torque_values = {motor_id: 1}  # Only enable torque for this specific motor
+            self.sync_write_group('All_Motors', 'torque_enable', torque_values)
+            logging.info(f"Torque enabled for motor {motor_id} after handling error.")
 
         except Exception as e:
             logging.error(f"Error rebooting motor {motor_id}: {e}")
