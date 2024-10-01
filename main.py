@@ -559,7 +559,7 @@ class FLIKRobot:
             increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: 0, 5: 0, 6: 0}
             self.dynamixel.set_group_profile_velocity('Left_Whegs', velocities)
             self.dynamixel.increment_group_position('Left_Whegs', increments)
-            self.dynamixel.set_goal_position_group('Right_Whegs', self.gait4_params['right_pos'])
+            self.dynamixel.set_position_group('Right_Whegs', self.gait4_params['right_pos'])
 
             # Calculate wait time
             wait_time = (inc_1 / (6 * rpm_1))+self.gait4_params['delay']
