@@ -59,18 +59,28 @@ gaits:
     smoothness: 4
     tolerance: 15
     delay: 0.025
+  gait_4:
+    fast_ang: 360
+    slow_ang: 360
+    low_pos: 160
+    high_pos: 200
+    min_rpm: 5
+    max_rpm: 15
+    smoothness: 5
+    tolerance: 15
+    delay: 0.025
 
 reporting:
   motor_position_interval: 10  # Seconds between logging motor positions
 
 velocity_limits:
   Wheg_Group: 200  # Velocity limit for Wheg_Group
-  Pivot_Group: 25 # Velocity limit for Pivot_Group
+  Pivot_Group: 4 # Velocity limit for Pivot_Group
   All_Motors: 200
 
 profile_velocities:
   Wheg_Group: 10  # Profile velocity for Wheg_Group
-  Pivot_Group: 5 # Profile velocity for Pivot_Group
+  Pivot_Group: 4 # Profile velocity for Pivot_Group
   All_Motors: 5
 
 hard_velocity_limit: 100  # The maximum velocity limit for any motor
