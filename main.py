@@ -299,27 +299,27 @@ class FLIKRobot:
         self.SMOOTHNESS = self.gait4_params['smoothness']
         self.odd_even = 0
         self.wheg_rpm = 0
-        # Read the current drive mode for all whegs
-        direction = self.dynamixel.bulk_read_group('Left_Whegs', ['drive_mode'])
+        # # Read the current drive mode for all whegs
+        # direction = self.dynamixel.bulk_read_group('Left_Whegs', ['drive_mode'])
         
-        # Log the structure of the direction data to debug
-        logging.info(f"Direction data: {direction}")
+        # # Log the structure of the direction data to debug
+        # logging.info(f"Direction data: {direction}")
 
-        # Ensure the correct extraction of drive mode values
-        try:
-            # Reverse the direction for each motor (0 -> 1, 1 -> 0)
-            reversed_direction = {
-                motor_id: 0 if drive_data['drive_mode'] == 1 else 1
-                for motor_id, drive_data in direction.items()
-            }
+        # # Ensure the correct extraction of drive mode values
+        # try:
+        #     # Reverse the direction for each motor (0 -> 1, 1 -> 0)
+        #     reversed_direction = {
+        #         motor_id: 0 if drive_data['drive_mode'] == 1 else 1
+        #         for motor_id, drive_data in direction.items()
+        #     }
 
-            # Set the reversed drive mode for each motor
-            self.dynamixel.set_drive_mode_group('Left_Whegs', reversed_direction)
-            logging.warning("Reversed the direction of the left whegs")
+        #     # Set the reversed drive mode for each motor
+        #     self.dynamixel.set_drive_mode_group('Left_Whegs', reversed_direction)
+        #     logging.warning("Reversed the direction of the left whegs")
 
-        except Exception as e:
-            logging.error(f"Failed to reverse direction: {e}")
-        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['low_pos'], 5: self.gait4_params['low_pos'], 6: self.gait4_params['low_pos'] }
+        # except Exception as e:
+        #     logging.error(f"Failed to reverse direction: {e}")
+        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['right_pos'], 5: self.gait4_params['right_pos'], 6: self.gait4_params['right_pos'] }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 3
@@ -507,13 +507,13 @@ class FLIKRobot:
             # Example RPM-based alternating gait logic
             if self.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
-                rpm_2 = 0
+                rpm_2 = self.wheg_rpm * (self.gait4_params['slow_ang'] / self.gait4_params['fast_ang'])
                 inc_1 = self.gait4_params['slow_ang']
-                inc_2 = 0
+                inc_2 = self.gait4_params['fast_ang']
             else:
-                rpm_1 = 0
+                rpm_1 = self.wheg_rpm * (self.gait4_params['slow_ang'] / self.gait4_params['fast_ang'])
                 rpm_2 = self.wheg_rpm
-                inc_1 = 0
+                inc_1 = self.gait4_params['fast_ang']
                 inc_2 = self.gait4_params['slow_ang']
 
             # Get the current motor positions
@@ -555,13 +555,13 @@ class FLIKRobot:
                     return 0.5  # No wait time, motors are moving correctly
 
             # Set profile velocities and increments
-            velocities = {1: rpm_1, 2: 0, 3: rpm_1, 4: rpm_2, 5: 0, 6: rpm_2}
-            increments = {1: inc_1, 2: 0, 3: inc_1, 4: inc_2, 5: 0, 6: inc_2}
+            velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: 0, 5: 0, 6: 0}
+            increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: 0, 5: 0, 6: 0}
             self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time
-            wait_time = (inc_1 / (6 * self.wehg_rpm))+self.gait4_params['delay']
+            wait_time = (inc_1 / (6 * rpm_1))+self.gait4_params['delay']
             self.odd_even += 1
             logging.info(f"Gait 4 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
