@@ -405,36 +405,17 @@ class DynamixelController:
         self.sync_write_group(group_name, 'torque_enable', torque_values)
         logging.debug(f"Torque disabled for group {group_name}")
 
-    def torque_on_group(self, group_or_motor):
-        """
-        Enable torque for all motors in a group or for a single motor.
+    def torque_on_group(self, group_name):
+        """Enable torque for all motors in the group."""
+        logging.info(f"Enabling torque for group {group_name}")
+        if group_name not in self.motor_groups:
+            logging.error(f"Motor group {group_name} not found")
+            return
 
-        :param group_or_motor: Either the name of the motor group (string) or an individual motor ID (int).
-        """
-        if isinstance(group_or_motor, str):
-            # Enable torque for all motors in the group
-            logging.info(f"Enabling torque for group '{group_or_motor}'")
-            if group_or_motor not in self.motor_groups:
-                logging.error(f"Motor group '{group_or_motor}' not found")
-                return
-
-            # Enable torque for each motor in the group
-            torque_values = {motor_id: 1 for motor_id in self.motor_groups[group_or_motor]}
-            self.sync_write_group(group_or_motor, 'torque_enable', torque_values)
-            logging.debug(f"Torque enabled for group '{group_or_motor}'")
-
-        elif isinstance(group_or_motor, int):
-            # Enable torque for an individual motor
-            logging.info(f"Enabling torque for motor ID {group_or_motor}")
-            try:
-                # Single motor torque enable
-                self.sync_write_single(group_or_motor, 'torque_enable', 1)
-                logging.debug(f"Torque enabled for motor ID {group_or_motor}")
-            except Exception as e:
-                logging.error(f"Failed to enable torque for motor {group_or_motor}: {e}")
-
-        else:
-            logging.error(f"Invalid input: {group_or_motor}. Must be a group name (string) or a motor ID (int).")
+        # Enable torque for each motor
+        torque_values = {motor_id: 1 for motor_id in self.motor_groups[group_name]}
+        self.sync_write_group(group_name, 'torque_enable', torque_values)
+        logging.debug(f"Torque enabled for group {group_name}")
 
     def set_position_group(self, group_name, positions):
         """
@@ -764,8 +745,10 @@ class DynamixelController:
 
             logging.info(f"Motor {motor_id} successfully rebooted.")
 
-            # Re-enable torque after reboot
-            self.torque_on_group(motor_id)
+            # Enable torque for the motor that had the error after the reboot
+            torque_values = {motor_id: 1}  # Only enable torque for this specific motor
+            self.dynamixel.sync_write_group('All_Motors', 'torque_enable', torque_values)
+            logging.info(f"Torque enabled for motor {motor_id} after handling error.")
 
         except Exception as e:
             logging.error(f"Error rebooting motor {motor_id}: {e}")
