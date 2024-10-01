@@ -553,10 +553,6 @@ class FLIKRobot:
                     self.reverse_direction()
                     logging.info("Direction of whegs reversed.")
 
-                if self.reboot_requested:
-                    self.gait_change_requested = True
-                    self.next_gait_index = 0 # Set the next gait index to 0
-
                 if wait_time > 0:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
@@ -645,6 +641,8 @@ class FLIKRobot:
                     if reboot_success: # If reboot is successful, request a gait change
                         logging.info(f"Motor {reboot_id} rebooted successfully.")
                         self.reboot_requested = True
+                        self.gait_change_requested = True
+                        self.next_gait_index = 0 # Set the next gait index to 0
                     else: # Emergency stop if reboot fails
                         logging.warning(f"Warning - Motor {reboot_id} reboot failed. Executing emergency stop.")
                         self.async_emergency_stop()
