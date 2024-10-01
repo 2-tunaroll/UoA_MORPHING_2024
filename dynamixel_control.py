@@ -744,6 +744,11 @@ class DynamixelController:
                 return False
 
             logging.info(f"Motor {motor_id} successfully rebooted.")
+
+            # Re-enable torque for the motor
+            torque_values = {motor_id: 1}
+            self.sync_write_group('reboot', 'torque_enable', torque_values)
+            logging.info(f"Torque re-enabled for motor {motor_id}")
             
             return True
 
