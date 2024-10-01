@@ -80,14 +80,14 @@ class FLIKRobot:
         direction = self.dynamixel.bulk_read_group('All_Motors', ['drive_mode'])
         
         # Log the structure of the direction data to debug
-        logging.debug(f"Direction data: {direction}")
+        logging.info(f"Direction data: {direction}")
 
         # Ensure the correct extraction of drive mode values
         try:
             # Reverse the direction for each motor (0 -> 1, 1 -> 0)
             reversed_direction = {
-                motor_id: 0 if drive_mode.get('drive_mode', 0) == 1 else 1 
-                for motor_id, drive_mode in direction.items()
+                motor_id: 0 if drive_data['drive_mode'] == 1 else 1
+                for motor_id, drive_data in direction.items()
             }
 
             # Set the reversed drive mode for each motor
