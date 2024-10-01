@@ -511,19 +511,32 @@ class DynamixelController:
             logging.error(f"Failed to set velocities for group {group_name}: {e}")
 
     def set_drive_mode_group(self, group_name, reverse_direction=False):
+        """
+        Set the drive mode for a group of motors. The direction can either be the same for all motors
+        (when reverse_direction is an int or bool) or specified per motor (when reverse_direction is a dict).
+        
+        :param group_name: The motor group name (from motor_groups configuration)
+        :param reverse_direction: Either a bool/int (same direction for all motors) or a dict (per motor control).
+        """
         motor_ids = self.motor_groups.get(group_name, [])
         if not motor_ids:
             logging.warning(f"No motors found for group '{group_name}'")
             return
 
-        drive_mode_value = 1 if reverse_direction else 0
-        logging.debug(f"Setting drive mode for group '{group_name}', reverse_direction={reverse_direction}, drive_mode_value={drive_mode_value}")
+        # Handle case where reverse_direction is a dict (per motor direction control)
+        if isinstance(reverse_direction, dict):
+            param_dict = reverse_direction
+        else:
+            # If reverse_direction is not a dict, apply the same drive mode to all motors
+            drive_mode_value = 1 if reverse_direction else 0
+            param_dict = {motor_id: drive_mode_value for motor_id in motor_ids}
+
+        logging.debug(f"Setting drive mode for group '{group_name}', reverse_direction={reverse_direction}, param_dict={param_dict}")
 
         # Disable torque before setting drive mode
         self.torque_off_group(group_name)
 
         # Sync write drive mode for all motors
-        param_dict = {motor_id: drive_mode_value for motor_id in motor_ids}
         try:
             logging.debug(f"Sync writing drive mode values: {param_dict}")
             self.sync_write_group(group_name, 'drive_mode', param_dict)
@@ -545,10 +558,12 @@ class DynamixelController:
             for motor_id, data in motor_data.items():
                 current_drive_mode = data.get('drive_mode', None)
                 logging.debug(f"Motor {motor_id} current drive mode read from bulk read: {current_drive_mode}")
-                if current_drive_mode != drive_mode_value:
-                    logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if reverse_direction else 'normal'}")
+                expected_drive_mode = param_dict.get(motor_id, None)
+
+                if current_drive_mode != expected_drive_mode:
+                    logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if expected_drive_mode == 1 else 'normal'}")
                 else:
-                    logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if reverse_direction else 'normal'}")
+                    logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if expected_drive_mode == 1 else 'normal'}")
         except Exception as e:
             logging.error(f"Failed to read drive mode for group {group_name}: {e}")
 
