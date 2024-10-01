@@ -749,6 +749,9 @@ class DynamixelController:
             torque_values = {motor_id: 1}  # Only enable torque for this specific motor
             self.sync_write_group('All_Motors', 'torque_enable', torque_values)
             logging.info(f"Torque enabled for motor {motor_id} after handling error.")
+            # Set the operating mode back to position control mode
+            self.set_operating_mode_group('All_Motors', 'position')
+            return True
 
         except Exception as e:
             logging.error(f"Error rebooting motor {motor_id}: {e}")
