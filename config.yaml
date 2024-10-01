@@ -64,7 +64,7 @@ gaits:
     slow_ang: 20
     low_pos: 155
     high_pos: 175
-    right_pos: 170
+    right_pos: 150
     min_rpm: 5
     max_rpm: 15
     smoothness: 5
