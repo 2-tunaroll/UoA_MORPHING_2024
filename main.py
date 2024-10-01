@@ -239,6 +239,7 @@ class FLIKRobot:
             self.rebbot_requested = False
             self.dynamixel.torque_off_group('All_Motors')
             self.dynamixel.torque_on_group('All_Motors')
+            await asyncio.sleep(1) # Wait one second
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
         self.dynamixel.set_position_group('Pivot_Group', 180)
