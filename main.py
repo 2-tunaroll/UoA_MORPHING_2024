@@ -237,6 +237,7 @@ class FLIKRobot:
         self.gait_change_requested = False  # Reset the request flag
         if self.reboot_requested:
             self.rebbot_requested = False
+            self.dynamixel.torque_off_group('All_Motors')
             self.dynamixel.torque_on_group('All_Motors')
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
