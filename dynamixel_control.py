@@ -747,7 +747,7 @@ class DynamixelController:
 
             # Enable torque for the motor that had the error after the reboot
             torque_values = {motor_id: 1}  # Only enable torque for this specific motor
-            self.dynamixel.sync_write_group('All_Motors', 'torque_enable', torque_values)
+            self.sync_write_group('All_Motors', 'torque_enable', torque_values)
             logging.info(f"Torque enabled for motor {motor_id} after handling error.")
 
         except Exception as e:
