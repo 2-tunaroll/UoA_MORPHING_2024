@@ -235,9 +235,11 @@ class FLIKRobot:
     async def gait_init_1(self):
         logging.info("Initialising Gait 1")
         self.gait_change_requested = False  # Reset the request flag
+        if self.reboot_requested:
+            self.rebbot_requested = False
+            await asyncio.sleep(3)
         self.wheg_rpm = 0
         self.dynamixel.set_position_group('Wheg_Group', 180)
-        self.dynamixel.torque_on_group('Pivot_Group')
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 3
         logging.info(f"Initialised Gait 1, waiting for {wait_time} seconds")
