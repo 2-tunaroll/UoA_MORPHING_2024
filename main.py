@@ -236,6 +236,7 @@ class FLIKRobot:
         logging.info("Initialising Gait 1")
         self.gait_change_requested = False  # Reset the request flag
         if self.reboot_requested:
+            logging.info("Reboot requested, resetting torque all motors")
             self.rebbot_requested = False
             self.dynamixel.torque_off_group('All_Motors')
             self.dynamixel.torque_on_group('All_Motors')
