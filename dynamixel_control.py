@@ -744,6 +744,8 @@ class DynamixelController:
                 return False
 
             logging.info(f"Motor {motor_id} successfully rebooted.")
+            
+            return True
 
         except Exception as e:
             logging.error(f"Error rebooting motor {motor_id}: {e}")
