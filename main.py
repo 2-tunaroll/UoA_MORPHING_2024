@@ -645,7 +645,7 @@ class FLIKRobot:
                         self.next_gait_index = 0 # Set the next gait index to 0
                     else: # Emergency stop if reboot fails
                         logging.warning(f"Warning - Motor {reboot_id} reboot failed. Executing emergency stop.")
-                        self.async_emergency_stop()
+                        await self.async_emergency_stop()
 
                 # Wait for the specified log_interval before the next report
                 await asyncio.sleep(log_interval)
