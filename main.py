@@ -507,11 +507,11 @@ class FLIKRobot:
             # Example RPM-based alternating gait logic
             if self.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
-                rpm_2 = self.wheg_rpm * (self.gait4_params['slow_ang'] / self.gait4_params['fast_ang'])
+                rpm_2 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
                 inc_1 = self.gait4_params['slow_ang']
                 inc_2 = self.gait4_params['fast_ang']
             else:
-                rpm_1 = self.wheg_rpm * (self.gait4_params['slow_ang'] / self.gait4_params['fast_ang'])
+                rpm_1 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
                 rpm_2 = self.wheg_rpm
                 inc_1 = self.gait4_params['fast_ang']
                 inc_2 = self.gait4_params['slow_ang']
