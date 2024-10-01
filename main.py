@@ -530,7 +530,7 @@ class FLIKRobot:
                 abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
                 for motor_id in current_positions.keys()
             ):
-                logging.warning(f"Motors are not in the correct positions for Gait 2. Positions: {current_positions}")
+                logging.warning(f"Motors are not in the correct positions for Gait 4. Positions: {current_positions}")
                 logging.warning("Waiting for 1 second before checking for movement")
                 await asyncio.sleep(0.1)
 
@@ -557,8 +557,9 @@ class FLIKRobot:
             # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: 0, 5: 0, 6: 0}
             increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: 0, 5: 0, 6: 0}
-            self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
-            self.dynamixel.increment_group_position('Wheg_Group', increments)
+            self.dynamixel.set_group_profile_velocity('Left_Whegs', velocities)
+            self.dynamixel.increment_group_position('Left_Whegs', increments)
+            self.dynamixel.set_goal_position_group('Right_Whegs', self.gait4_params['right_pos'])
 
             # Calculate wait time
             wait_time = (inc_1 / (6 * rpm_1))+self.gait4_params['delay']
