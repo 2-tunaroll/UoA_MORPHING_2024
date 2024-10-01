@@ -60,10 +60,10 @@ gaits:
     tolerance: 15
     delay: 0.025
   gait_4:
-    fast_ang: 330
-    slow_ang: 30
-    low_pos: 165
-    high_pos: 195
+    fast_ang: 340
+    slow_ang: 20
+    low_pos: 155
+    high_pos: 175
     right_pos: 170
     min_rpm: 5
     max_rpm: 15
