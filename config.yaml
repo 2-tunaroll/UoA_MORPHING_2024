@@ -17,7 +17,7 @@ motor_ids:
     REAR_PIVOT: 8
 
 wheg_parameters:
-  max_rpm: 20 # Maximum RPM for the wheg motors
+  max_rpm: 50 # Maximum RPM for the wheg motors
   min_rpm: 20  # Minimum RPM for the wheg motors
   smoothness: 10  # Speed increase smoothness
   initial_rpm: 0  # Initial speed for wheg motors
