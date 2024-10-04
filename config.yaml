@@ -17,8 +17,8 @@ motor_ids:
     REAR_PIVOT: 8
 
 wheg_parameters:
-  max_rpm: 50 # Maximum RPM for the wheg motors
-  min_rpm: 10  # Minimum RPM for the wheg motors
+  max_rpm: 20 # Maximum RPM for the wheg motors
+  min_rpm: 20  # Minimum RPM for the wheg motors
   smoothness: 10  # Speed increase smoothness
   initial_rpm: 0  # Initial speed for wheg motors
 
@@ -43,8 +43,8 @@ gaits:
     fast_ang: 320
     low_pos: 160 # Position where motor will mvoe slow
     high_pos: 200 # Position where the motor will move fast
-    min_rpm: 1
-    max_rpm: 4 # This max value has been tested, greater than this the whegs do not have enough time to get around in multi-turn mode
+    min_rpm: 2
+    max_rpm: 2 # This max value has been tested, greater than this the whegs do not have enough time to get around in multi-turn mode
     smoothness: 1
     tolerance: 10 # This is in degrees, whegs must be within  this marging of positions before continuing with the next itteration
     delay: 0.025 # This is the addition wait time in seconds to allow for motors to finish moving
@@ -54,8 +54,8 @@ gaits:
     low_pos: 160
     mid_pos: 180
     high_pos: 200
-    min_rpm: 8
-    max_rpm: 30
+    min_rpm: 10
+    max_rpm: 10
     smoothness: 4
     tolerance: 15
     delay: 0.025
