@@ -642,7 +642,7 @@ class FLIKRobot:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
             else:
-                logging.info("Emergency stop activated, gait execution paused.")
+                logging.debug("Emergency stop activated, gait execution paused.")
 
             await asyncio.sleep(0.01)  # Small sleep to allow other tasks to run
 
