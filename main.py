@@ -319,7 +319,7 @@ class FLIKRobot:
 
         except Exception as e:
             logging.error(f"Failed to reverse direction: {e}")
-        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['right_pos'], 5: self.gait4_params['right_pos'], 6: self.gait4_params['right_pos'] }
+        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['low_pos'], 5: self.gait4_params['high_pos'], 6: self.gait4_params['low_pos'] }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 3
@@ -507,14 +507,14 @@ class FLIKRobot:
             # Example RPM-based alternating gait logic
             if self.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
-                rpm_4 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
+                rpm_2 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
                 inc_1 = self.gait4_params['slow_ang']
-                inc_4 = self.gait4_params['fast_ang']
+                inc_2 = self.gait4_params['fast_ang']
             else:
                 rpm_1 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
-                rpm_4 = self.wheg_rpm
+                rpm_2 = self.wheg_rpm
                 inc_1 = self.gait4_params['fast_ang']
-                inc_4 = self.gait4_params['slow_ang']
+                inc_2 = self.gait4_params['slow_ang']
 
             # Get the current motor positions
             current_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
@@ -557,15 +557,15 @@ class FLIKRobot:
                         return 0.5  # No wait time, motors are moving correctly
 
             # Set profile velocities and increments
-            velocities = {1: rpm_1, 4: rpm_4, 3: rpm_1, 4: rpm_4, 5: rpm_1, 6: rpm_4}
-            increments = {1: inc_1, 4: inc_4, 3: inc_1, 4: inc_4, 5: inc_1, 6: inc_4}
+            velocities = {1: rpm_1, 4: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
+            increments = {1: inc_1, 4: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
             self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time
             wait_time = (inc_1 / (6 * rpm_1))+self.gait2_params['delay']
             self.odd_even += 1
-            logging.info(f"Gait 2 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
+            logging.info(f"Gait 4 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
     
