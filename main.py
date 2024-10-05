@@ -319,7 +319,7 @@ class FLIKRobot:
 
         except Exception as e:
             logging.error(f"Failed to reverse direction: {e}")
-        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['low_pos'], 5: self.gait4_params['high_pos'], 6: self.gait4_params['low_pos'] }
+        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['high_pos'], 5: self.gait4_params['low_pos'], 6: self.gait4_params['high_pos'] }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 3
