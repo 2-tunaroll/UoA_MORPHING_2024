@@ -557,8 +557,8 @@ class FLIKRobot:
                         return 0.5  # No wait time, motors are moving correctly
 
             # Set profile velocities and increments
-            velocities = {1: rpm_1, 4: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
-            increments = {1: inc_1, 4: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
+            velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
+            increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
             self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
