@@ -44,7 +44,7 @@ gaits:
     low_pos: 160 # Position where motor will mvoe slow
     high_pos: 200 # Position where the motor will move fast
     min_rpm: 2
-    max_rpm: 2 # This max value has been tested, greater than this the whegs do not have enough time to get around in multi-turn mode
+    max_rpm: 4 # This max value has been tested, greater than this the whegs do not have enough time to get around in multi-turn mode
     smoothness: 1
     tolerance: 20 # This is in degrees, whegs must be within  this marging of positions before continuing with the next itteration
     delay: 0.025 # This is the addition wait time in seconds to allow for motors to finish moving
@@ -61,15 +61,15 @@ gaits:
     delay: 0.025
   gait_4:
     fast_ang: 340
-    slow_ang: 20
-    low_pos: 155
-    high_pos: 175
+    slow_ang: 40
+    low_pos: 160
+    high_pos: 1200
     right_pos: 210
-    min_rpm: 5
-    max_rpm: 15
-    smoothness: 5
-    tolerance: 15
-    delay: 0.1
+    min_rpm: 2
+    max_rpm: 4
+    smoothness: 1
+    tolerance: 20
+    delay: 0.025
 
 reporting:
   motor_position_interval: 10  # Seconds between logging motor positions

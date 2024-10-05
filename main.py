@@ -299,26 +299,26 @@ class FLIKRobot:
         self.SMOOTHNESS = self.gait4_params['smoothness']
         self.odd_even = 0
         self.wheg_rpm = 0
-        # # Read the current drive mode for all whegs
-        # direction = self.dynamixel.bulk_read_group('Left_Whegs', ['drive_mode'])
+        # Read the current drive mode for all whegs
+        direction = self.dynamixel.bulk_read_group('Left_Whegs', ['drive_mode'])
         
-        # # Log the structure of the direction data to debug
-        # logging.info(f"Direction data: {direction}")
+        # Log the structure of the direction data to debug
+        logging.info(f"Direction data: {direction}")
 
-        # # Ensure the correct extraction of drive mode values
-        # try:
-        #     # Reverse the direction for each motor (0 -> 1, 1 -> 0)
-        #     reversed_direction = {
-        #         motor_id: 0 if drive_data['drive_mode'] == 1 else 1
-        #         for motor_id, drive_data in direction.items()
-        #     }
+        # Ensure the correct extraction of drive mode values
+        try:
+            # Reverse the direction for each motor (0 -> 1, 1 -> 0)
+            reversed_direction = {
+                motor_id: 0 if drive_data['drive_mode'] == 1 else 1
+                for motor_id, drive_data in direction.items()
+            }
 
-        #     # Set the reversed drive mode for each motor
-        #     self.dynamixel.set_drive_mode_group('Left_Whegs', reversed_direction)
-        #     logging.warning("Reversed the direction of the left whegs")
+            # Set the reversed drive mode for each motor
+            self.dynamixel.set_drive_mode_group('Left_Whegs', reversed_direction)
+            logging.warning("Reversed the direction of the left whegs")
 
-        # except Exception as e:
-        #     logging.error(f"Failed to reverse direction: {e}")
+        except Exception as e:
+            logging.error(f"Failed to reverse direction: {e}")
         self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['right_pos'], 5: self.gait4_params['right_pos'], 6: self.gait4_params['right_pos'] }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
@@ -502,19 +502,19 @@ class FLIKRobot:
     async def gait_4(self):
         """Execute Gait 4 and return how long to wait before the next step."""
         logging.debug("Executing Gait 4")
-        self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
+        self.wheg_rpm = self.adjust_wheg_rpm(self.r4_trigger)
         if self.wheg_rpm > 1 and self.gait_change_requested == False:
             # Example RPM-based alternating gait logic
             if self.odd_even % 2 == 0:
                 rpm_1 = self.wheg_rpm
-                rpm_2 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
+                rpm_4 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
                 inc_1 = self.gait4_params['slow_ang']
-                inc_2 = self.gait4_params['fast_ang']
+                inc_4 = self.gait4_params['fast_ang']
             else:
                 rpm_1 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
-                rpm_2 = self.wheg_rpm
+                rpm_4 = self.wheg_rpm
                 inc_1 = self.gait4_params['fast_ang']
-                inc_2 = self.gait4_params['slow_ang']
+                inc_4 = self.gait4_params['slow_ang']
 
             # Get the current motor positions
             current_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
@@ -525,46 +525,47 @@ class FLIKRobot:
                 for motor_id, pos_data in current_positions.items()
             }
 
-            # Check if not all motors are within the tolerance
-            if not all(
-                abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
-                for motor_id in current_positions.keys()
-            ):
-                logging.warning(f"Motors are not in the correct positions for Gait 4. Positions: {current_positions}")
-                logging.warning("Waiting for 1 second before checking for movement")
-                await asyncio.sleep(0.1)
+            # On even steps
+            if self.odd_even % 2 == 0:
+                # Check if not all motors are within the tolerance
+                if not all(
+                    abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
+                    for motor_id in current_positions.keys()
+                ):
+                    logging.warning(f"Motors are not in the correct positions for Gait 4. Positions: {current_positions}")
+                    logging.warning("Waiting for 1 second before checking for movement")
+                    await asyncio.sleep(0.1)
 
-                # Get the current motor positions again after waiting
-                new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+                    # Get the current motor positions again after waiting
+                    new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
 
-                # Convert the positions from dict to degrees
-                new_positions = {
-                    motor_id: (pos_data['present_position'] * (360 / 4096))%359
-                    for motor_id, pos_data in new_positions.items()
-                }
+                    # Convert the positions from dict to degrees
+                    new_positions = {
+                        motor_id: (pos_data['present_position'] * (360 / 4096))%359
+                        for motor_id, pos_data in new_positions.items()
+                    }
 
-                # Check if the motors are still moving
-                if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 1 for motor_id in new_positions.keys()):
-                    wait_time = 3 # Wait for 3 seconds to allow for resetting the gait
-                    logging.critical("Motors are not moving, reseting positions, and waiting for 3 seconds.")
-                    self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
-                    await asyncio.sleep(0.5)  # Wait for 0.5 second to allow for resetting the gait
-                    self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
-                else:
-                    logging.info("Motors are moving. Continuing with the gait.")
-                    return 0.5  # No wait time, motors are moving correctly
+                    # Check if the motors are still moving
+                    if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 1 for motor_id in new_positions.keys()):
+                        wait_time = 3 # Wait for 3 seconds to allow for resetting the gait
+                        logging.critical("Motors are not moving, reseting positions, and waiting for 3 seconds.")
+                        self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
+                        await asyncio.sleep(0.5)  # Wait for 0.5 second to allow for resetting the gait
+                        self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
+                    else:
+                        logging.info("Motors are moving. Continuing with the gait.")
+                        return 0.5  # No wait time, motors are moving correctly
 
             # Set profile velocities and increments
-            velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: 0, 5: 0, 6: 0}
-            increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: 0, 5: 0, 6: 0}
-            self.dynamixel.set_group_profile_velocity('Left_Whegs', velocities)
-            self.dynamixel.increment_group_position('Left_Whegs', increments)
-            self.dynamixel.set_position_group('Right_Whegs', self.gait4_params['right_pos'])
+            velocities = {1: rpm_1, 4: rpm_4, 3: rpm_1, 4: rpm_4, 5: rpm_1, 6: rpm_4}
+            increments = {1: inc_1, 4: inc_4, 3: inc_1, 4: inc_4, 5: inc_1, 6: inc_4}
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
+            self.dynamixel.increment_group_position('Wheg_Group', increments)
 
             # Calculate wait time
-            wait_time = (inc_1 / (6 * rpm_1))+self.gait4_params['delay']
+            wait_time = (inc_1 / (6 * rpm_1))+self.gait2_params['delay']
             self.odd_even += 1
-            logging.info(f"Gait 4 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
+            logging.info(f"Gait 2 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
             return wait_time
         return 0  # No movement, no wait time
     
