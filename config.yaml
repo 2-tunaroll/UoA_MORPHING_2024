@@ -65,11 +65,11 @@ gaits:
     low_pos: 160
     high_pos: 200
     right_pos: 210
-    min_rpm: 2
-    max_rpm: 4
+    min_rpm: 1
+    max_rpm: 3
     smoothness: 1
-    tolerance: 20
-    delay: 0.025
+    tolerance: 10
+    delay: 0.5
 
 reporting:
   motor_position_interval: 10  # Seconds between logging motor positions
