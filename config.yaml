@@ -63,7 +63,7 @@ gaits:
     fast_ang: 340
     slow_ang: 40
     low_pos: 160
-    high_pos: 1200
+    high_pos: 200
     right_pos: 210
     min_rpm: 2
     max_rpm: 4
