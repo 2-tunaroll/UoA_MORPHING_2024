@@ -60,7 +60,7 @@ gaits:
     tolerance: 20
     delay: 0.025
   gait_4:
-    fast_ang: 340
+    fast_ang: 320
     slow_ang: 40
     low_pos: 160
     high_pos: 200
