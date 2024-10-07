@@ -1,0 +1,222 @@
+#Configuration file for key parameters in main.py
+logging:
+  log_directory: "Logs"
+  log_level_file: "DEBUG"  # File logging level
+  log_level_console: "INFO"  # Console logging level
+
+motor_ids:
+  whegs:
+    LR_WHEG: 1
+    LM_WHEG: 2
+    LF_WHEG: 3
+    RR_WHEG: 4
+    RM_WHEG: 5
+    RF_WHEG: 6
+  pivots:
+    FRONT_PIVOT: 7
+    REAR_PIVOT: 8
+
+wheg_parameters:
+  max_rpm: 30 # Maximum RPM for the wheg motors
+  min_rpm: 5  # Minimum RPM for the wheg motors
+  smoothness: 5 # Speed increase smoothness
+  initial_rpm: 0  # Initial speed for wheg motors
+
+pivot_parameters:
+  pivot_step: 5  # Step size for D-pad pivot control in degrees
+  initial_front_angle: 180  # Starting angle for the front pivot
+  initial_rear_angle: 180   # Starting angle for the rear pivot
+
+controller:
+  device_name: "/dev/ttyACM0"
+  baudrate: 1000000
+
+gaits:
+  available_gaits:
+    - gait_1
+    - gait_2
+    - gait_3
+    - gait_4
+  initial_gait: gait_1
+  gait_2:
+    slow_ang: 40
+    fast_ang: 320
+    low_pos: 160 # Position where motor will mvoe slow
+    high_pos: 200 # Position where the motor will move fast
+    min_rpm: 2
+    max_rpm: 4 # This max value has been tested, greater than this the whegs do not have enough time to get around in multi-turn mode
+    smoothness: 1
+    tolerance: 20 # This is in degrees, whegs must be within  this marging of positions before continuing with the next itteration
+    delay: 0.025 # This is the addition wait time in seconds to allow for motors to finish moving
+  gait_3:
+    fast_ang: 320
+    slow_ang: 40
+    low_pos: 160
+    mid_pos: 180
+    high_pos: 200
+    min_rpm: 4
+    max_rpm: 20
+    smoothness: 4
+    tolerance: 20
+    delay: 0.025
+  gait_4:
+    fast_ang: 320
+    slow_ang: 40
+    low_pos: 160
+    high_pos: 200
+    right_pos: 210
+    min_rpm: 1
+    max_rpm: 3
+    smoothness: 1
+    tolerance: 10
+    delay: 0.5
+
+reporting:
+  motor_position_interval: 10  # Seconds between logging motor positions
+
+velocity_limits:
+  Wheg_Group: 200  # Velocity limit for Wheg_Group
+  Pivot_Group: 4 # Velocity limit for Pivot_Group
+  All_Motors: 200
+
+profile_velocities:
+  Wheg_Group: 10  # Profile velocity for Wheg_Group
+  Pivot_Group: 4 # Profile velocity for Pivot_Group
+  All_Motors: 5
+
+hard_velocity_limit: 100  # The maximum velocity limit for any motor
+hard_profile_velocity_limit: 100  # The maximum profile velocity limit for any motor
+
+position_limits:
+  Hinges:
+    min_degrees: 90
+    max_degrees: 270
+  Whegs:
+
+control_table: # Control table values for XC330 and XL430 from https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/
+  torque_enable:
+    address: 64
+    length: 1
+  goal_velocity:
+    address: 104
+    length: 4
+  goal_position:
+    address: 116
+    length: 4
+  present_position:
+    address: 132
+    length: 4
+  homing_offset:
+    address: 20
+    length: 4
+  operating_mode:
+    address: 11
+    length: 1
+  velocity_limit:
+    address: 44
+    length: 4
+  profile_velocity:
+    address: 112
+    length: 4
+  profile_acceleration:
+    address: 108
+    length: 4
+  present_velocity:
+    address: 128
+    length: 4
+  max_position_limit:
+    address: 48
+    length: 4
+  min_position_limit:
+    address: 52
+    length: 4
+  drive_mode:
+    address: 10
+    length: 1
+  temperature_limit:
+    address: 31
+    length: 1
+  max_voltage_limit:
+    address: 32
+    length: 2
+  min_voltage_limit:
+    address: 34
+    length: 2
+  pwm_limit:
+    address: 36
+    length: 2
+  current_limit:
+    address: 38
+    length: 2
+  acceleration_limit:
+    address: 40
+    length: 4
+  shutdown:
+    address: 63
+    length: 1
+  moving_status:
+    address: 123
+    length: 1
+  moving:
+    address: 122
+    length: 1
+  hardware_error_status:
+    address: 70
+    length: 1
+  indirect_address_1:
+    address: 168
+    length: 2
+  indirect_data_1:
+    address: 224
+    length: 1
+  status_return_level:
+    address: 68
+    length: 1
+  present_load:
+    address: 126
+    length: 2
+motor_groups: # Motor groups that can be controlled with sync and bulk write
+  Pivot_Group: 
+    - FRONT_PIVOT
+    - REAR_PIVOT
+  Wheg_Group:
+    - LR_WHEG
+    - LM_WHEG
+    - LF_WHEG
+    - RR_WHEG
+    - RM_WHEG
+    - RF_WHEG
+  All_Motors:
+    - LR_WHEG
+    - LM_WHEG
+    - LF_WHEG
+    - RR_WHEG
+    - RM_WHEG
+    - RF_WHEG
+    - FRONT_PIVOT
+    - REAR_PIVOT
+  Left_Whegs:
+    - LR_WHEG
+    - LM_WHEG
+    - LF_WHEG
+  Right_Whegs:
+    - RR_WHEG
+    - RM_WHEG
+    - RF_WHEG
+  Front_Whegs:
+    - LF_WHEG
+    - RF_WHEG
+  Rear_Whegs:
+    - LR_WHEG
+    - RR_WHEG
+  Middle_Whegs:
+    - LM_WHEG
+    - RM_WHEG
+  Two_Right_One_Left:
+    - LM_WHEG
+    - RR_WHEG
+    - RF_WHEG
+  Two_Left_One_Right:
+    - RM_WHEG
+    - LR_WHEG
+    - LF_WHEG
