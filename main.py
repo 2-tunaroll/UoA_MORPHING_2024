@@ -15,6 +15,7 @@ import time
 import logging
 import yaml
 import asyncio
+import csv
 
 # Internal Imports
 from datetime import datetime
@@ -741,6 +742,107 @@ class FLIKRobot:
                 # In case of an error, wait briefly before retrying
                 await asyncio.sleep(1)
 
+    async def write_to_csv(self, log_interval=0.2, csv_file_path='robot_log.csv'):
+        """
+        Asynchronously collect and log critical information from the robot using bulk read and log to a CSV file.
+        Each motor will have its associated parameters in the CSV headers.
+        
+        :param log_interval: Time (in seconds) between each report logging.
+        :param csv_file_path: Path to the CSV file where the log will be saved.
+        """
+        # Perform a bulk read once to get the motor group for header creation
+        motor_data = self.dynamixel.bulk_read_group('All_Motors', [
+            'present_position', 'present_velocity', 'present_load', 'hardware_error_status'
+        ])
+
+        if not motor_data:
+            logging.error("Failed to retrieve motor data for CSV header generation.")
+            return
+
+        # Open the CSV file in append mode
+        with open(csv_file_path, mode='a', newline='') as csvfile:
+            # Dynamically create the headers based on the motor data
+            motor_ids = motor_data.keys()
+            fieldnames = ['Time']
+            for motor_id in motor_ids:
+                fieldnames.extend([
+                    f'Motor_{motor_id}_Position (degrees)',
+                    f'Motor_{motor_id}_Velocity (RPM)',
+                    f'Motor_{motor_id}_Load (%)',
+                    f'Motor_{motor_id}_Error Status'
+                ])
+
+            # Define CSV writer
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            
+            # If the file is empty, write the header
+            csvfile.seek(0, 2)  # Move the cursor to the end of the file
+            if csvfile.tell() == 0:
+                writer.writeheader()
+
+            # Start the asynchronous logging loop
+            while True:
+                try:
+                    # Get the current timestamp
+                    timestamp = time.time()
+
+                    # Perform bulk read to gather motor information
+                    motor_data = self.dynamixel.bulk_read_group('All_Motors', [
+                        'present_position', 'present_velocity', 'present_load', 'hardware_error_status'
+                    ])
+
+                    if not motor_data:
+                        logging.error("Failed to read motor data.")
+                        await asyncio.sleep(1)
+                        continue
+
+                    # Create a dictionary to hold the row data
+                    row_data = {'Time': timestamp}
+
+                    for motor_id, data in motor_data.items():
+                        position_ticks = data.get('present_position', 'N/A')
+                        velocity_ticks = data.get('present_velocity', 'N/A')
+                        load = data.get('present_load', 'N/A')
+                        error_status = data.get('hardware_error_status', 0)
+
+                        # Convert position from ticks to degrees
+                        if isinstance(position_ticks, (int, float)):
+                            position_degrees = ((position_ticks * 360) / 4096) % 359
+                        else:
+                            position_degrees = 'N/A'
+
+                        # Convert velocity from ticks/sec to RPM
+                        if isinstance(velocity_ticks, (int, float)):
+                            velocity_rpm = (velocity_ticks * 0.229)
+                        else:
+                            velocity_rpm = 'N/A'
+
+                        # Convert load to signed 16-bit
+                        if isinstance(load, (int, float)):
+                            if load > 32767:
+                                load_signed = load - 65536
+                            else:
+                                load_signed = load
+                        else:
+                            load_signed = 'N/A'
+
+                        # Add motor data to the row
+                        row_data[f'Motor_{motor_id}_Position (degrees)'] = position_degrees
+                        row_data[f'Motor_{motor_id}_Velocity (RPM)'] = velocity_rpm
+                        row_data[f'Motor_{motor_id}_Load (%)'] = load_signed
+                        row_data[f'Motor_{motor_id}_Error Status'] = error_status
+
+                    # Write the row data to the CSV file
+                    writer.writerow(row_data)
+
+                    # Wait for the specified log_interval before next report
+                    await asyncio.sleep(log_interval)
+
+                except Exception as e:
+                    logging.error(f"Error while logging robot states: {e}")
+                    # In case of an error, wait briefly before retrying
+                    await asyncio.sleep(1)
+                
     async def main_loop(self):
         """Main loop to run the asynchronous tasks, with safe shutdown on KeyboardInterrupt."""
         try:
@@ -748,6 +850,7 @@ class FLIKRobot:
                 self.check_inputs(),    # Run input checking
                 self.execute_gait(),    # Run gait execution
                 self.control_pivots_with_dpad(),
+                self.write_to_csv(0.2), # Write to the csv every 0.2 seconds
                 self.report_states(5)   # Log states every 5 seconds (customizable interval)
             )
         

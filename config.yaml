@@ -68,7 +68,7 @@ gaits:
     min_rpm: 1
     max_rpm: 3
     smoothness: 1
-    tolerance: 10
+    tolerance: 5
     delay: 0.5
 
 reporting:
