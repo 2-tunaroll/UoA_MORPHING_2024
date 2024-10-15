@@ -691,17 +691,15 @@ class FLIKRobot:
                     else:
                         velocity_rpm = 'N/A'
 
-                    # Convert load to signed 16-bit
+                    # Convert load to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
                     if isinstance(load, (int, float)):
-                        if load > 32767:
-                            load_signed = load - 65536
-                        else:
-                            load_signed = load
+                        # Load is in 0.1% units, so dividing by 10 converts it to a percentage
+                        load_percentage = load / 10.0
                     else:
-                        load_signed = 'N/A'
+                        load_percentage = 'N/A'
 
                     # Log the motor information
-                    logging.info(f"{motor_id:<10}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_signed:<10}")
+                    logging.info(f"{motor_id:<10}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_percentage:<10}")
 
                 # Check for hardware errors and log them
                 error_detected = False
