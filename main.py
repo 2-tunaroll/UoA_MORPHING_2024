@@ -820,6 +820,7 @@ class FLIKRobot:
                         velocity_rpm = 'N/A'
 
                     # Convert load to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
+                    load = motor_loads.get(motor_id, {}).get('present_load', 'N/A')
                     if isinstance(load, (int, float)):
                         # Check if load value is in the 16-bit signed integer range and handle negative values
                         if load > 32767:
