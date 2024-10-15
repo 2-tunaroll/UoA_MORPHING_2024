@@ -1,7 +1,7 @@
 #Configuration file for key parameters in main.py
 logging:
   log_directory: "Logs"
-  log_level_file: "DEBUG"  # File logging level
+  log_level_file: "INFO"  # File logging level
   log_level_console: "INFO"  # Console logging level
 
 motor_ids:

@@ -819,10 +819,13 @@ class FLIKRobot:
                     else:
                         velocity_rpm = 'N/A'
 
-                    # Get load data and convert to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
-                    load = motor_loads.get(motor_id, {}).get('present_load', 'N/A')
+                    # Convert load to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
                     if isinstance(load, (int, float)):
-                        load_percentage = load / 10.0  # Convert to percentage
+                        # Check if load value is in the 16-bit signed integer range and handle negative values
+                        if load > 32767:
+                            load = load - 65536
+                        # Load is in 0.1% units, so dividing by 10 converts it to a percentage
+                        load_percentage = load / 10.0
                     else:
                         load_percentage = 'N/A'
 
