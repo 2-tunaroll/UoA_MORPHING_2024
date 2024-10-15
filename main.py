@@ -693,6 +693,9 @@ class FLIKRobot:
 
                     # Convert load to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
                     if isinstance(load, (int, float)):
+                        # Check if load value is in the 16-bit signed integer range and handle negative values
+                        if load > 32767:
+                            load = load - 65536
                         # Load is in 0.1% units, so dividing by 10 converts it to a percentage
                         load_percentage = load / 10.0
                     else:
