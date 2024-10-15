@@ -746,7 +746,7 @@ class FLIKRobot:
         """
         Asynchronously collect and log critical information from the robot using individual bulk reads per parameter,
         and log the data to a CSV file with each motor's parameters as separate columns.
-        
+
         :param log_interval: Time (in seconds) between each report logging.
         :param csv_file_path: Path to the CSV file where the log will be saved.
         """
@@ -808,15 +808,13 @@ class FLIKRobot:
                         else:
                             velocity_rpm = 'N/A'
 
-                        # Get load data and convert to signed 16-bit
+                        # Get load data and convert to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
                         load = motor_loads.get(motor_id, {}).get('present_load', 'N/A')
                         if isinstance(load, (int, float)):
-                            if load > 32767:
-                                load_signed = load - 65536
-                            else:
-                                load_signed = load
+                            # Load is in 0.1% units, so we divide by 10 to get percentage (-100% to 100%)
+                            load_percentage = load / 10.0
                         else:
-                            load_signed = 'N/A'
+                            load_percentage = 'N/A'
 
                         # Get hardware error status
                         error_status = hardware_errors.get(motor_id, {}).get('hardware_error_status', 0)
@@ -824,7 +822,7 @@ class FLIKRobot:
                         # Add motor data to the row
                         row_data[f'Motor_{motor_id}_Position (degrees)'] = position_degrees
                         row_data[f'Motor_{motor_id}_Velocity (RPM)'] = velocity_rpm
-                        row_data[f'Motor_{motor_id}_Load (%)'] = load_signed
+                        row_data[f'Motor_{motor_id}_Load (%)'] = load_percentage
                         row_data[f'Motor_{motor_id}_Error Status'] = error_status
 
                         # Log hardware errors, if any
