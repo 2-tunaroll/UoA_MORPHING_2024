@@ -70,26 +70,12 @@ class FLIKRobot:
         # Add the handler to the logger
         logging.getLogger().addHandler(console_handler)
 
-        # Create CSV file based on the same time format
+        # Create the CSV file without headers (headers will be added later in write_to_csv)
         self.csv_filename = f"{log_directory}/flik_test_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
         
-        # Create and write the CSV header
-        motor_ids = self.dynamixel.motor_groups.get('All_Motors', [])
-        
-        if motor_ids:
-            with open(self.csv_filename, mode='w', newline='') as csvfile:
-                fieldnames = ['hh:mm', 'ss:usus']
-                for motor_id in motor_ids:
-                    fieldnames.extend([
-                        f'Motor_{motor_id}_Position (degrees)',
-                        f'Motor_{motor_id}_Velocity (RPM)',
-                        f'Motor_{motor_id}_Load (%)',
-                        f'Motor_{motor_id}_Error Status'
-                    ])
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writeheader()  # Write the header to the CSV file
-        else:
-            logging.error("Failed to retrieve motor IDs for CSV header generation.")
+        # Just create an empty CSV file
+        with open(self.csv_filename, mode='w', newline='') as csvfile:
+            pass  # CSV file will be populated with headers in write_to_csv
 
     def setup_whegs(self):
         # Set the right side whegs to reverse
@@ -768,6 +754,8 @@ class FLIKRobot:
         Asynchronously collect and log critical information from the robot using individual bulk reads per parameter,
         and log the data to the CSV file that was created during setup_logging.
 
+        The headers are added when motor IDs become available after the Dynamixel controller initialization.
+
         :param log_interval: Time (in seconds) between each report logging.
         """
         # Get the motor IDs for logging
@@ -776,6 +764,23 @@ class FLIKRobot:
         if not motor_ids:
             logging.error("Failed to retrieve motor IDs for CSV logging.")
             return
+
+        # Write the CSV headers now that motor IDs are available
+        with open(self.csv_filename, mode='a', newline='') as csvfile:
+            fieldnames = ['hh:mm', 'ss:usus']
+            for motor_id in motor_ids:
+                fieldnames.extend([
+                    f'Motor_{motor_id}_Position (degrees)',
+                    f'Motor_{motor_id}_Velocity (RPM)',
+                    f'Motor_{motor_id}_Load (%)',
+                    f'Motor_{motor_id}_Error Status'
+                ])
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            
+            # If file is empty, write the headers
+            csvfile.seek(0, 2)  # Move to the end of the file
+            if csvfile.tell() == 0:
+                writer.writeheader()
 
         # Start the asynchronous logging loop
         while True:
