@@ -70,6 +70,27 @@ class FLIKRobot:
         # Add the handler to the logger
         logging.getLogger().addHandler(console_handler)
 
+        # Create CSV file based on the same time format
+        self.csv_filename = f"{log_directory}/flik_test_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+        
+        # Create and write the CSV header
+        motor_ids = self.dynamixel.motor_groups.get('All_Motors', [])
+        
+        if motor_ids:
+            with open(self.csv_filename, mode='w', newline='') as csvfile:
+                fieldnames = ['hh:mm', 'ss:usus']
+                for motor_id in motor_ids:
+                    fieldnames.extend([
+                        f'Motor_{motor_id}_Position (degrees)',
+                        f'Motor_{motor_id}_Velocity (RPM)',
+                        f'Motor_{motor_id}_Load (%)',
+                        f'Motor_{motor_id}_Error Status'
+                    ])
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()  # Write the header to the CSV file
+        else:
+            logging.error("Failed to retrieve motor IDs for CSV header generation.")
+
     def setup_whegs(self):
         # Set the right side whegs to reverse
         self.dynamixel.set_drive_mode_group('Right_Whegs', True)
@@ -742,113 +763,98 @@ class FLIKRobot:
                 # In case of an error, wait briefly before retrying
                 await asyncio.sleep(1)
 
-    async def write_to_csv(self, log_interval=0.2, csv_file_path='robot_log.csv'):
+    async def write_to_csv(self, log_interval=0.2):
         """
         Asynchronously collect and log critical information from the robot using individual bulk reads per parameter,
-        and log the data to a CSV file with each motor's parameters as separate columns.
+        and log the data to the CSV file that was created during setup_logging.
 
         :param log_interval: Time (in seconds) between each report logging.
-        :param csv_file_path: Path to the CSV file where the log will be saved.
         """
-        # Perform an initial bulk read to get the motor group and establish headers
+        # Get the motor IDs for logging
         motor_ids = self.dynamixel.motor_groups.get('All_Motors', [])
 
         if not motor_ids:
-            logging.error("Failed to retrieve motor IDs for CSV header generation.")
+            logging.error("Failed to retrieve motor IDs for CSV logging.")
             return
 
-        # Open the CSV file in append mode
-        with open(csv_file_path, mode='a', newline='') as csvfile:
-            # Dynamically create the headers based on the motor data
-            fieldnames = ['Time']
-            for motor_id in motor_ids:
-                fieldnames.extend([
-                    f'Motor_{motor_id}_Position (degrees)',
-                    f'Motor_{motor_id}_Velocity (RPM)',
-                    f'Motor_{motor_id}_Load (%)',
-                    f'Motor_{motor_id}_Error Status'
-                ])
+        # Start the asynchronous logging loop
+        while True:
+            try:
+                # Get the current time in hh:mm format and seconds with microseconds for ss:usus
+                current_time = datetime.now()
+                time_hhmm = current_time.strftime('%H:%M')
+                time_ssusus = current_time.strftime('%S:%f')
 
-            # Define CSV writer
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            
-            # If the file is empty, write the header
-            csvfile.seek(0, 2)  # Move the cursor to the end of the file
-            if csvfile.tell() == 0:
-                writer.writeheader()
+                # Create a dictionary to hold the row data
+                row_data = {
+                    'hh:mm': time_hhmm,
+                    'ss:usus': time_ssusus
+                }
 
-            # Start the asynchronous logging loop
-            while True:
-                try:
-                    # Get the current timestamp
-                    timestamp = time.time()
+                # Read motor data individually for each parameter
+                motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
+                motor_velocities = self.dynamixel.bulk_read_group('All_Motors', ['present_velocity'])
+                motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
+                hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
 
-                    # Create a dictionary to hold the row data
-                    row_data = {'Time': timestamp}
+                # Populate the row data with individual readings for each motor
+                for motor_id in motor_ids:
+                    # Get position data and convert to degrees
+                    position_ticks = motor_positions.get(motor_id, {}).get('present_position', 'N/A')
+                    if isinstance(position_ticks, (int, float)):
+                        position_degrees = ((position_ticks * 360) / 4096) % 359
+                    else:
+                        position_degrees = 'N/A'
 
-                    # Read motor data individually for each parameter
-                    motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
-                    motor_velocities = self.dynamixel.bulk_read_group('All_Motors', ['present_velocity'])
-                    motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
-                    hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
+                    # Get velocity data and convert to RPM
+                    velocity_ticks = motor_velocities.get(motor_id, {}).get('present_velocity', 'N/A')
+                    if isinstance(velocity_ticks, (int, float)):
+                        velocity_rpm = (velocity_ticks * 0.229)
+                    else:
+                        velocity_rpm = 'N/A'
 
-                    # Populate the row data with individual readings for each motor
-                    for motor_id in motor_ids:
-                        # Get position data and convert to degrees
-                        position_ticks = motor_positions.get(motor_id, {}).get('present_position', 'N/A')
-                        if isinstance(position_ticks, (int, float)):
-                            position_degrees = ((position_ticks * 360) / 4096) % 359
-                        else:
-                            position_degrees = 'N/A'
+                    # Get load data and convert to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
+                    load = motor_loads.get(motor_id, {}).get('present_load', 'N/A')
+                    if isinstance(load, (int, float)):
+                        load_percentage = load / 10.0  # Convert to percentage
+                    else:
+                        load_percentage = 'N/A'
 
-                        # Get velocity data and convert to RPM
-                        velocity_ticks = motor_velocities.get(motor_id, {}).get('present_velocity', 'N/A')
-                        if isinstance(velocity_ticks, (int, float)):
-                            velocity_rpm = (velocity_ticks * 0.229)
-                        else:
-                            velocity_rpm = 'N/A'
+                    # Get hardware error status
+                    error_status = hardware_errors.get(motor_id, {}).get('hardware_error_status', 0)
 
-                        # Get load data and convert to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
-                        load = motor_loads.get(motor_id, {}).get('present_load', 'N/A')
-                        if isinstance(load, (int, float)):
-                            # Load is in 0.1% units, so we divide by 10 to get percentage (-100% to 100%)
-                            load_percentage = load / 10.0
-                        else:
-                            load_percentage = 'N/A'
+                    # Add motor data to the row
+                    row_data[f'Motor_{motor_id}_Position (degrees)'] = position_degrees
+                    row_data[f'Motor_{motor_id}_Velocity (RPM)'] = velocity_rpm
+                    row_data[f'Motor_{motor_id}_Load (%)'] = load_percentage
+                    row_data[f'Motor_{motor_id}_Error Status'] = error_status
 
-                        # Get hardware error status
-                        error_status = hardware_errors.get(motor_id, {}).get('hardware_error_status', 0)
+                    # Log hardware errors, if any
+                    if error_status != 0:
+                        logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
+                        if error_status & 0b00000001:
+                            logging.error(f"Motor {motor_id}: Input Voltage Error detected.")
+                        if error_status & 0b00000100:
+                            logging.error(f"Motor {motor_id}: Overheating Error detected.")
+                        if error_status & 0b00001000:
+                            logging.error(f"Motor {motor_id}: Motor Encoder Error detected.")
+                        if error_status & 0b00010000:
+                            logging.error(f"Motor {motor_id}: Electrical Shock Error detected.")
+                        if error_status & 0b00100000:
+                            logging.error(f"Motor {motor_id}: Overload Error detected.")
 
-                        # Add motor data to the row
-                        row_data[f'Motor_{motor_id}_Position (degrees)'] = position_degrees
-                        row_data[f'Motor_{motor_id}_Velocity (RPM)'] = velocity_rpm
-                        row_data[f'Motor_{motor_id}_Load (%)'] = load_percentage
-                        row_data[f'Motor_{motor_id}_Error Status'] = error_status
-
-                        # Log hardware errors, if any
-                        if error_status != 0:
-                            logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
-                            if error_status & 0b00000001:
-                                logging.error(f"Motor {motor_id}: Input Voltage Error detected.")
-                            if error_status & 0b00000100:
-                                logging.error(f"Motor {motor_id}: Overheating Error detected.")
-                            if error_status & 0b00001000:
-                                logging.error(f"Motor {motor_id}: Motor Encoder Error detected.")
-                            if error_status & 0b00010000:
-                                logging.error(f"Motor {motor_id}: Electrical Shock Error detected.")
-                            if error_status & 0b00100000:
-                                logging.error(f"Motor {motor_id}: Overload Error detected.")
-
-                    # Write the row data to the CSV file
+                # Write the row data to the CSV file
+                with open(self.csv_filename, mode='a', newline='') as csvfile:
+                    writer = csv.DictWriter(csvfile, fieldnames=row_data.keys())
                     writer.writerow(row_data)
 
-                    # Wait for the specified log_interval before the next report
-                    await asyncio.sleep(log_interval)
+                # Wait for the specified log_interval before the next report
+                await asyncio.sleep(log_interval)
 
-                except Exception as e:
-                    logging.error(f"Error while logging robot states: {e}")
-                    # In case of an error, wait briefly before retrying
-                    await asyncio.sleep(1)
+            except Exception as e:
+                logging.error(f"Error while logging robot states: {e}")
+                # In case of an error, wait briefly before retrying
+                await asyncio.sleep(1)
                 
     async def main_loop(self):
         """Main loop to run the asynchronous tasks, with safe shutdown on KeyboardInterrupt."""
