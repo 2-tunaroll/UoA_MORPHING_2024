@@ -15,6 +15,7 @@ import time
 import logging
 import yaml
 import asyncio
+import csv
 
 # Internal Imports
 from datetime import datetime
@@ -68,6 +69,13 @@ class FLIKRobot:
 
         # Add the handler to the logger
         logging.getLogger().addHandler(console_handler)
+
+        # Create the CSV file without headers (headers will be added later in write_to_csv)
+        self.csv_filename = f"{log_directory}/flik_test_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+        
+        # Just create an empty CSV file
+        with open(self.csv_filename, mode='w', newline='') as csvfile:
+            pass  # CSV file will be populated with headers in write_to_csv
 
     def setup_whegs(self):
         # Set the right side whegs to reverse
@@ -683,17 +691,18 @@ class FLIKRobot:
                     else:
                         velocity_rpm = 'N/A'
 
-                    # Convert load to signed 16-bit
+                    # Convert load to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
                     if isinstance(load, (int, float)):
+                        # Check if load value is in the 16-bit signed integer range and handle negative values
                         if load > 32767:
-                            load_signed = load - 65536
-                        else:
-                            load_signed = load
+                            load = load - 65536
+                        # Load is in 0.1% units, so dividing by 10 converts it to a percentage
+                        load_percentage = load / 10.0
                     else:
-                        load_signed = 'N/A'
+                        load_percentage = 'N/A'
 
                     # Log the motor information
-                    logging.info(f"{motor_id:<10}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_signed:<10}")
+                    logging.info(f"{motor_id:<10}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_percentage:<10}")
 
                 # Check for hardware errors and log them
                 error_detected = False
@@ -741,6 +750,122 @@ class FLIKRobot:
                 # In case of an error, wait briefly before retrying
                 await asyncio.sleep(1)
 
+    async def write_to_csv(self, log_interval=0.2):
+        """
+        Asynchronously collect and log critical information from the robot using individual bulk reads per parameter,
+        and log the data to the CSV file that was created during setup_logging.
+
+        The headers are added when motor IDs become available after the Dynamixel controller initialization.
+
+        :param log_interval: Time (in seconds) between each report logging.
+        """
+        # Get the motor IDs for logging
+        motor_ids = self.dynamixel.motor_groups.get('All_Motors', [])
+
+        if not motor_ids:
+            logging.error("Failed to retrieve motor IDs for CSV logging.")
+            return
+
+        # Write the CSV headers now that motor IDs are available
+        with open(self.csv_filename, mode='a', newline='') as csvfile:
+            fieldnames = ['hh:mm', 'ss:usus']
+            for motor_id in motor_ids:
+                fieldnames.extend([
+                    f'Motor_{motor_id}_Position (degrees)',
+                    f'Motor_{motor_id}_Velocity (RPM)',
+                    f'Motor_{motor_id}_Load (%)',
+                    f'Motor_{motor_id}_Error Status'
+                ])
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            
+            # If file is empty, write the headers
+            csvfile.seek(0, 2)  # Move to the end of the file
+            if csvfile.tell() == 0:
+                writer.writeheader()
+
+        # Start the asynchronous logging loop
+        while True:
+            try:
+                # Get the current time in hh:mm format and seconds with microseconds for ss:usus
+                current_time = datetime.now()
+                time_hhmm = current_time.strftime('%H:%M')
+                time_ssusus = current_time.strftime('%S:%f')
+
+                # Create a dictionary to hold the row data
+                row_data = {
+                    'hh:mm': time_hhmm,
+                    'ss:usus': time_ssusus
+                }
+
+                # Read motor data individually for each parameter
+                motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
+                motor_velocities = self.dynamixel.bulk_read_group('All_Motors', ['present_velocity'])
+                motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
+                hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
+
+                # Populate the row data with individual readings for each motor
+                for motor_id in motor_ids:
+                    # Get position data and convert to degrees
+                    position_ticks = motor_positions.get(motor_id, {}).get('present_position', 'N/A')
+                    if isinstance(position_ticks, (int, float)):
+                        position_degrees = ((position_ticks * 360) / 4096) % 359
+                    else:
+                        position_degrees = 'N/A'
+
+                    # Get velocity data and convert to RPM
+                    velocity_ticks = motor_velocities.get(motor_id, {}).get('present_velocity', 'N/A')
+                    if isinstance(velocity_ticks, (int, float)):
+                        velocity_rpm = (velocity_ticks * 0.229)
+                    else:
+                        velocity_rpm = 'N/A'
+
+                    # Convert load to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
+                    load = motor_loads.get(motor_id, {}).get('present_load', 'N/A')
+                    if isinstance(load, (int, float)):
+                        # Check if load value is in the 16-bit signed integer range and handle negative values
+                        if load > 32767:
+                            load = load - 65536
+                        # Load is in 0.1% units, so dividing by 10 converts it to a percentage
+                        load_percentage = load / 10.0
+                    else:
+                        load_percentage = 'N/A'
+
+                    # Get hardware error status
+                    error_status = hardware_errors.get(motor_id, {}).get('hardware_error_status', 0)
+
+                    # Add motor data to the row
+                    row_data[f'Motor_{motor_id}_Position (degrees)'] = position_degrees
+                    row_data[f'Motor_{motor_id}_Velocity (RPM)'] = velocity_rpm
+                    row_data[f'Motor_{motor_id}_Load (%)'] = load_percentage
+                    row_data[f'Motor_{motor_id}_Error Status'] = error_status
+
+                    # Log hardware errors, if any
+                    if error_status != 0:
+                        logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
+                        if error_status & 0b00000001:
+                            logging.error(f"Motor {motor_id}: Input Voltage Error detected.")
+                        if error_status & 0b00000100:
+                            logging.error(f"Motor {motor_id}: Overheating Error detected.")
+                        if error_status & 0b00001000:
+                            logging.error(f"Motor {motor_id}: Motor Encoder Error detected.")
+                        if error_status & 0b00010000:
+                            logging.error(f"Motor {motor_id}: Electrical Shock Error detected.")
+                        if error_status & 0b00100000:
+                            logging.error(f"Motor {motor_id}: Overload Error detected.")
+
+                # Write the row data to the CSV file
+                with open(self.csv_filename, mode='a', newline='') as csvfile:
+                    writer = csv.DictWriter(csvfile, fieldnames=row_data.keys())
+                    writer.writerow(row_data)
+
+                # Wait for the specified log_interval before the next report
+                await asyncio.sleep(log_interval)
+
+            except Exception as e:
+                logging.error(f"Error while logging robot states: {e}")
+                # In case of an error, wait briefly before retrying
+                await asyncio.sleep(1)
+                
     async def main_loop(self):
         """Main loop to run the asynchronous tasks, with safe shutdown on KeyboardInterrupt."""
         try:
@@ -748,6 +873,7 @@ class FLIKRobot:
                 self.check_inputs(),    # Run input checking
                 self.execute_gait(),    # Run gait execution
                 self.control_pivots_with_dpad(),
+                self.write_to_csv(0.2), # Write to the csv every 0.2 seconds
                 self.report_states(5)   # Log states every 5 seconds (customizable interval)
             )
         
