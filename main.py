@@ -16,6 +16,9 @@ import logging
 import yaml
 import asyncio
 import csv
+import time
+import streamlit as st
+from PIL import Image, ImageDraw
 
 # Internal Imports
 from datetime import datetime
@@ -42,9 +45,87 @@ class FLIKRobot:
         except Exception as e:
             logging.error(f"Error initialising components: {e}")
         
+        # Initialise the dashboard
+        self.init_dashboard()
+
         # Setup the whegs and pivots
         self.setup_whegs()
         self.setup_pivots()
+
+    def init_dashboard(self):
+        # Streamlit setup
+        st.title("FLIK Robot Dashboard")
+
+        # Create placeholders for motor load bars
+        self.motor_bars = [st.empty() for _ in range(8)]
+
+        # Load the PS4 controller image for button display
+        self.controller_image = st.empty()  # Placeholder for the controller image
+
+        # Set up Streamlit layout for displaying motor loads and controller state
+        st.header("Motor Loads")
+        for i in range(8):
+            st.text(f"Motor {i+1} Load:")
+
+        st.header("PS4 Controller Button State")
+
+    def update_controller_image(self, button_states, image_path='ps4_controller.png'):
+        """ Updates the PS4 controller image with button press indicators """
+        img = Image.open(image_path).convert("RGBA")
+        draw = ImageDraw.Draw(img)
+
+        # Define button coordinates (fine-tune for the image)
+        button_coords = {
+            'Square': (320, 200),
+            'X': (380, 260),
+            'Circle': (440, 200),
+            'Triangle': (380, 140),
+            'L1': (80, 60),
+            'R1': (520, 60),
+            'L2': (60, 100),
+            'R2': (540, 100),
+            'Share': (220, 150),
+            'Options': (480, 150),
+            'L3': (160, 300),
+            'R3': (460, 300),
+            'PS': (350, 380),
+            'Touchpad': (350, 180)
+        }
+
+        # Draw red circles on pressed buttons
+        for button, coord in button_coords.items():
+            if button_states.get(button, False):  # Check if the button is pressed
+                draw.ellipse((coord[0] - 15, coord[1] - 15, coord[0] + 15, coord[1] + 15), fill=(255, 0, 0, 128))
+
+        return img
+    
+    async def update_dashboard(self):
+        """ Asynchronously updates the Streamlit dashboard with motor loads and PS4 controller state """
+        while True:
+            try:
+                # Get motor loads and positions (use your actual motor load retrieval logic here)
+                motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
+                motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
+
+                # Get controller button states
+                button_states = self.ps4_controller.get_button_input()
+
+                # Update motor load bars
+                for i, motor_id in enumerate(self.motor_ids):
+                    load = motor_loads.get(motor_id, {}).get('present_load', 0)
+                    load_percentage = load / 10.0 if isinstance(load, (int, float)) else 0
+                    self.motor_bars[i].progress(int(load_percentage))
+
+                # Update the controller image with the button press indicators
+                img = self.update_controller_image(button_states)
+                self.controller_image.image(img, use_column_width=True)
+
+                # Wait for 0.1 seconds before updating again
+                await asyncio.sleep(0.1)
+
+            except Exception as e:
+                st.error(f"Error updating dashboard: {e}")
+                await asyncio.sleep(1)
 
     def setup_logging(self):
         # Create Logs directory if it doesn't exist
@@ -874,7 +955,8 @@ class FLIKRobot:
                 self.execute_gait(),    # Run gait execution
                 self.control_pivots_with_dpad(),
                 self.write_to_csv(0.2), # Write to the csv every 0.2 seconds
-                self.report_states(5)   # Log states every 5 seconds (customizable interval)
+                self.report_states(5),   # Log states every 5 seconds (customizable interval)"""
+                self.update_dashboard() # Update the dashboard
             )
         
         except asyncio.CancelledError:
