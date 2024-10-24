@@ -69,6 +69,8 @@ class FLIKRobot:
 
         st.header("PS4 Controller Button State")
 
+        logging.info("Initialised Streamlit dashboard")
+
     def update_controller_image(self, button_states, image_path='ps4_controller.png'):
         """ Updates the PS4 controller image with button press indicators """
         img = Image.open(image_path).convert("RGBA")
