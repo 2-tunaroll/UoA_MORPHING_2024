@@ -120,25 +120,28 @@ class FLIKRobot:
                 logging.debug(f"L2 trigger value: {l2_trigger}")
 
                 # Update the throttle indicator
-                throttle_value = (l2_trigger + 1) * 50  # Map -1 to 0, 1 to 100
+                # Map l2_trigger from -1 (not pressed) to 1 (fully pressed) to 0% to 100%
+                throttle_value = ((l2_trigger + 1) / 2) * 100
                 self.throttle_placeholder.progress(throttle_value / 100.0)
 
                 # Update D-pad visualization
                 dpad_directions = []
-                for direction in ['up', 'down', 'left', 'right']:
+                for direction in ['dpad_up', 'dpad_down', 'dpad_left', 'dpad_right']:
                     if dpad_inputs.get(direction, False):
-                        dpad_directions.append(direction.capitalize())
+                        # Remove 'dpad_' prefix and capitalize
+                        dir_name = direction.replace('dpad_', '').capitalize()
+                        dpad_directions.append(dir_name)
                 self.dpad_placeholder.text(f"D-pad directions pressed: {', '.join(dpad_directions) if dpad_directions else 'None'}")
 
                 # Update list of buttons pressed
-                buttons_pressed = [button for button, pressed in button_states.items() if pressed]
+                buttons_pressed = [button.capitalize() for button, pressed in button_states.items() if pressed]
                 self.buttons_pressed_placeholder.text(f"Buttons pressed: {', '.join(buttons_pressed) if buttons_pressed else 'None'}")
 
                 # Update the controller image
                 img = self.update_controller_image(button_states, dpad_inputs, l2_trigger)
                 self.controller_image_placeholder.image(img)
 
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.1)  # Adjust sleep time as needed
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
@@ -151,28 +154,28 @@ class FLIKRobot:
 
         # Define button coordinates (adjust as necessary)
         button_coords = {
-            'Square': (320, 200),
-            'X': (380, 260),
-            'Circle': (440, 200),
-            'Triangle': (380, 140),
-            'L1': (80, 60),
-            'R1': (520, 60),
-            'L2': (60, 100),
-            'R2': (540, 100),
-            'Share': (220, 150),
-            'Options': (480, 150),
-            'L3': (160, 300),
-            'R3': (460, 300),
-            'PS': (350, 380),
-            'Touchpad': (350, 180),
+            'square': (320, 200),
+            'x': (380, 260),
+            'circle': (440, 200),
+            'triangle': (380, 140),
+            'l1': (80, 60),
+            'r1': (520, 60),
+            'l2': (60, 100),
+            'r2': (540, 100),
+            'share': (220, 150),
+            'options': (480, 150),
+            'l3': (160, 300),
+            'r3': (460, 300),
+            'ps': (350, 380),
+            'touchpad': (350, 180),
         }
 
         # D-pad coordinates (adjust as necessary)
         dpad_coords = {
-            'up': (100, 200),
-            'down': (100, 240),
-            'left': (80, 220),
-            'right': (120, 220)
+            'dpad_up': (100, 200),
+            'dpad_down': (100, 240),
+            'dpad_left': (80, 220),
+            'dpad_right': (120, 220)
         }
 
         # Draw red circles on pressed buttons
@@ -187,12 +190,12 @@ class FLIKRobot:
 
         # Draw throttle indicator (L2 trigger)
         # Map l2_trigger from -1 to 1 to a value between 0 and 100
-        throttle_value = (l2_trigger + 1) * 50
+        throttle_value = ((l2_trigger + 1) / 2) * 100
         # Define the position and size of the throttle bar
         throttle_bar_coords = (580, 50, 600, 250)  # (left, top, right, bottom)
         # Calculate the height based on throttle_value
         max_height = throttle_bar_coords[3] - throttle_bar_coords[1]
-        filled_height = throttle_value / 100 * max_height
+        filled_height = (throttle_value / 100) * max_height
         # Draw the throttle bar background
         draw.rectangle(throttle_bar_coords, outline="black", fill=(200, 200, 200, 255))
         # Draw the filled part of the throttle bar
