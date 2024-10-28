@@ -71,7 +71,7 @@ class FLIKRobot:
 
         logging.info("Initialised Streamlit dashboard")
 
-    def update_controller_image(self, button_states, image_path='ps4_controller.png'):
+    def update_controller_image(self, button_states, image_path='ps4_switch.svg'):
         """ Updates the PS4 controller image with button press indicators """
         img = Image.open(image_path).convert("RGBA")
         draw = ImageDraw.Draw(img)
@@ -113,7 +113,7 @@ class FLIKRobot:
                 button_states = self.ps4_controller.get_button_input()
 
                 # Update motor load bars
-                for i, motor_id in enumerate(self.motor_ids):
+                for i, motor_id in enumerate(8):
                     load = motor_loads.get(motor_id, {}).get('present_load', 0)
                     load_percentage = load / 10.0 if isinstance(load, (int, float)) else 0
                     self.motor_bars[i].progress(int(load_percentage))
