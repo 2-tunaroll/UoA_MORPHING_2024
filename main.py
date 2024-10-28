@@ -109,39 +109,62 @@ class FLIKRobot:
                             </div>
                         """, unsafe_allow_html=True)
 
-                # Use existing controller inputs
-                button_states = self.button_states
-                dpad_inputs = self.dpad_inputs
-                l2_trigger = self.l2_trigger
+                # Check for controller inputs
+                self.button_states = self.ps4_controller.get_button_input()
+                self.dpad_inputs = self.ps4_controller.get_dpad_input()
+                self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
 
-                # Add logging to debug
-                # logging.info(f"Button states: {button_states}")
-                # logging.info(f"D-pad inputs: {dpad_inputs}")
-                # logging.info(f"L2 trigger value: {l2_trigger}")
+                # Handle emergency stop and gait changes within the dashboard update
+                # Check for emergency stop (Circle button)
+                if 'circle' in self.button_states and self.button_states['circle']:
+                    self.emergency_stop_activated = True
+                    await self.async_emergency_stop()
+
+                # Optionally, resume control after emergency stop (X button)
+                if 'x' in self.button_states and self.button_states['x'] and self.emergency_stop_activated:
+                    self.emergency_stop_activated = False
+                    logging.info("Emergency Stop Deactivated. Resuming control...")
+                    self.gait_change_requested = True
+                    self.next_gait_index = 0
+
+                # Monitor Triangle (increase gait) and Square (decrease gait) buttons for gait change
+                if self.button_states['triangle']:
+                    self.next_gait_index = (self.current_gait_index + 1) % len(self.gait_methods)
+                    self.gait_change_requested = True  # Request a gait change
+                    logging.info(f"Triangle pressed. Preparing to change to next gait: {self.next_gait_index+1}")
+
+                if self.button_states['square']:
+                    self.next_gait_index = (self.current_gait_index - 1) % len(self.gait_methods)
+                    self.gait_change_requested = True  # Request a gait change
+                    logging.info(f"Square pressed. Preparing to change to previous gait: {self.next_gait_index+1}")
+
+                if self.button_states['share']:
+                    self.direction_change_requested = True  # Request a direction change
+                    logging.info(f"Share pressed. Reversing the direction of the whegs")
 
                 # Update the throttle indicator
-                # Map l2_trigger from -1 (not pressed) to 1 (fully pressed) to 0% to 100%
-                throttle_value = ((l2_trigger + 1) / 2) * 100
+                # Use the correct trigger value (adjust if necessary)
+                r2_trigger = self.r2_trigger
+                throttle_value = ((r2_trigger + 1) / 2) * 100  # Map -1 to 0, 1 to 100
                 self.throttle_placeholder.progress(throttle_value / 100.0)
 
                 # Update D-pad visualization
                 dpad_directions = []
                 for direction in ['dpad_up', 'dpad_down', 'dpad_left', 'dpad_right']:
-                    if dpad_inputs.get(direction, False):
-                        # Remove 'dpad_' prefix and capitalize
+                    if self.dpad_inputs.get(direction, False):
                         dir_name = direction.replace('dpad_', '').capitalize()
                         dpad_directions.append(dir_name)
                 self.dpad_placeholder.text(f"D-pad directions pressed: {', '.join(dpad_directions) if dpad_directions else 'None'}")
 
                 # Update list of buttons pressed
-                buttons_pressed = [button.capitalize() for button, pressed in button_states.items() if pressed]
+                buttons_pressed = [button.capitalize() for button, pressed in self.button_states.items() if pressed]
                 self.buttons_pressed_placeholder.text(f"Buttons pressed: {', '.join(buttons_pressed) if buttons_pressed else 'None'}")
 
                 # Update the controller image
-                img = self.update_controller_image(button_states, dpad_inputs, l2_trigger)
+                img = self.update_controller_image(self.button_states, self.dpad_inputs, r2_trigger)
                 self.controller_image_placeholder.image(img)
 
-                await asyncio.sleep(0.1)  # Adjust sleep time as needed
+                await asyncio.sleep(0.1)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
@@ -969,7 +992,7 @@ class FLIKRobot:
         """Main loop to run the asynchronous tasks, with safe shutdown on KeyboardInterrupt."""
         try:
             await asyncio.gather(
-                self.check_inputs(),    # Run input checking
+                # self.check_inputs(),    # Run input checking
                 self.execute_gait(),    # Run gait execution
                 self.control_pivots_with_dpad(),
                 # self.write_to_csv(0.2), # Write to the csv every 0.2 seconds
