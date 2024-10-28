@@ -115,9 +115,9 @@ class FLIKRobot:
                 l2_trigger = self.l2_trigger
 
                 # Add logging to debug
-                logging.info(f"Button states: {button_states}")
-                logging.info(f"D-pad inputs: {dpad_inputs}")
-                logging.info(f"L2 trigger value: {l2_trigger}")
+                # logging.info(f"Button states: {button_states}")
+                # logging.info(f"D-pad inputs: {dpad_inputs}")
+                # logging.info(f"L2 trigger value: {l2_trigger}")
 
                 # Update the throttle indicator
                 # Map l2_trigger from -1 (not pressed) to 1 (fully pressed) to 0% to 100%
@@ -719,7 +719,7 @@ class FLIKRobot:
             logging.info(f"check_inputs - Button states: {self.button_states}")
             logging.info(f"check_inputs - D-pad inputs: {self.dpad_inputs}")
             logging.info(f"check_inputs - L2 trigger value: {self.l2_trigger}")
-            
+
             # Check for emergency stop (Circle button)
             if 'circle' in self.button_states and self.button_states['circle']:
                 self.emergency_stop_activated = True
