@@ -60,10 +60,6 @@ class FLIKRobot:
         st.header("Motor Loads")
         self.motor_placeholders = {name: st.empty() for name in self.config['motor_groups']['All_Motors']}
 
-        st.header("Controller State")
-        # Existing placeholder for controller image
-        self.controller_image_placeholder = st.empty()
-
         # Add placeholders for throttle, D-pad, and buttons pressed
         st.subheader("Throttle Indicator")
         self.throttle_placeholder = st.empty()
@@ -160,28 +156,11 @@ class FLIKRobot:
                 buttons_pressed = [button.capitalize() for button, pressed in self.button_states.items() if pressed]
                 self.buttons_pressed_placeholder.text(f"Buttons pressed: {', '.join(buttons_pressed) if buttons_pressed else 'None'}")
 
-                # Update the controller image
-                img = self.update_controller_image(self.button_states, self.dpad_inputs, r2_trigger)
-                self.controller_image_placeholder.image(img)
-
                 await asyncio.sleep(0.05)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
                 await asyncio.sleep(1)
-
-    def update_controller_image(self, button_states, dpad_inputs, l2_trigger, image_path='ps4_controller.jpg'):
-        try:
-            img = Image.open(image_path).convert("RGBA")
-            draw = ImageDraw.Draw(img)
-
-            # Draw a simple red rectangle to test
-            draw.rectangle((50, 50, 150, 150), fill=(255, 0, 0, 255))
-
-            return img
-        except Exception as e:
-            logging.error(f"Error in update_controller_image: {e}")
-            return None
 
     def setup_logging(self):
         # Create Logs directory if it doesn't exist
