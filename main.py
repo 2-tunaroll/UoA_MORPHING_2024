@@ -103,15 +103,16 @@ class FLIKRobot:
     
     async def update_dashboard(self):
         """ Asynchronously updates the Streamlit dashboard with motor loads and PS4 controller state """
+        # Define placeholders for motor load bars to avoid stacking
+        motor_placeholders = {name: st.empty() for name in self.config['motor_groups']['All_Motors']}
+
         while True:
             try:
-                logging.info("Updating dashboard")
-
                 # Retrieve motor data
                 motor_data = await self.get_motor_data()
 
                 # Update motor load bars with custom color-coding using HTML and CSS
-                for i, named_id in enumerate(self.config['motor_groups']['All_Motors']):
+                for named_id in self.config['motor_groups']['All_Motors']:
                     # Map named motor ID to numeric ID
                     numeric_id = self.config['motor_ids']['whegs'].get(named_id) or self.config['motor_ids']['pivots'].get(named_id)
                     
@@ -126,8 +127,8 @@ class FLIKRobot:
                         else:
                             color = "#4CAF50"  # Green
 
-                        # Create a custom HTML progress bar with label
-                        st.markdown(f"""
+                        # Use st.empty() placeholder to update the progress bar for each motor
+                        motor_placeholders[named_id].markdown(f"""
                             <div style="margin-bottom: 10px;">
                                 <strong>Motor {named_id} Load: {load_percentage:.1f}%</strong>
                                 <div style="background-color: #e0e0e0; border-radius: 5px; height: 20px; width: 100%;">
@@ -135,10 +136,6 @@ class FLIKRobot:
                                 </div>
                             </div>
                         """, unsafe_allow_html=True)
-
-                        logging.info(f"Motor ID {named_id} (Numeric ID {numeric_id}): load_percentage = {load_percentage} (color = {color})")
-                    else:
-                        logging.warning(f"Motor ID {named_id} not found in motor data.")
 
                 # Get controller button states and update the dashboard
                 button_states = self.ps4_controller.get_button_input()
