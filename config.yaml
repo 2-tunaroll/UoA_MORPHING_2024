@@ -73,10 +73,10 @@ gaits:
 
   # Detailed configuration for Gait 4
   gait_4:
-    fast_ang: 360
-    slow_ang: 0
-    low_pos: 180
-    high_pos: 180
+    fast_ang: 350
+    slow_ang: 10
+    low_pos: 175
+    high_pos: 185
     right_pos: 180  # Specific position for the right whegs
     min_rpm: 1
     max_rpm: 3
