@@ -110,25 +110,31 @@ class FLIKRobot:
                 # Retrieve motor data
                 motor_data = await self.get_motor_data()
 
-                # Update motor load bars
+                # Update motor load bars with custom color-coding using HTML and CSS
                 for i, named_id in enumerate(self.config['motor_groups']['All_Motors']):
                     # Map named motor ID to numeric ID
                     numeric_id = self.config['motor_ids']['whegs'].get(named_id) or self.config['motor_ids']['pivots'].get(named_id)
                     
                     if numeric_id and numeric_id in motor_data:
-                        # Get the absolute load percentage and set color based on thresholds
+                        # Get the absolute load percentage and determine color
                         load_percentage = abs(motor_data[numeric_id]["load_percentage"])
                         
                         if load_percentage > 80:
-                            color = "red"
+                            color = "#FF4C4C"  # Red
                         elif load_percentage > 50:
-                            color = "orange"
+                            color = "#FFA500"  # Orange
                         else:
-                            color = "green"
+                            color = "#4CAF50"  # Green
 
-                        # Display the motor load with a label and color-coded progress bar
-                        st.text(f"Motor {named_id} Load: {load_percentage:.1f}%")
-                        self.motor_bars[i].progress(int(load_percentage), text_color=color)
+                        # Create a custom HTML progress bar with label
+                        st.markdown(f"""
+                            <div style="margin-bottom: 10px;">
+                                <strong>Motor {named_id} Load: {load_percentage:.1f}%</strong>
+                                <div style="background-color: #e0e0e0; border-radius: 5px; height: 20px; width: 100%;">
+                                    <div style="width: {load_percentage}%; background-color: {color}; height: 100%; border-radius: 5px;"></div>
+                                </div>
+                            </div>
+                        """, unsafe_allow_html=True)
 
                         logging.info(f"Motor ID {named_id} (Numeric ID {numeric_id}): load_percentage = {load_percentage} (color = {color})")
                     else:
