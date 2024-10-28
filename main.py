@@ -164,7 +164,7 @@ class FLIKRobot:
                 img = self.update_controller_image(self.button_states, self.dpad_inputs, r2_trigger)
                 self.controller_image_placeholder.image(img)
 
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.02)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
@@ -481,7 +481,6 @@ class FLIKRobot:
     async def gait_1(self):
         """Execute Gait 1 and return how long to wait before the next step."""
         logging.debug("Executing Gait 1")
-        print("DEBUG: %s", self.r2_trigger)
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
         if self.wheg_rpm > 1 and self.gait_change_requested == False:
         
