@@ -56,6 +56,22 @@ class FLIKRobot:
         # Streamlit setup
         st.title("FLIK Robot Dashboard")
 
+        # Display status indicators at the top
+        st.header("Robot Status")
+
+        # Create placeholders for status indicators
+        status_col1, status_col2, status_col3 = st.columns(3)
+
+        with status_col1:
+            st.subheader("Current Gait")
+            self.current_gait_placeholder = st.empty()
+        with status_col2:
+            st.subheader("Emergency Stop")
+            self.emergency_stop_placeholder = st.empty()
+        with status_col3:
+            st.subheader("Robot Direction")
+            self.robot_direction_placeholder = st.empty()
+
         # Create two columns: Left for indicators, Right for motor loads
         col1, col2 = st.columns(2)
 
@@ -78,8 +94,6 @@ class FLIKRobot:
         # Initialize dictionaries to track button and D-pad press times
         self.button_press_times = {}
         self.dpad_press_times = {}
-
-        logging.info("Initialized Streamlit dashboard")
 
     async def update_dashboard(self):
         """ Asynchronously updates the Streamlit dashboard with motor loads and PS4 controller state """
@@ -114,6 +128,21 @@ class FLIKRobot:
                             </div>
                         """, unsafe_allow_html=True)
 
+                # Update status indicators
+                # Current Gait
+                current_gait_name = self.gait_methods[self.current_gait_index].__name__.replace('_', ' ').capitalize()
+                self.current_gait_placeholder.text(current_gait_name)
+
+                # Emergency Stop Status
+                if self.emergency_stop_activated:
+                    self.emergency_stop_placeholder.markdown('<span style="color:red; font-weight:bold">Activated</span>', unsafe_allow_html=True)
+                else:
+                    self.emergency_stop_placeholder.markdown('<span style="color:green; font-weight:bold">Deactivated</span>', unsafe_allow_html=True)
+
+                # Robot Direction
+                robot_direction = "Forward" if self.current_direction else "Reverse"
+                self.robot_direction_placeholder.text(robot_direction)
+                
                 # Check for controller inputs
                 self.button_states = self.ps4_controller.get_button_input()
                 self.dpad_inputs = self.ps4_controller.get_dpad_input()
@@ -250,7 +279,10 @@ class FLIKRobot:
 
             # Set the reversed drive mode for each motor
             self.dynamixel.set_drive_mode_group('Wheg_Group', reversed_direction)
-            logging.warning("Reversed the direction of all whegs")
+
+            wait_time = 3
+            logging.info(f"Reversed the direction of all whegs, waiting for {wait_time} seconds")
+            time.sleep(wait_time)
 
         except Exception as e:
             logging.error(f"Failed to reverse direction: {e}")
