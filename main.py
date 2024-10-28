@@ -106,29 +106,39 @@ class FLIKRobot:
         while True:
             try:
                 logging.info("Updating dashboard")
-                # Get motor loads and positions (use your actual motor load retrieval logic here)
+
+                # Get motor loads and positions
                 motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
-                motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
                 logging.info(f"Motor loads: {motor_loads}")
 
                 # Get controller button states
                 button_states = self.ps4_controller.get_button_input()
 
                 # Update motor load bars
-                for i, motor_id in enumerate(self.config['motor_groups']['All_Motors']):
-                    motor_data = motor_loads.get(motor_id, {})
-
-                    # Check if present_load is available and calculate percentage
-                    load = motor_data.get('present_load', None)
-                    if load is not None and isinstance(load, (int, float)):
-                        load_percentage = load / 10.0
-                    else:
-                        load_percentage = 0  # Default if load is missing or invalid
-
-                    logging.info(f"Motor ID {motor_id}: load_percentage = {load_percentage}")
+                all_motors = self.config['motor_groups']['All_Motors']
+                wheg_ids = self.config['motor_ids']['whegs']
+                pivot_ids = self.config['motor_ids']['pivots']
+                
+                for i, named_id in enumerate(all_motors):
+                    # Determine if the motor is a wheg or pivot to get the numeric ID
+                    numeric_id = wheg_ids.get(named_id) or pivot_ids.get(named_id)
                     
-                    # Update progress bar for each motor
-                    self.motor_bars[i].progress(int(load_percentage))
+                    if numeric_id is not None:
+                        motor_data = motor_loads.get(numeric_id, {})
+
+                        # Check if present_load is available and calculate percentage
+                        load = motor_data.get('present_load', None)
+                        if load is not None and isinstance(load, (int, float)):
+                            load_percentage = load / 10.0
+                        else:
+                            load_percentage = 0  # Default if load is missing or invalid
+
+                        logging.info(f"Motor ID {named_id} (Numeric ID {numeric_id}): load_percentage = {load_percentage}")
+                        
+                        # Update progress bar for each motor
+                        self.motor_bars[i].progress(int(load_percentage))
+                    else:
+                        logging.warning(f"Motor ID {named_id} not found in motor_ids configuration.")
 
                 # Update the controller image with the button press indicators
                 img = self.update_controller_image(button_states)
