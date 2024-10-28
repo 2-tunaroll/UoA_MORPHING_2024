@@ -71,40 +71,14 @@ class FLIKRobot:
 
         logging.info("Initialised Streamlit dashboard")
 
-    def update_controller_image(self, button_states, image_path='ps4_controller.jpg'):
-        """ Updates the PS4 controller image with button press indicators """
-        img = Image.open(image_path).convert("RGBA")
-        draw = ImageDraw.Draw(img)
-
-        # Define button coordinates (fine-tune for the image)
-        button_coords = {
-            'Square': (320, 200),
-            'X': (380, 260),
-            'Circle': (440, 200),
-            'Triangle': (380, 140),
-            'L1': (80, 60),
-            'R1': (520, 60),
-            'L2': (60, 100),
-            'R2': (540, 100),
-            'Share': (220, 150),
-            'Options': (480, 150),
-            'L3': (160, 300),
-            'R3': (460, 300),
-            'PS': (350, 380),
-            'Touchpad': (350, 180)
-        }
-
-        # Draw red circles on pressed buttons
-        for button, coord in button_coords.items():
-            if button_states.get(button, False):  # Check if the button is pressed
-                draw.ellipse((coord[0] - 15, coord[1] - 15, coord[0] + 15, coord[1] + 15), fill=(255, 0, 0, 128))
-
-        return img
-    
     async def update_dashboard(self):
         """ Asynchronously updates the Streamlit dashboard with motor loads and PS4 controller state """
-        # Define placeholders for motor load bars to avoid stacking
+        # Set up the layout with headings and placeholders
+        st.header("Motor Loads")
         motor_placeholders = {name: st.empty() for name in self.config['motor_groups']['All_Motors']}
+        
+        st.header("PS4 Controller Button State")
+        controller_image_placeholder = st.empty()  # Placeholder for controller image
 
         while True:
             try:
@@ -137,16 +111,46 @@ class FLIKRobot:
                             </div>
                         """, unsafe_allow_html=True)
 
-                # Get controller button states and update the dashboard
+                # Get controller button states and update the controller image
                 button_states = self.ps4_controller.get_button_input()
                 img = self.update_controller_image(button_states)
-                self.controller_image.image(img, use_column_width=True)
+                controller_image_placeholder.image(img, use_column_width=True)
 
                 await asyncio.sleep(0.1)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
                 await asyncio.sleep(1)
+
+    def update_controller_image(self, button_states, image_path='ps4_controller.jpg'):
+        """ Updates the PS4 controller image with button press indicators """
+        img = Image.open(image_path).convert("RGBA")
+        draw = ImageDraw.Draw(img)
+
+        # Define button coordinates (fine-tune for the image)
+        button_coords = {
+            'Square': (320, 200),
+            'X': (380, 260),
+            'Circle': (440, 200),
+            'Triangle': (380, 140),
+            'L1': (80, 60),
+            'R1': (520, 60),
+            'L2': (60, 100),
+            'R2': (540, 100),
+            'Share': (220, 150),
+            'Options': (480, 150),
+            'L3': (160, 300),
+            'R3': (460, 300),
+            'PS': (350, 380),
+            'Touchpad': (350, 180)
+        }
+
+        # Draw red circles on pressed buttons
+        for button, coord in button_coords.items():
+            if button_states.get(button, False):  # Check if the button is pressed
+                draw.ellipse((coord[0] - 15, coord[1] - 15, coord[0] + 15, coord[1] + 15), fill=(255, 0, 0, 128))
+
+        return img
 
     def setup_logging(self):
         # Create Logs directory if it doesn't exist
