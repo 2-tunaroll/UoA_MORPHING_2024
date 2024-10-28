@@ -75,6 +75,10 @@ class FLIKRobot:
             # Set up the motor load placeholders in the right column
             self.motor_placeholders = {name: col2.empty() for name in self.config['motor_groups']['All_Motors']}
 
+        # Initialize dictionaries to track button and D-pad press times
+        self.button_press_times = {}
+        self.dpad_press_times = {}
+
         logging.info("Initialized Streamlit dashboard")
 
     async def update_dashboard(self):
@@ -115,6 +119,8 @@ class FLIKRobot:
                 self.dpad_inputs = self.ps4_controller.get_dpad_input()
                 self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
 
+                current_time = time.time()
+
                 # Handle emergency stop and gait changes within the dashboard update
                 # Check for emergency stop (Circle button)
                 if 'circle' in self.button_states and self.button_states['circle']:
@@ -144,29 +150,47 @@ class FLIKRobot:
                     logging.info(f"Share pressed. Reversing the direction of the whegs")
 
                 # Update the throttle indicator
-                # Use the correct trigger value (adjust if necessary)
                 r2_trigger = self.r2_trigger
                 throttle_value = ((r2_trigger + 1) / 2) * 100  # Map -1 to 0, 1 to 100
                 self.throttle_placeholder.progress(throttle_value / 100.0)
 
-                # Update D-Pad Control display
+                # Update D-Pad Control display with persistence
+                # For each D-pad direction, if pressed, record the current time
+                for direction in ['dpad_up', 'dpad_down', 'dpad_left', 'dpad_right']:
+                    if self.dpad_inputs.get(direction, False):
+                        self.dpad_press_times[direction] = current_time
+
+                # Remove entries older than 1 second
+                self.dpad_press_times = {k: v for k, v in self.dpad_press_times.items() if current_time - v < 1.0}
+
+                # Map D-pad directions to actions, correcting the rear pivot up/down
                 dpad_actions = []
-                if self.dpad_inputs.get('dpad_up', False):
+                if 'dpad_up' in self.dpad_press_times:
                     dpad_actions.append('Front Pivot Up')
-                if self.dpad_inputs.get('dpad_down', False):
+                if 'dpad_down' in self.dpad_press_times:
                     dpad_actions.append('Front Pivot Down')
-                if self.dpad_inputs.get('dpad_left', False):
-                    dpad_actions.append('Rear Pivot Down')
-                if self.dpad_inputs.get('dpad_right', False):
-                    dpad_actions.append('Rear Pivot Up')
+                if 'dpad_left' in self.dpad_press_times:
+                    dpad_actions.append('Rear Pivot Up')    # Corrected assignment
+                if 'dpad_right' in self.dpad_press_times:
+                    dpad_actions.append('Rear Pivot Down')  # Corrected assignment
 
                 if dpad_actions:
                     self.dpad_placeholder.text(f"D-Pad Actions: {', '.join(dpad_actions)}")
                 else:
                     self.dpad_placeholder.text("D-Pad Actions: None")
 
-                # Update list of buttons pressed
-                buttons_pressed = [button.capitalize() for button, pressed in self.button_states.items() if pressed]
+                # Update list of buttons pressed with persistence
+                # For each button, if pressed, record the current time
+                for button, pressed in self.button_states.items():
+                    if pressed:
+                        self.button_press_times[button] = current_time
+
+                # Remove entries older than 1 second
+                self.button_press_times = {k: v for k, v in self.button_press_times.items() if current_time - v < 1.0}
+
+                # Prepare the list of buttons to display
+                buttons_pressed = [button.capitalize() for button in self.button_press_times.keys()]
+
                 self.buttons_pressed_placeholder.text(f"Buttons pressed: {', '.join(buttons_pressed) if buttons_pressed else 'None'}")
 
                 await asyncio.sleep(0.05)
