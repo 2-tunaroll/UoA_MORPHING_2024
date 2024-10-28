@@ -269,7 +269,12 @@ class FLIKRobot:
             2: self.gait_3,
             3: self.gait_4
         }
-        
+        # Buttons
+        self.button_states = {}
+        self.dpad_inputs = {}
+        self.l2_trigger = -1.0
+        self.r2_trigger = -1.0
+            
     def adjust_front_pivot(self, direction):
         """Adjust the front pivot angle based on D-pad input."""
         if direction == 'up':
@@ -700,10 +705,21 @@ class FLIKRobot:
     async def check_inputs(self):
         """Asynchronously check for controller inputs, including gait change."""
         while True:
-            self.button_states = self.ps4_controller.get_button_input()
-            self.dpad_inputs = self.ps4_controller.get_dpad_input()
+            new_button_states = self.ps4_controller.get_button_input()
+            self.button_states.clear()
+            self.button_states.update(new_button_states)
+
+            new_dpad_inputs = self.ps4_controller.get_dpad_input()
+            self.dpad_inputs.clear()
+            self.dpad_inputs.update(new_dpad_inputs)
+
             self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
 
+            # Add logging to monitor inputs
+            logging.info(f"check_inputs - Button states: {self.button_states}")
+            logging.info(f"check_inputs - D-pad inputs: {self.dpad_inputs}")
+            logging.info(f"check_inputs - L2 trigger value: {self.l2_trigger}")
+            
             # Check for emergency stop (Circle button)
             if 'circle' in self.button_states and self.button_states['circle']:
                 self.emergency_stop_activated = True
