@@ -103,7 +103,7 @@ class FLIKRobot:
                 img = self.update_controller_image(button_states)
                 self.controller_image_placeholder.image(img, use_column_width=True)
 
-                await asyncio.sleep(0.25)
+                await asyncio.sleep(0.5)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
