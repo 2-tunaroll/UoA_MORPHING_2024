@@ -107,44 +107,25 @@ class FLIKRobot:
             try:
                 logging.info("Updating dashboard")
 
-                # Get motor loads and positions
-                motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
-                logging.info(f"Motor loads: {motor_loads}")
-
-                # Get controller button states
-                button_states = self.ps4_controller.get_button_input()
+                # Retrieve motor data
+                motor_data = await self.get_motor_data()
 
                 # Update motor load bars
-                all_motors = self.config['motor_groups']['All_Motors']
-                wheg_ids = self.config['motor_ids']['whegs']
-                pivot_ids = self.config['motor_ids']['pivots']
-                
-                for i, named_id in enumerate(all_motors):
-                    # Determine if the motor is a wheg or pivot to get the numeric ID
-                    numeric_id = wheg_ids.get(named_id) or pivot_ids.get(named_id)
-                    
-                    if numeric_id is not None:
-                        motor_data = motor_loads.get(numeric_id, {})
-
-                        # Check if present_load is available and calculate percentage
-                        load = motor_data.get('present_load', None)
-                        if load is not None and isinstance(load, (int, float)):
-                            load_percentage = load / 10.0
-                        else:
-                            load_percentage = 0  # Default if load is missing or invalid
-
+                for i, named_id in enumerate(self.config['motor_groups']['All_Motors']):
+                    # Map named motor ID to numeric ID
+                    numeric_id = self.config['motor_ids']['whegs'].get(named_id) or self.config['motor_ids']['pivots'].get(named_id)
+                    if numeric_id and numeric_id in motor_data:
+                        load_percentage = motor_data[numeric_id]["load_percentage"]
                         logging.info(f"Motor ID {named_id} (Numeric ID {numeric_id}): load_percentage = {load_percentage}")
-                        
-                        # Update progress bar for each motor
                         self.motor_bars[i].progress(int(load_percentage))
                     else:
-                        logging.warning(f"Motor ID {named_id} not found in motor_ids configuration.")
+                        logging.warning(f"Motor ID {named_id} not found in motor data.")
 
-                # Update the controller image with the button press indicators
+                # Get controller button states and update the dashboard
+                button_states = self.ps4_controller.get_button_input()
                 img = self.update_controller_image(button_states)
                 self.controller_image.image(img, use_column_width=True)
 
-                # Wait for 0.1 seconds before updating again
                 await asyncio.sleep(0.1)
 
             except Exception as e:
@@ -760,99 +741,67 @@ class FLIKRobot:
 
             await asyncio.sleep(0.01)  # Small sleep to allow other tasks to run
 
+    async def get_motor_data(self):
+        """
+        Retrieves motor data including positions, velocities, loads, and error statuses.
+        Returns a dictionary with each motor's ID and its associated data.
+        """
+        try:
+            # Perform a bulk read for motor positions, velocities, loads, and hardware errors
+            motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
+            motor_velocities = self.dynamixel.bulk_read_group('All_Motors', ['present_velocity'])
+            motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
+            hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
+
+            motor_data = {}
+
+            for motor_id in motor_positions.keys():
+                # Retrieve position, velocity, load, and error status
+                position_ticks = motor_positions[motor_id].get('present_position', 'N/A')
+                velocity = motor_velocities[motor_id].get('present_velocity', 'N/A')
+                load = motor_loads[motor_id].get('present_load', 'N/A')
+                error_status = hardware_errors[motor_id].get('hardware_error_status', 0)
+
+                # Convert position to degrees, velocity to RPM, and load to percentage
+                position_degrees = ((position_ticks * 360) / 4096) % 359 if isinstance(position_ticks, (int, float)) else 'N/A'
+                velocity_rpm = (velocity * 0.229) if isinstance(velocity, (int, float)) else 'N/A'
+                load_percentage = (load - 65536) / 10.0 if load > 32767 else (load / 10.0 if isinstance(load, (int, float)) else 'N/A')
+
+                # Store processed data in motor_data dictionary
+                motor_data[motor_id] = {
+                    "position_degrees": position_degrees,
+                    "velocity_rpm": velocity_rpm,
+                    "load_percentage": load_percentage,
+                    "error_status": error_status
+                }
+
+            return motor_data
+
+        except Exception as e:
+            logging.error(f"Error retrieving motor data: {e}")
+            return {}
+            
     async def report_states(self, log_interval=5):
-        """
-        Asynchronously collect and log critical information from the robot using bulk read.
-        
-        :param log_interval: Time (in seconds) between each report logging.
-        """
+        """ Asynchronously logs motor states including positions, velocities, loads, and errors. """
         while True:
             try:
-                # Perform a bulk read to gather critical motor information (e.g., positions, velocities)
-                motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
-                motor_velocities = self.dynamixel.bulk_read_group('All_Motors', ['present_velocity'])
+                # Retrieve motor data
+                motor_data = await self.get_motor_data()
                 
-                # Optionally, you can include other states like motor loads
-                motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
-                hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
-
-                # Logging system with load conversion
                 logging.info(f"{'Motor':<10}{'Position (degrees)':<25}{'Velocity (RPM)':<20}{'Load (%)':<10}")
+                for motor_id, data in motor_data.items():
+                    logging.info(f"{motor_id:<10}{data['position_degrees']:<25.2f}{data['velocity_rpm']:<20.2f}{data['load_percentage']:<10}")
 
-                for motor_id in motor_positions.keys():
-                    position_ticks = motor_positions[motor_id].get('present_position', 'N/A')
-                    velocity = motor_velocities[motor_id].get('present_velocity', 'N/A')
-                    load = motor_loads[motor_id].get('present_load', 'N/A') if motor_loads else 'N/A'
+                    # Log any detected hardware errors
+                    error_status = data["error_status"]
+                    if error_status != 0:
+                        logging.error(f"Hardware error on motor {motor_id}: Error code {error_status}")
+                        # Additional error handling logic can go here if needed
 
-                    # Convert position from ticks to degrees
-                    if isinstance(position_ticks, (int, float)):
-                        position_degrees = ((position_ticks * 360) / 4096) % 359
-                    else:
-                        position_degrees = 'N/A'
-
-                    # Convert velocity from ticks/sec to RPM
-                    if isinstance(velocity, (int, float)):
-                        velocity_rpm = (velocity * 0.229)
-                    else:
-                        velocity_rpm = 'N/A'
-
-                    # Convert load to percentage (-1000 ~ 1000 corresponds to -100% ~ 100%)
-                    if isinstance(load, (int, float)):
-                        # Check if load value is in the 16-bit signed integer range and handle negative values
-                        if load > 32767:
-                            load = load - 65536
-                        # Load is in 0.1% units, so dividing by 10 converts it to a percentage
-                        load_percentage = load / 10.0
-                    else:
-                        load_percentage = 'N/A'
-
-                    # Log the motor information
-                    logging.info(f"{motor_id:<10}{position_degrees:<25.2f}{velocity_rpm:<20.2f}{load_percentage:<10}")
-
-                # Check for hardware errors and log them
-                error_detected = False
-                reboot_id = None
-
-                # Ensure hardware_errors contains valid data
-                if hardware_errors:
-                    for motor_id, error_status_dict in hardware_errors.items():
-                        error_status = error_status_dict.get('hardware_error_status', 0)
-                        if error_status != 0:  # Non-zero error status indicates a hardware error
-                            error_detected = True
-                            logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
-                            reboot_id = motor_id
-                            
-                            # Decode the hardware error based on the error status bits
-                            if error_status & 0b00000001:  # Bit 0 - Input Voltage Error
-                                logging.error(f"Motor {motor_id}: Input Voltage Error detected.")
-                            if error_status & 0b00000100:  # Bit 2 - Overheating Error
-                                logging.error(f"Motor {motor_id}: Overheating Error detected.")
-                            if error_status & 0b00001000:  # Bit 3 - Motor Encoder Error
-                                logging.error(f"Motor {motor_id}: Motor Encoder Error detected.")
-                            if error_status & 0b00010000:  # Bit 4 - Electrical Shock Error
-                                logging.error(f"Motor {motor_id}: Electrical Shock Error detected.")
-                            if error_status & 0b00100000:  # Bit 5 - Overload Error
-                                logging.error(f"Motor {motor_id}: Overload Error detected.")
-
-                # If any hardware errors are detected, reset motors and change gait
-                if error_detected and reboot_id is not None:
-                    logging.warning(f"Hardware error detected on motor {reboot_id}. Rebooting motor and resetting gait...")
-                    reboot_success = self.dynamixel.reboot_motor(reboot_id)  # Reboot the motor
-                    if reboot_success: # If reboot is successful, request a gait change
-                        logging.info(f"Motor {reboot_id} rebooted successfully.")
-                        self.reboot_requested = True
-                        self.gait_change_requested = True
-                        self.next_gait_index = 0 # Set the next gait index to 0
-                    else: # Emergency stop if reboot fails
-                        logging.warning(f"Warning - Motor {reboot_id} reboot failed. Executing emergency stop.")
-                        await self.async_emergency_stop()
-
-                # Wait for the specified log_interval before the next report
                 await asyncio.sleep(log_interval)
 
             except Exception as e:
                 logging.error(f"Error while reporting robot states: {e}")
-                # In case of an error, wait briefly before retrying
                 await asyncio.sleep(1)
 
     async def write_to_csv(self, log_interval=0.2):
