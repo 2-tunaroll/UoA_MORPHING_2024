@@ -754,7 +754,7 @@ class FLIKRobot:
                 self.emergency_stop()
                 break
 
-            await asyncio.sleep(0.01)  # Non-blocking wait to continue checking inputs
+            await asyncio.sleep(0.05)  # Non-blocking wait to continue checking inputs
 
     async def execute_gait(self):
         """Execute the current gait asynchronously, adding a 2-second wait for initialization."""
