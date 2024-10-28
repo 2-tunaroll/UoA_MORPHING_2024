@@ -60,8 +60,19 @@ class FLIKRobot:
         st.header("Motor Loads")
         self.motor_placeholders = {name: st.empty() for name in self.config['motor_groups']['All_Motors']}
 
-        st.header("PS4 Controller Button State")
-        self.controller_image_placeholder = st.empty()  # Placeholder for the controller image
+        st.header("Controller State")
+        # Existing placeholder for controller image
+        self.controller_image_placeholder = st.empty()
+
+        # Add placeholders for throttle, D-pad, and buttons pressed
+        st.subheader("Throttle Indicator")
+        self.throttle_placeholder = st.empty()
+
+        st.subheader("D-pad Visualization")
+        self.dpad_placeholder = st.empty()
+
+        st.subheader("Buttons Pressed")
+        self.buttons_pressed_placeholder = st.empty()
 
         logging.info("Initialised Streamlit dashboard")
 
@@ -98,14 +109,43 @@ class FLIKRobot:
                             </div>
                         """, unsafe_allow_html=True)
 
+                # Update controller inputs
+                button_states = self.ps4_controller.get_button_input()
+                dpad_inputs = self.ps4_controller.get_dpad_input()
+                l2_trigger, r2_trigger = self.ps4_controller.get_trigger_input()
+
+                # Update the throttle indicator
+                throttle_value = (l2_trigger + 1) * 50  # Map -1 to 0, 1 to 100
+                self.throttle_placeholder.progress(throttle_value / 100.0)
+
+                # Update D-pad visualization
+                dpad_directions = []
+                if dpad_inputs.get('up', False):
+                    dpad_directions.append('Up')
+                if dpad_inputs.get('down', False):
+                    dpad_directions.append('Down')
+                if dpad_inputs.get('left', False):
+                    dpad_directions.append('Left')
+                if dpad_inputs.get('right', False):
+                    dpad_directions.append('Right')
+                self.dpad_placeholder.text(f"D-pad directions pressed: {', '.join(dpad_directions) if dpad_directions else 'None'}")
+
+                # Update list of buttons pressed
+                buttons_pressed = [button for button, pressed in button_states.items() if pressed]
+                self.buttons_pressed_placeholder.text(f"Buttons pressed: {', '.join(buttons_pressed) if buttons_pressed else 'None'}")
+
+                # Update the controller image
+                img = self.update_controller_image(button_states, dpad_inputs, l2_trigger)
+                self.controller_image_placeholder.image(img)
+
                 await asyncio.sleep(0.5)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
                 await asyncio.sleep(1)
 
-    def update_controller_image(self, button_states, image_path='ps4_controller.jpg'):
-        """ Updates the PS4 controller image with button press indicators """
+    def update_controller_image(self, button_states, dpad_inputs, l2_trigger, image_path='ps4_controller.jpg'):
+        """ Updates the PS4 controller image with button press indicators, D-pad visualization, and throttle indicator """
         img = Image.open(image_path).convert("RGBA")
         draw = ImageDraw.Draw(img)
 
@@ -124,13 +164,40 @@ class FLIKRobot:
             'L3': (160, 300),
             'R3': (460, 300),
             'PS': (350, 380),
-            'Touchpad': (350, 180)
+            'Touchpad': (350, 180),
+        }
+
+        # D-pad coordinates
+        dpad_coords = {
+            'up': (100, 200),
+            'down': (100, 240),
+            'left': (80, 220),
+            'right': (120, 220)
         }
 
         # Draw red circles on pressed buttons
         for button, coord in button_coords.items():
             if button_states.get(button, False):  # Check if the button is pressed
                 draw.ellipse((coord[0] - 15, coord[1] - 15, coord[0] + 15, coord[1] + 15), fill=(255, 0, 0, 128))
+
+        # Draw blue circles on D-pad presses
+        for direction, coord in dpad_coords.items():
+            if dpad_inputs.get(direction, False):  # Check if the direction is pressed
+                draw.ellipse((coord[0] - 10, coord[1] - 10, coord[0] + 10, coord[1] + 10), fill=(0, 0, 255, 128))
+
+        # Draw throttle indicator (L2 trigger)
+        # Map l2_trigger from -1 to 1 to a value between 0 and 100
+        throttle_value = (l2_trigger + 1) * 50
+        # Define the position and size of the throttle bar
+        throttle_bar_coords = (50, 50, 70, 250)  # (left, top, right, bottom)
+        # Calculate the height based on throttle_value
+        max_height = throttle_bar_coords[3] - throttle_bar_coords[1]
+        filled_height = throttle_value / 100 * max_height
+        # Draw the throttle bar background
+        draw.rectangle(throttle_bar_coords, outline="black", fill=(200, 200, 200, 255))
+        # Draw the filled part of the throttle bar
+        draw.rectangle((throttle_bar_coords[0], throttle_bar_coords[3] - filled_height,
+                        throttle_bar_coords[2], throttle_bar_coords[3]), fill=(0, 255, 0, 255))
 
         return img
 
