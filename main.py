@@ -109,10 +109,15 @@ class FLIKRobot:
                             </div>
                         """, unsafe_allow_html=True)
 
-                # Update controller inputs
-                button_states = self.ps4_controller.get_button_input()
-                dpad_inputs = self.ps4_controller.get_dpad_input()
-                l2_trigger, r2_trigger = self.ps4_controller.get_trigger_input()
+                # Use existing controller inputs
+                button_states = self.button_states
+                dpad_inputs = self.dpad_inputs
+                l2_trigger = self.l2_trigger
+
+                # Add logging to debug
+                logging.debug(f"Button states: {button_states}")
+                logging.debug(f"D-pad inputs: {dpad_inputs}")
+                logging.debug(f"L2 trigger value: {l2_trigger}")
 
                 # Update the throttle indicator
                 throttle_value = (l2_trigger + 1) * 50  # Map -1 to 0, 1 to 100
@@ -120,14 +125,9 @@ class FLIKRobot:
 
                 # Update D-pad visualization
                 dpad_directions = []
-                if dpad_inputs.get('up', False):
-                    dpad_directions.append('Up')
-                if dpad_inputs.get('down', False):
-                    dpad_directions.append('Down')
-                if dpad_inputs.get('left', False):
-                    dpad_directions.append('Left')
-                if dpad_inputs.get('right', False):
-                    dpad_directions.append('Right')
+                for direction in ['up', 'down', 'left', 'right']:
+                    if dpad_inputs.get(direction, False):
+                        dpad_directions.append(direction.capitalize())
                 self.dpad_placeholder.text(f"D-pad directions pressed: {', '.join(dpad_directions) if dpad_directions else 'None'}")
 
                 # Update list of buttons pressed
@@ -138,7 +138,7 @@ class FLIKRobot:
                 img = self.update_controller_image(button_states, dpad_inputs, l2_trigger)
                 self.controller_image_placeholder.image(img)
 
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.1)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
@@ -149,7 +149,7 @@ class FLIKRobot:
         img = Image.open(image_path).convert("RGBA")
         draw = ImageDraw.Draw(img)
 
-        # Define button coordinates (fine-tune for the image)
+        # Define button coordinates (adjust as necessary)
         button_coords = {
             'Square': (320, 200),
             'X': (380, 260),
@@ -167,7 +167,7 @@ class FLIKRobot:
             'Touchpad': (350, 180),
         }
 
-        # D-pad coordinates
+        # D-pad coordinates (adjust as necessary)
         dpad_coords = {
             'up': (100, 200),
             'down': (100, 240),
@@ -189,15 +189,22 @@ class FLIKRobot:
         # Map l2_trigger from -1 to 1 to a value between 0 and 100
         throttle_value = (l2_trigger + 1) * 50
         # Define the position and size of the throttle bar
-        throttle_bar_coords = (50, 50, 70, 250)  # (left, top, right, bottom)
+        throttle_bar_coords = (580, 50, 600, 250)  # (left, top, right, bottom)
         # Calculate the height based on throttle_value
         max_height = throttle_bar_coords[3] - throttle_bar_coords[1]
         filled_height = throttle_value / 100 * max_height
         # Draw the throttle bar background
         draw.rectangle(throttle_bar_coords, outline="black", fill=(200, 200, 200, 255))
         # Draw the filled part of the throttle bar
-        draw.rectangle((throttle_bar_coords[0], throttle_bar_coords[3] - filled_height,
-                        throttle_bar_coords[2], throttle_bar_coords[3]), fill=(0, 255, 0, 255))
+        draw.rectangle(
+            (
+                throttle_bar_coords[0],
+                throttle_bar_coords[3] - filled_height,
+                throttle_bar_coords[2],
+                throttle_bar_coords[3]
+            ),
+            fill=(0, 255, 0, 255)
+        )
 
         return img
 
