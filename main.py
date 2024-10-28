@@ -113,7 +113,7 @@ class FLIKRobot:
                 button_states = self.ps4_controller.get_button_input()
 
                 # Update motor load bars
-                for i, motor_id in enumerate(8):
+                for i, motor_id in enumerate(self.config['motor_groups']['All_Motors']):
                     load = motor_loads.get(motor_id, {}).get('present_load', 0)
                     load_percentage = load / 10.0 if isinstance(load, (int, float)) else 0
                     self.motor_bars[i].progress(int(load_percentage))
