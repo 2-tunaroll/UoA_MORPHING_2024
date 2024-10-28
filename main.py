@@ -142,7 +142,7 @@ class FLIKRobot:
                 # Robot Direction
                 robot_direction = "Forward" if self.current_direction else "Reverse"
                 self.robot_direction_placeholder.text(robot_direction)
-                
+
                 # Check for controller inputs
                 self.button_states = self.ps4_controller.get_button_input()
                 self.dpad_inputs = self.ps4_controller.get_dpad_input()
@@ -830,31 +830,91 @@ class FLIKRobot:
         """Execute the current gait asynchronously, adding a 2-second wait for initialization."""
         while True:
             if not self.emergency_stop_activated:
-
+                # Check for hardware errors before executing the gait
+                await self.check_hardware_errors()
+                if self.emergency_stop_activated:
+                    logging.debug("Emergency stop activated due to hardware error, gait execution paused.")
+                    continue  # Skip the rest of the loop if emergency stop is activated
+                
                 # Get the current gait function and execute it
                 gait_function = self.gait_methods[self.current_gait_index]
                 wait_time = await gait_function()
-
+                
                 # Check if a gait change has been requested
                 if self.gait_change_requested:
-                    # Initialise the new gait (with a 2-second wait)
+                    # Initialize the new gait
                     init_gait_function = self.gait_init_methods[self.next_gait_index]
-                    await init_gait_function()  # Initialise the new gait
+                    await init_gait_function()
+                    
                     # Update current gait index
                     self.current_gait_index = self.next_gait_index
+                    self.gait_change_requested = False
                     logging.info(f"New gait {self.current_gait_index + 1} is now active.")
                 
+                # Handle direction change
                 if self.direction_change_requested:
                     self.reverse_direction()
+                    self.direction_change_requested = False
                     logging.info("Direction of whegs reversed.")
-
+                
                 if wait_time > 0:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
             else:
                 logging.debug("Emergency stop activated, gait execution paused.")
-
+            
             await asyncio.sleep(0.01)  # Small sleep to allow other tasks to run
+
+    async def reset_motors(self):
+        """
+        Resets the motors to a safe state.
+        """
+        try:
+            # Stop all motors
+            zero_velocities = {motor_id: 0 for motor_id in self.dynamixel.groups['All_Motors']}
+            self.dynamixel.set_velocity_group('All_Motors', zero_velocities)
+            
+            # Optionally, set motors to a default position
+            positions = {motor_id: 180 for motor_id in self.dynamixel.groups['All_Motors']}
+            self.dynamixel.set_position_group('All_Motors', positions)
+            
+            logging.info("Motors have been reset to a safe state.")
+        except Exception as e:
+            logging.error(f"Error resetting motors: {e}")
+
+    async def check_hardware_errors(self):
+        """
+        Checks for hardware errors on all motors and activates emergency stop if any are found.
+        """
+        try:
+            # Read hardware error statuses
+            hardware_errors = self.dynamixel.bulk_read_group('All_Motors', ['hardware_error_status'])
+            
+            for motor_id, data in hardware_errors.items():
+                error_status = data.get('hardware_error_status', 0)
+                
+                if error_status != 0:
+                    # Log hardware errors
+                    logging.error(f"Hardware error detected on motor {motor_id}: Error code {error_status}")
+                    if error_status & 0b00000001:
+                        logging.error(f"Motor {motor_id}: Input Voltage Error detected.")
+                    if error_status & 0b00000100:
+                        logging.error(f"Motor {motor_id}: Overheating Error detected.")
+                    if error_status & 0b00001000:
+                        logging.error(f"Motor {motor_id}: Motor Encoder Error detected.")
+                    if error_status & 0b00010000:
+                        logging.error(f"Motor {motor_id}: Electrical Shock Error detected.")
+                    if error_status & 0b00100000:
+                        logging.error(f"Motor {motor_id}: Overload Error detected.")
+                    
+                    # Activate emergency stop
+                    self.emergency_stop_activated = True
+                    await self.async_emergency_stop()
+                    # Optionally, reset the motors
+                    await self.reset_motors()
+                    break  # Exit the loop after handling the first error
+        except Exception as e:
+            logging.error(f"Error checking hardware errors: {e}")
 
     async def get_motor_data(self):
         """
