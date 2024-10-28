@@ -115,9 +115,9 @@ class FLIKRobot:
                 l2_trigger = self.l2_trigger
 
                 # Add logging to debug
-                logging.debug(f"Button states: {button_states}")
-                logging.debug(f"D-pad inputs: {dpad_inputs}")
-                logging.debug(f"L2 trigger value: {l2_trigger}")
+                logging.info(f"Button states: {button_states}")
+                logging.info(f"D-pad inputs: {dpad_inputs}")
+                logging.info(f"L2 trigger value: {l2_trigger}")
 
                 # Update the throttle indicator
                 # Map l2_trigger from -1 (not pressed) to 1 (fully pressed) to 0% to 100%
@@ -300,6 +300,7 @@ class FLIKRobot:
         self.report_timer = time.time()
         self.gait_change_requested = True
         self.direction_change_requested = False
+        self.current_direction = True
         self.allow_pivot_control = True
         # Gait parameters
         self.odd_even = 0
