@@ -105,17 +105,29 @@ class FLIKRobot:
         """ Asynchronously updates the Streamlit dashboard with motor loads and PS4 controller state """
         while True:
             try:
+                logging.info("Updating dashboard")
                 # Get motor loads and positions (use your actual motor load retrieval logic here)
                 motor_loads = self.dynamixel.bulk_read_group('All_Motors', ['present_load'])
                 motor_positions = self.dynamixel.bulk_read_group('All_Motors', ['present_position'])
+                logging.info(f"Motor loads: {motor_loads}")
 
                 # Get controller button states
                 button_states = self.ps4_controller.get_button_input()
 
                 # Update motor load bars
                 for i, motor_id in enumerate(self.config['motor_groups']['All_Motors']):
-                    load = motor_loads.get(motor_id, {}).get('present_load', 0)
-                    load_percentage = load / 10.0 if isinstance(load, (int, float)) else 0
+                    motor_data = motor_loads.get(motor_id, {})
+
+                    # Check if present_load is available and calculate percentage
+                    load = motor_data.get('present_load', None)
+                    if load is not None and isinstance(load, (int, float)):
+                        load_percentage = load / 10.0
+                    else:
+                        load_percentage = 0  # Default if load is missing or invalid
+
+                    logging.info(f"Motor ID {motor_id}: load_percentage = {load_percentage}")
+                    
+                    # Update progress bar for each motor
                     self.motor_bars[i].progress(int(load_percentage))
 
                 # Update the controller image with the button press indicators
@@ -126,7 +138,7 @@ class FLIKRobot:
                 await asyncio.sleep(0.1)
 
             except Exception as e:
-                st.error(f"Error updating dashboard: {e}")
+                logging.error(f"Error updating dashboard: {e}")
                 await asyncio.sleep(1)
 
     def setup_logging(self):
