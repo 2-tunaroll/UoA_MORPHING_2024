@@ -148,68 +148,17 @@ class FLIKRobot:
                 await asyncio.sleep(1)
 
     def update_controller_image(self, button_states, dpad_inputs, l2_trigger, image_path='ps4_controller.jpg'):
-        """ Updates the PS4 controller image with button press indicators, D-pad visualization, and throttle indicator """
-        img = Image.open(image_path).convert("RGBA")
-        draw = ImageDraw.Draw(img)
+        try:
+            img = Image.open(image_path).convert("RGBA")
+            draw = ImageDraw.Draw(img)
 
-        # Define button coordinates (adjust as necessary)
-        button_coords = {
-            'square': (320, 200),
-            'x': (380, 260),
-            'circle': (440, 200),
-            'triangle': (380, 140),
-            'l1': (80, 60),
-            'r1': (520, 60),
-            'l2': (60, 100),
-            'r2': (540, 100),
-            'share': (220, 150),
-            'options': (480, 150),
-            'l3': (160, 300),
-            'r3': (460, 300),
-            'ps': (350, 380),
-            'touchpad': (350, 180),
-        }
+            # Draw a simple red rectangle to test
+            draw.rectangle((50, 50, 150, 150), fill=(255, 0, 0, 255))
 
-        # D-pad coordinates (adjust as necessary)
-        dpad_coords = {
-            'dpad_up': (100, 200),
-            'dpad_down': (100, 240),
-            'dpad_left': (80, 220),
-            'dpad_right': (120, 220)
-        }
-
-        # Draw red circles on pressed buttons
-        for button, coord in button_coords.items():
-            if button_states.get(button, False):  # Check if the button is pressed
-                draw.ellipse((coord[0] - 15, coord[1] - 15, coord[0] + 15, coord[1] + 15), fill=(255, 0, 0, 128))
-
-        # Draw blue circles on D-pad presses
-        for direction, coord in dpad_coords.items():
-            if dpad_inputs.get(direction, False):  # Check if the direction is pressed
-                draw.ellipse((coord[0] - 10, coord[1] - 10, coord[0] + 10, coord[1] + 10), fill=(0, 0, 255, 128))
-
-        # Draw throttle indicator (L2 trigger)
-        # Map l2_trigger from -1 to 1 to a value between 0 and 100
-        throttle_value = ((l2_trigger + 1) / 2) * 100
-        # Define the position and size of the throttle bar
-        throttle_bar_coords = (580, 50, 600, 250)  # (left, top, right, bottom)
-        # Calculate the height based on throttle_value
-        max_height = throttle_bar_coords[3] - throttle_bar_coords[1]
-        filled_height = (throttle_value / 100) * max_height
-        # Draw the throttle bar background
-        draw.rectangle(throttle_bar_coords, outline="black", fill=(200, 200, 200, 255))
-        # Draw the filled part of the throttle bar
-        draw.rectangle(
-            (
-                throttle_bar_coords[0],
-                throttle_bar_coords[3] - filled_height,
-                throttle_bar_coords[2],
-                throttle_bar_coords[3]
-            ),
-            fill=(0, 255, 0, 255)
-        )
-
-        return img
+            return img
+        except Exception as e:
+            logging.error(f"Error in update_controller_image: {e}")
+            return None
 
     def setup_logging(self):
         # Create Logs directory if it doesn't exist
@@ -251,9 +200,6 @@ class FLIKRobot:
     def reverse_direction(self):
         # Read the current drive mode for all whegs
         direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
-        
-        # Log the structure of the direction data to debug
-        logging.info(f"Direction data: {direction}")
 
         # Ensure the correct extraction of drive mode values
         try:
@@ -269,7 +215,9 @@ class FLIKRobot:
 
         except Exception as e:
             logging.error(f"Failed to reverse direction: {e}")
-        
+
+        # Change the current direction
+        self.current_direction = not self.current_direction
         self.direction_change_requested = False
         self.gait_change_requested = True
 
