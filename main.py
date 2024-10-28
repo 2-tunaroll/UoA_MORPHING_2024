@@ -458,6 +458,7 @@ class FLIKRobot:
     async def gait_1(self):
         """Execute Gait 1 and return how long to wait before the next step."""
         logging.debug("Executing Gait 1")
+        print("DEBUG: %s", self.r2_trigger)
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
         if self.wheg_rpm > 1 and self.gait_change_requested == False:
         
