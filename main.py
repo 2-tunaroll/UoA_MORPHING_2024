@@ -98,11 +98,6 @@ class FLIKRobot:
                             </div>
                         """, unsafe_allow_html=True)
 
-                # Update the controller image with button states
-                button_states = self.ps4_controller.get_button_input()
-                img = self.update_controller_image(button_states)
-                self.controller_image_placeholder.image(img, use_column_width=True)
-
                 await asyncio.sleep(0.5)
 
             except Exception as e:
