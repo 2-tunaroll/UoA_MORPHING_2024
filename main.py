@@ -56,30 +56,17 @@ class FLIKRobot:
         # Streamlit setup
         st.title("FLIK Robot Dashboard")
 
-        # Create placeholders for motor load bars
-        self.motor_bars = [st.empty() for _ in range(8)]
-
-        # Load the PS4 controller image for button display
-        self.controller_image = st.empty()  # Placeholder for the controller image
-
-        # Set up Streamlit layout for displaying motor loads and controller state
+        # Set up the main layout with headers and placeholders
         st.header("Motor Loads")
-        for i in range(8):
-            st.text(f"Motor {i+1} Load:")
+        self.motor_placeholders = {name: st.empty() for name in self.config['motor_groups']['All_Motors']}
 
         st.header("PS4 Controller Button State")
+        self.controller_image_placeholder = st.empty()  # Placeholder for the controller image
 
         logging.info("Initialised Streamlit dashboard")
 
     async def update_dashboard(self):
         """ Asynchronously updates the Streamlit dashboard with motor loads and PS4 controller state """
-        # Set up the layout with headings and placeholders
-        st.header("Motor Loads")
-        motor_placeholders = {name: st.empty() for name in self.config['motor_groups']['All_Motors']}
-        
-        st.header("PS4 Controller Button State")
-        controller_image_placeholder = st.empty()  # Placeholder for controller image
-
         while True:
             try:
                 # Retrieve motor data
@@ -101,8 +88,8 @@ class FLIKRobot:
                         else:
                             color = "#4CAF50"  # Green
 
-                        # Use st.empty() placeholder to update the progress bar for each motor
-                        motor_placeholders[named_id].markdown(f"""
+                        # Update the specific motor's progress bar using its placeholder
+                        self.motor_placeholders[named_id].markdown(f"""
                             <div style="margin-bottom: 10px;">
                                 <strong>Motor {named_id} Load: {load_percentage:.1f}%</strong>
                                 <div style="background-color: #e0e0e0; border-radius: 5px; height: 20px; width: 100%;">
@@ -111,12 +98,12 @@ class FLIKRobot:
                             </div>
                         """, unsafe_allow_html=True)
 
-                # Get controller button states and update the controller image
+                # Update the controller image with button states
                 button_states = self.ps4_controller.get_button_input()
                 img = self.update_controller_image(button_states)
-                controller_image_placeholder.image(img, use_column_width=True)
+                self.controller_image_placeholder.image(img, use_column_width=True)
 
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.25)
 
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
