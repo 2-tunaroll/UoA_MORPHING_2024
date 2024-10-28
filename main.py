@@ -114,10 +114,23 @@ class FLIKRobot:
                 for i, named_id in enumerate(self.config['motor_groups']['All_Motors']):
                     # Map named motor ID to numeric ID
                     numeric_id = self.config['motor_ids']['whegs'].get(named_id) or self.config['motor_ids']['pivots'].get(named_id)
+                    
                     if numeric_id and numeric_id in motor_data:
-                        load_percentage = motor_data[numeric_id]["load_percentage"]
-                        logging.info(f"Motor ID {named_id} (Numeric ID {numeric_id}): load_percentage = {load_percentage}")
-                        self.motor_bars[i].progress(int(load_percentage))
+                        # Get the absolute load percentage and set color based on thresholds
+                        load_percentage = abs(motor_data[numeric_id]["load_percentage"])
+                        
+                        if load_percentage > 80:
+                            color = "red"
+                        elif load_percentage > 50:
+                            color = "orange"
+                        else:
+                            color = "green"
+
+                        # Display the motor load with a label and color-coded progress bar
+                        st.text(f"Motor {named_id} Load: {load_percentage:.1f}%")
+                        self.motor_bars[i].progress(int(load_percentage), text_color=color)
+
+                        logging.info(f"Motor ID {named_id} (Numeric ID {numeric_id}): load_percentage = {load_percentage} (color = {color})")
                     else:
                         logging.warning(f"Motor ID {named_id} not found in motor data.")
 
