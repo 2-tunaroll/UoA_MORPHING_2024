@@ -934,8 +934,8 @@ class FLIKRobot:
                 self.check_inputs(),    # Run input checking
                 self.execute_gait(),    # Run gait execution
                 self.control_pivots_with_dpad(),
-                self.write_to_csv(0.2), # Write to the csv every 0.2 seconds
-                self.report_states(5),   # Log states every 5 seconds (customizable interval)"""
+                # self.write_to_csv(0.2), # Write to the csv every 0.2 seconds
+                # self.report_states(5),   # Log states every 5 seconds (customizable interval)"""
                 self.update_dashboard() # Update the dashboard
             )
         

@@ -5,7 +5,7 @@ import logging
 import time
 
 class PS4Controller:
-    def __init__(self, debounce_time=0.01):
+    def __init__(self, debounce_time=0.1):
         logging.info("Initializing PS4Controller")
 
         # Initialize pygame
