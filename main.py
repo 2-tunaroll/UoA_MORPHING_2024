@@ -56,21 +56,26 @@ class FLIKRobot:
         # Streamlit setup
         st.title("FLIK Robot Dashboard")
 
-        # Set up the main layout with headers and placeholders
-        st.header("Motor Loads")
-        self.motor_placeholders = {name: st.empty() for name in self.config['motor_groups']['All_Motors']}
+        # Create two columns: Left for indicators, Right for motor loads
+        col1, col2 = st.columns(2)
 
-        # Add placeholders for throttle, D-pad, and buttons pressed
-        st.subheader("Throttle Indicator")
-        self.throttle_placeholder = st.empty()
+        with col1:
+            # Add placeholders for throttle, D-pad, and buttons pressed
+            st.subheader("Throttle")
+            self.throttle_placeholder = st.empty()
 
-        st.subheader("D-pad Visualization")
-        self.dpad_placeholder = st.empty()
+            st.subheader("D-Pad Control")
+            self.dpad_placeholder = st.empty()
 
-        st.subheader("Buttons Pressed")
-        self.buttons_pressed_placeholder = st.empty()
+            st.subheader("Buttons Pressed")
+            self.buttons_pressed_placeholder = st.empty()
 
-        logging.info("Initialised Streamlit dashboard")
+        with col2:
+            st.header("Motor Loads")
+            # Set up the motor load placeholders in the right column
+            self.motor_placeholders = {name: col2.empty() for name in self.config['motor_groups']['All_Motors']}
+
+        logging.info("Initialized Streamlit dashboard")
 
     async def update_dashboard(self):
         """ Asynchronously updates the Streamlit dashboard with motor loads and PS4 controller state """
@@ -144,13 +149,21 @@ class FLIKRobot:
                 throttle_value = ((r2_trigger + 1) / 2) * 100  # Map -1 to 0, 1 to 100
                 self.throttle_placeholder.progress(throttle_value / 100.0)
 
-                # Update D-pad visualization
-                dpad_directions = []
-                for direction in ['dpad_up', 'dpad_down', 'dpad_left', 'dpad_right']:
-                    if self.dpad_inputs.get(direction, False):
-                        dir_name = direction.replace('dpad_', '').capitalize()
-                        dpad_directions.append(dir_name)
-                self.dpad_placeholder.text(f"D-pad directions pressed: {', '.join(dpad_directions) if dpad_directions else 'None'}")
+                # Update D-Pad Control display
+                dpad_actions = []
+                if self.dpad_inputs.get('dpad_up', False):
+                    dpad_actions.append('Front Pivot Up')
+                if self.dpad_inputs.get('dpad_down', False):
+                    dpad_actions.append('Front Pivot Down')
+                if self.dpad_inputs.get('dpad_left', False):
+                    dpad_actions.append('Rear Pivot Down')
+                if self.dpad_inputs.get('dpad_right', False):
+                    dpad_actions.append('Rear Pivot Up')
+
+                if dpad_actions:
+                    self.dpad_placeholder.text(f"D-Pad Actions: {', '.join(dpad_actions)}")
+                else:
+                    self.dpad_placeholder.text("D-Pad Actions: None")
 
                 # Update list of buttons pressed
                 buttons_pressed = [button.capitalize() for button, pressed in self.button_states.items() if pressed]
@@ -161,7 +174,7 @@ class FLIKRobot:
             except Exception as e:
                 logging.error(f"Error updating dashboard: {e}")
                 await asyncio.sleep(1)
-
+        
     def setup_logging(self):
         # Create Logs directory if it doesn't exist
         log_directory = self.config['logging']['log_directory']
