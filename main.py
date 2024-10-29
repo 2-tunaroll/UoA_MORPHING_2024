@@ -176,7 +176,7 @@ class FLIKRobot:
                     self.turn_mode_requested = True
                     logging.info(f"R3 pressed. Turning mode requested")
                 
-                if self.button_states['share']:
+                if self.button_states['options']:
                     self.turn_mode_deactivate = True
                     logging.info(f"share pressed. Turning mode deactivating")
 
@@ -887,7 +887,7 @@ class FLIKRobot:
 
     async def turn_mode_off(self):
         # Get current direction
-        if self.current_directon:
+        if self.current_direction:
             direction = {1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0}
             self.dynamixel.set_drive_mode_group('All_Whegs', direction)
             logging.warning("Set direction of whegs to forward")
