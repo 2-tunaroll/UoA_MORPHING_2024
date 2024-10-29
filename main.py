@@ -141,6 +141,7 @@ class FLIKRobot:
                 self.dpad_inputs = self.ps4_controller.get_dpad_input()
                 self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
                 self.joystick_inputs = self.ps4_controller.get_joystick_input()
+                logging.info("Left Joystick input %s", self.joystick_inputs[0])
 
                 current_time = time.time()
 
