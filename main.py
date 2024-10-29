@@ -1009,7 +1009,7 @@ class FLIKRobot:
                 
                 # Handle turn mode
                 if self.turn_mode_requested:
-                    self.init_turn_mode()
+                    await self.init_turn_mode()
                     logging.info("Turn mode activated.")
 
                 if wait_time > 0:
