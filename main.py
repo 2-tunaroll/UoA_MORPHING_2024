@@ -806,7 +806,7 @@ class FLIKRobot:
                 logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
                 try:
                     # Set the reversed drive mode for each motor
-                    self.dynamixel.set_drive_mode_group('Wheg_Group', direction)
+                    self.dynamixel.set_drive_mode_group('Wheg_Group', expected_direction)
                     logging.warning("Direction of whegs set to turn right")
                     await asyncio.sleep(0.5)
                 except Exception as e:
@@ -821,8 +821,8 @@ class FLIKRobot:
                 logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
                 try:
                     # Set the reversed drive mode for each motor
-                    self.dynamixel.set_drive_mode_group('Wheg_Group', direction)
-                    logging.warning("Direction of whegs set to turn right")
+                    self.dynamixel.set_drive_mode_group('Wheg_Group', expected_direction)
+                    logging.warning("Direction of whegs set to left right")
                     await asyncio.sleep(0.5)
                 except Exception as e:
                     logging.error(f"Failed to turn direction direction: {e}")
