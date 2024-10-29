@@ -366,7 +366,7 @@ class DynamixelController:
             logging.info(f"Setting the profile velocity for group {group_name} from config.yaml: {profile_velocity}")
             if profile_velocity is None:
                 logging.error(f"Profile velocity for group {group_name} not found in config.yaml and no value was provided.")
-                return
+                profile_velocity = 5
 
         # Handle the case where profile_velocity is a dictionary (per motor setting)
         if isinstance(profile_velocity, dict):
@@ -386,7 +386,7 @@ class DynamixelController:
             profile_velocities = {motor_id: profile_velocity for motor_id in self.motor_groups[group_name]}
 
         # Convert profile velocities to raw values and ensure they are >= 1
-        profile_velocities = {motor_id: max(1, velocity * 4.37) for motor_id, velocity in profile_velocities.items()}
+        profile_velocities = {motor_id: max(3, velocity * 4.37) for motor_id, velocity in profile_velocities.items()}
 
         # Apply profile velocities using sync write
         self.sync_write_group(group_name, 'profile_velocity', profile_velocities)
@@ -416,6 +416,9 @@ class DynamixelController:
         torque_values = {motor_id: 1 for motor_id in self.motor_groups[group_name]}
         self.sync_write_group(group_name, 'torque_enable', torque_values)
         logging.debug(f"Torque enabled for group {group_name}")
+
+        # Set a default profile velocity for the group after enabling torque
+        self.set_group_profile_velocity(group_name)
 
     def set_position_group(self, group_name, positions):
         """

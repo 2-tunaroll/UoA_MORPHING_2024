@@ -56,22 +56,6 @@ class FLIKRobot:
         # Streamlit setup
         st.title("FLIK Robot Dashboard")
 
-        # Display status indicators at the top
-        st.header("Robot Status")
-
-        # Create placeholders for status indicators
-        status_col1, status_col2, status_col3 = st.columns(3)
-
-        with status_col1:
-            st.subheader("Current Gait")
-            self.current_gait_placeholder = st.empty()
-        with status_col2:
-            st.subheader("Emergency Stop")
-            self.emergency_stop_placeholder = st.empty()
-        with status_col3:
-            st.subheader("Robot Direction")
-            self.robot_direction_placeholder = st.empty()
-
         # Create two columns: Left for indicators, Right for motor loads
         col1, col2 = st.columns(2)
 
@@ -79,6 +63,15 @@ class FLIKRobot:
             # Add placeholders for throttle, D-pad, and buttons pressed
             st.subheader("Throttle")
             self.throttle_placeholder = st.empty()
+
+            st.subheader("Current Gait")
+            self.current_gait_placeholder = st.empty()
+
+            st.subheader("Emergency Stop")
+            self.emergency_stop_placeholder = st.empty()
+
+            st.subheader("Robot Direction")
+            self.robot_direction_placeholder = st.empty()
 
             st.subheader("D-Pad Control")
             self.dpad_placeholder = st.empty()
@@ -147,6 +140,7 @@ class FLIKRobot:
                 self.button_states = self.ps4_controller.get_button_input()
                 self.dpad_inputs = self.ps4_controller.get_dpad_input()
                 self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
+                self.joystick_inputs = self.ps4_controller.get_joystick_input()
 
                 current_time = time.time()
 
@@ -177,6 +171,14 @@ class FLIKRobot:
                 if self.button_states['share']:
                     self.direction_change_requested = True  # Request a direction change
                     logging.info(f"Share pressed. Reversing the direction of the whegs")
+
+                if self.button_states['l3']:
+                    self.turn_mode_requested = True
+                    logging.info(f"L3 pressed. Turning mode requested")
+                
+                if self.button_states['r3']:
+                    self.turn_mode_deactivate = True
+                    logging.info(f"R3 pressed. Turning mode deactivating")
 
                 # Update the throttle indicator
                 r2_trigger = self.r2_trigger
@@ -331,20 +333,22 @@ class FLIKRobot:
             0: self.gait_init_1,
             1: self.gait_init_2,
             2: self.gait_init_3,
-            3: self.gait_init_4
         }
 
         self.gait_methods = {
             0: self.gait_1,
             1: self.gait_2,
             2: self.gait_3,
-            3: self.gait_4
         }
         # Buttons
         self.button_states = {}
         self.dpad_inputs = {}
         self.l2_trigger = -1.0
         self.r2_trigger = -1.0
+        self.joystick_inputs = 0
+        self.turn_mode_requested = False
+        self.turn_mode_active = False
+        self.turn_mode_deactivate = False
             
     def adjust_front_pivot(self, direction):
         """Adjust the front pivot angle based on D-pad input."""
@@ -767,6 +771,142 @@ class FLIKRobot:
             return wait_time
         return 0  # No movement, no wait time
     
+    async def init_turn_mode(self):
+        logging.info("Initialising Turn Mode")
+        self.gait_change_requested = False  # Reset the request flag
+        # Update the min and max RPM for this gait:
+        self.MIN_RPM = self.gait4_params['min_rpm']
+        self.MAX_RPM = self.gait4_params['max_rpm']
+        self.SMOOTHNESS = self.gait4_params['smoothness']
+        self.odd_even = 0
+        self.wheg_rpm = 0
+        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['high_pos'], 5: self.gait4_params['low_pos'], 6: self.gait4_params['high_pos'] }
+        self.dynamixel.set_position_group('Wheg_Group', self.positions)
+        self.dynamixel.set_position_group('Pivot_Group', 180)
+        wait_time = 3
+        logging.info(f"Initialised turn mode, waiting for {wait_time} seconds")
+        await asyncio.sleep(wait_time)
+        self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
+        self.turn_mode_active = True
+        self.turn_mode_requested = False
+        return
+    
+    async def turn_mode(self):
+        # Check the joystick input for turning
+        if self.joystick_inputs > 0:
+            # Turn right
+            # Check the current whegs direction
+            direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
+            # Compare to the expected direction
+            expected_direction = {1: 0, 2: 0, 3: 0, 4: 1, 5: 1, 6: 1}
+            if direction != expected_direction:
+                logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
+                try:
+                    # Set the reversed drive mode for each motor
+                    self.dynamixel.set_drive_mode_group('All_Whegs', direction)
+                    logging.warning("Direction of whegs set to turn right")
+
+                except Exception as e:
+                    logging.error(f"Failed to turn direction direction: {e}")
+        if self.joystick_inputs < 0:
+            # Turn left
+            # Check the current whegs direction
+            direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
+            # Compare to the expected direction
+            expected_direction = {1: 1, 2: 1, 3: 1, 4: 0, 5: 0, 6: 0}
+            if direction != expected_direction:
+                logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
+                try:
+                    # Set the reversed drive mode for each motor
+                    self.dynamixel.set_drive_mode_group('All_Whegs', direction)
+                    logging.warning("Direction of whegs set to turn right")
+
+                except Exception as e:
+                    logging.error(f"Failed to turn direction direction: {e}")
+        else: 
+            return 0
+        
+        logging.debug("Execute Turn")
+        self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
+        if self.wheg_rpm > 1 and self.gait_change_requested == False:
+            # Example RPM-based alternating gait logic
+            if self.odd_even % 2 == 0:
+                rpm_1 = self.wheg_rpm
+                rpm_2 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
+                inc_1 = self.gait4_params['slow_ang']
+                inc_2 = self.gait4_params['fast_ang']
+            else:
+                rpm_1 = self.wheg_rpm * (self.gait4_params['fast_ang'] / self.gait4_params['slow_ang'])
+                rpm_2 = self.wheg_rpm
+                inc_1 = self.gait4_params['fast_ang']
+                inc_2 = self.gait4_params['slow_ang']
+
+            # Get the current motor positions
+            current_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+
+            # Convert the positions from dict to degrees by extracting the 'present_position' key from the dict
+            current_positions = {
+                motor_id: (pos_data['present_position'] * (360 / 4096))%359
+                for motor_id, pos_data in current_positions.items()
+            }
+
+            # On even steps
+            if self.odd_even % 2 == 0:
+                # Check if not all motors are within the tolerance
+                if not all(
+                    abs(current_positions[motor_id] - self.positions[motor_id]) < self.TOLERANCE 
+                    for motor_id in current_positions.keys()
+                ):
+                    logging.warning(f"Motors are not in the correct positions for Gait 4. Positions: {current_positions}")
+                    logging.warning("Waiting for 1 second before checking for movement")
+                    await asyncio.sleep(0.1)
+
+                    # Get the current motor positions again after waiting
+                    new_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
+
+                    # Convert the positions from dict to degrees
+                    new_positions = {
+                        motor_id: (pos_data['present_position'] * (360 / 4096))%359
+                        for motor_id, pos_data in new_positions.items()
+                    }
+
+                    # Check if the motors are still moving
+                    if all(abs(new_positions[motor_id] - current_positions[motor_id]) < 1 for motor_id in new_positions.keys()):
+                        wait_time = 3 # Wait for 3 seconds to allow for resetting the gait
+                        logging.critical("Motors are not moving, reseting positions, and waiting for 3 seconds.")
+                        self.dynamixel.set_position_group('Wheg_Group', self.positions)                      
+                        await asyncio.sleep(3)  # Wait for 0.5 second to allow for resetting the gait
+                        self.dynamixel.set_operating_mode_group('Wheg_Group', 'multi_turn')
+                    else:
+                        logging.info("Motors are moving. Continuing with the gait.")
+                        return 0.5  # No wait time, motors are moving correctly
+
+            # Set profile velocities and increments
+            velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
+            increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
+            self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
+            self.dynamixel.increment_group_position('Wheg_Group', increments)
+
+            # Calculate wait time
+            wait_time = (inc_1 / (6 * rpm_1))+self.gait2_params['delay']
+            self.odd_even += 1
+            logging.info(f"Gait 4 step executed at {self.wheg_rpm:.2f}RPM, wait for {wait_time:.2f} seconds")
+            return wait_time
+        return 0  # No movement, no wait time
+
+    async def turn_mode_off(self):
+        # Get current direction
+        if self.current_directon:
+            direction = {1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0}
+            self.dynamixel.set_drive_mode_group('All_Whegs', direction)
+            logging.warning("Set direction of whegs to forward")
+        else:
+            direction = {1 : 1, 2 : 1, 3 : 1, 4 : 1, 5 : 1, 6 : 1}
+            self.dynamixel.set_drive_mode_group('All_Whegs', direction)
+            logging.warning("Set direction of whegs to forward")
+        self.turn_mode_deactivate = False
+        self.turn_mode_active = False
+
     async def async_emergency_stop(self):
         """Asynchronously stop all motors during an emergency."""
         logging.warning("Emergency stop activated! Stopping all motors asynchronously.")
@@ -836,6 +976,16 @@ class FLIKRobot:
                     logging.debug("Emergency stop activated due to hardware error, gait execution paused.")
                     continue  # Skip the rest of the loop if emergency stop is activated
                 
+                if self.turn_mode_active:
+                    logging.debug("Turn mode activated executing turn gait")
+                    turn_function = self.turn_mode()
+                    wait = await turn_function
+                    await asyncio.sleep(wait)
+                    if self.turn_mode_deactivate:
+                        self.turn_mode_off()
+                        logging.info("Turn mode deactivating")
+                    continue # Skip the rest of the loop
+
                 # Get the current gait function and execute it
                 gait_function = self.gait_methods[self.current_gait_index]
                 wait_time = await gait_function()
@@ -857,6 +1007,11 @@ class FLIKRobot:
                     self.direction_change_requested = False
                     logging.info("Direction of whegs reversed.")
                 
+                # Handle turn mode
+                if self.turn_mode_requested:
+                    self.int_turn_mode()
+                    logging.info("Turn mode activated.")
+
                 if wait_time > 0:
                     logging.debug(f"Waiting for {wait_time:.2f} seconds before next gait step")
                     await asyncio.sleep(wait_time)  # Non-blocking wait for the calculated time
