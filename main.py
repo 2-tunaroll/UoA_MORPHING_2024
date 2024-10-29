@@ -172,13 +172,13 @@ class FLIKRobot:
                     self.direction_change_requested = True  # Request a direction change
                     logging.info(f"Share pressed. Reversing the direction of the whegs")
 
-                if self.button_states['l3']:
-                    self.turn_mode_requested = True
-                    logging.info(f"L3 pressed. Turning mode requested")
-                
                 if self.button_states['r3']:
+                    self.turn_mode_requested = True
+                    logging.info(f"R3 pressed. Turning mode requested")
+                
+                if self.button_states['share']:
                     self.turn_mode_deactivate = True
-                    logging.info(f"R3 pressed. Turning mode deactivating")
+                    logging.info(f"share pressed. Turning mode deactivating")
 
                 # Update the throttle indicator
                 r2_trigger = self.r2_trigger
@@ -793,7 +793,7 @@ class FLIKRobot:
     
     async def turn_mode(self):
         # Check the joystick input for turning
-        if self.joystick_inputs > 0:
+        if self.joystick_inputs[0] > 0:
             # Turn right
             # Check the current whegs direction
             direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
@@ -808,7 +808,7 @@ class FLIKRobot:
 
                 except Exception as e:
                     logging.error(f"Failed to turn direction direction: {e}")
-        if self.joystick_inputs < 0:
+        if self.joystick_inputs[0] < 0:
             # Turn left
             # Check the current whegs direction
             direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
