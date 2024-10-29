@@ -800,7 +800,7 @@ class FLIKRobot:
             # Check the current whegs direction
             direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
             # Compare to the expected direction
-            expected_direction = {1: 0, 2: 0, 3: 0, 4: 1, 5: 1, 6: 1}
+            expected_direction = {1: False, 2: False, 3: False, 4: True, 5: True, 6: True}
             if direction != expected_direction:
                 logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
                 try:
@@ -815,7 +815,7 @@ class FLIKRobot:
             # Check the current whegs direction
             direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
             # Compare to the expected direction
-            expected_direction = {1: 1, 2: 1, 3: 1, 4: 0, 5: 0, 6: 0}
+            expected_direction = {1: True, 2: True, 3: True, 4: False, 5: False, 6: False}
             if direction != expected_direction:
                 logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
                 try:
