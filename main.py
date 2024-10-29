@@ -141,7 +141,6 @@ class FLIKRobot:
                 self.dpad_inputs = self.ps4_controller.get_dpad_input()
                 self.l2_trigger, self.r2_trigger = self.ps4_controller.get_trigger_input()
                 self.joystick_inputs = self.ps4_controller.get_joystick_input()
-                logging.info("Left Joystick input %s", self.joystick_inputs[0])
 
                 current_time = time.time()
 
@@ -822,7 +821,7 @@ class FLIKRobot:
                 try:
                     # Set the reversed drive mode for each motor
                     self.dynamixel.set_drive_mode_group('Wheg_Group', expected_direction)
-                    logging.warning("Direction of whegs set to left right")
+                    logging.warning("Direction of whegs set to turn left")
                     await asyncio.sleep(0.5)
                 except Exception as e:
                     logging.error(f"Failed to turn direction direction: {e}")
@@ -985,7 +984,7 @@ class FLIKRobot:
                     wait = await turn_function
                     await asyncio.sleep(wait)
                     if self.turn_mode_deactivate:
-                        self.turn_mode_off()
+                        await self.turn_mode_off()
                         logging.info("Turn mode deactivating")
                     continue # Skip the rest of the loop
 
