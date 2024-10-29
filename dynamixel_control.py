@@ -517,7 +517,7 @@ class DynamixelController:
         """
         Set the drive mode for a group of motors. The direction can either be the same for all motors
         (when reverse_direction is an int or bool) or specified per motor (when reverse_direction is a dict).
-        
+
         :param group_name: The motor group name (from motor_groups configuration)
         :param reverse_direction: Either a bool/int (same direction for all motors) or a dict (per motor control).
         """
@@ -526,9 +526,17 @@ class DynamixelController:
             logging.warning(f"No motors found for group '{group_name}'")
             return
 
+        # Initialize param_dict to store motor_id and drive_mode_value pairs
+        param_dict = {}
+
         # Handle case where reverse_direction is a dict (per motor direction control)
         if isinstance(reverse_direction, dict):
-            param_dict = reverse_direction
+            for motor_id in motor_ids:
+                # Get the reverse direction for each motor, defaulting to False if not specified
+                rev_dir = reverse_direction.get(motor_id, False)
+                # Convert to drive_mode_value (0 or 1)
+                drive_mode_value = 1 if rev_dir else 0
+                param_dict[motor_id] = drive_mode_value
         else:
             # If reverse_direction is not a dict, apply the same drive mode to all motors
             drive_mode_value = 1 if reverse_direction else 0
