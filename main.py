@@ -794,43 +794,6 @@ class FLIKRobot:
         return
     
     async def turn_mode(self):
-        # Check the joystick input for turning
-        if self.joystick_inputs[0] > 0:
-            # Turn right
-            # Check the current whegs direction
-            direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
-            # Compare to the expected direction
-            expected_direction = {1: False, 2: False, 3: False, 4: True, 5: True, 6: True}
-            if direction != expected_direction:
-                logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
-                try:
-                    # Set the reversed drive mode for each motor
-                    self.dynamixel.set_drive_mode_group('Left_Whegs', False)
-                    time.sleep(1)
-                    self.dynamixel.set_drive_mode_group('Right_Whegs', True)
-                    logging.warning("Direction of whegs set to turn right")
-                    time.sleep(1)
-                except Exception as e:
-                    logging.error(f"Failed to turn direction direction: {e}")
-        if self.joystick_inputs[0] < 0:
-            # Turn left
-            # Check the current whegs direction
-            direction = self.dynamixel.bulk_read_group('Wheg_Group', ['drive_mode'])
-            # Compare to the expected direction
-            expected_direction = {1: True, 2: True, 3: True, 4: False, 5: False, 6: False}
-            if direction != expected_direction:
-                logging.warning("Direction of whegs is not set correctly. Setting the direction to turn right.")
-                try:
-                    # Set the reversed drive mode for each motor
-                    self.dynamixel.set_drive_mode_group('Left_Whegs', True)
-                    time.sleep(1)
-                    self.dynamixel.set_drive_mode_group('Right_Whegs', False)
-                    logging.warning("Direction of whegs set to turn left")
-                    time.sleep(1)
-                except Exception as e:
-                    logging.error(f"Failed to turn direction direction: {e}")
-        else: 
-            return 0
         
         logging.debug("Execute Turn")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
@@ -846,6 +809,16 @@ class FLIKRobot:
                 rpm_2 = self.wheg_rpm
                 inc_1 = self.gait4_params['fast_ang']
                 inc_2 = self.gait4_params['slow_ang']
+
+            # Check the joystick input for turning
+            if self.joystick_inputs[0] > 0:
+                inc_3 = -inc_1
+                inc_4 = -inc_2
+            else:
+                inc_3 = inc_1
+                inc_4 = inc_2
+                inc_1 = -inc_1
+                inc_2 = -inc_2
 
             # Get the current motor positions
             current_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
@@ -889,7 +862,7 @@ class FLIKRobot:
 
             # Set profile velocities and increments
             velocities = {1: rpm_1, 2: rpm_2, 3: rpm_1, 4: rpm_2, 5: rpm_1, 6: rpm_2}
-            increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_2, 5: inc_1, 6: inc_2}
+            increments = {1: inc_1, 2: inc_2, 3: inc_1, 4: inc_4, 5: inc_3, 6: inc_4}
             self.dynamixel.set_group_profile_velocity('Wheg_Group', velocities)
             self.dynamixel.increment_group_position('Wheg_Group', increments)
 
