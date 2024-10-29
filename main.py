@@ -481,6 +481,7 @@ class FLIKRobot:
         self.MIN_RPM = self.gait3_params['min_rpm']
         self.MAX_RPM = self.gait3_params['max_rpm']
         self.SMOOTHNESS = self.gait3_params['smoothness']
+        self.TOLERANCE = self.gait3_params['tolerance']
         self.wheg_rpm = 0
         self.odd_even = 0
         self.positions = { 1: self.gait3_params['high_pos'], 2: self.gait3_params['low_pos'], 3: self.gait3_params['low_pos'], 4: self.gait3_params['high_pos'], 5: self.gait3_params['low_pos'], 6: self.gait3_params['low_pos']}
@@ -780,6 +781,7 @@ class FLIKRobot:
         self.SMOOTHNESS = self.gait4_params['smoothness']
         self.odd_even = 0
         self.wheg_rpm = 0
+        self.TOLERANCE = self.gait4_params['tolerance']
         self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['high_pos'], 5: self.gait4_params['low_pos'], 6: self.gait4_params['high_pos'] }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
