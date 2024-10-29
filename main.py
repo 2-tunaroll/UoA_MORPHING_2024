@@ -806,9 +806,10 @@ class FLIKRobot:
                 try:
                     # Set the reversed drive mode for each motor
                     self.dynamixel.set_drive_mode_group('Left_Whegs', False)
+                    time.sleep(1)
                     self.dynamixel.set_drive_mode_group('Right_Whegs', True)
                     logging.warning("Direction of whegs set to turn right")
-                    await asyncio.sleep(1)
+                    time.sleep(1)
                 except Exception as e:
                     logging.error(f"Failed to turn direction direction: {e}")
         if self.joystick_inputs[0] < 0:
@@ -822,9 +823,10 @@ class FLIKRobot:
                 try:
                     # Set the reversed drive mode for each motor
                     self.dynamixel.set_drive_mode_group('Left_Whegs', True)
+                    time.sleep(1)
                     self.dynamixel.set_drive_mode_group('Right_Whegs', False)
                     logging.warning("Direction of whegs set to turn left")
-                    await asyncio.sleep(0.5)
+                    time.sleep(1)
                 except Exception as e:
                     logging.error(f"Failed to turn direction direction: {e}")
         else: 
