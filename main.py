@@ -349,6 +349,7 @@ class FLIKRobot:
         self.turn_mode_requested = False
         self.turn_mode_active = False
         self.turn_mode_deactivate = False
+        self.current_side = "Right"
             
     def adjust_front_pivot(self, direction):
         """Adjust the front pivot angle based on D-pad input."""
@@ -782,7 +783,7 @@ class FLIKRobot:
         self.odd_even = 0
         self.wheg_rpm = 0
         self.TOLERANCE = self.gait4_params['tolerance']
-        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['high_pos'], 5: self.gait4_params['low_pos'], 6: self.gait4_params['high_pos'] }
+        self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['low_pos'], 5: self.gait4_params['high_pos'], 6: self.gait4_params['low_pos'] }
         self.dynamixel.set_position_group('Wheg_Group', self.positions)
         self.dynamixel.set_position_group('Pivot_Group', 180)
         wait_time = 3
@@ -794,7 +795,6 @@ class FLIKRobot:
         return
     
     async def turn_mode(self):
-        
         logging.debug("Execute Turn")
         self.wheg_rpm = self.adjust_wheg_rpm(self.r2_trigger)
         if self.wheg_rpm > 1 and self.gait_change_requested == False:
@@ -811,14 +811,26 @@ class FLIKRobot:
                 inc_2 = self.gait4_params['slow_ang']
 
             # Check the joystick input for turning
-            if self.joystick_inputs[0] > 0:
+            if self.joystick_inputs[0] > 0.1:
                 inc_3 = -inc_1
                 inc_4 = -inc_2
-            else:
+                if self.current_side != "Right":
+                    self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['low_pos'], 5: self.gait4_params['high_pos'], 6: self.gait4_params['low_pos'] }
+                    self.dynamixel.set_position_group('Wheg_Group', self.positions)
+                    self.current_side = "Right"
+                time.sleep(0.5)
+
+            elif self.joystick_inputs[0] < 0.1:
                 inc_3 = inc_1
                 inc_4 = inc_2
                 inc_1 = -inc_1
                 inc_2 = -inc_2
+                if self.current_side != "Left":
+                    self.positions = { 1: self.gait4_params['high_pos'], 2: self.gait4_params['low_pos'], 3: self.gait4_params['high_pos'], 4: self.gait4_params['high_pos'], 5: self.gait4_params['low_pos'], 6: self.gait4_params['high_pos'] }
+                    self.dynamixel.set_position_group('Wheg_Group', self.positions)
+                    self.current_side = "Left"
+            else:
+                return 0
 
             # Get the current motor positions
             current_positions = self.dynamixel.bulk_read_group('Wheg_Group', ['present_position'])
