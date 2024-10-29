@@ -815,7 +815,7 @@ class FLIKRobot:
                 inc_3 = -inc_1
                 inc_4 = -inc_2
                 if self.current_side != "Right":
-                    self.positions = { 1: self.gait4_params['high_pos'], 2: self.gait4_params['low_pos'], 3: self.gait4_params['high_pos'], 4: self.gait4_params['high_pos'], 5: self.gait4_params['low_pos'], 6: self.gait4_params['high_pos'] }
+                    self.positions = { 1: self.gait4_params['low_pos'], 2: self.gait4_params['high_pos'], 3: self.gait4_params['low_pos'], 4: self.gait4_params['low_pos'], 5: self.gait4_params['high_pos'], 6: self.gait4_params['low_pos'] }
                     self.dynamixel.set_position_group('Wheg_Group', self.positions)
                     self.current_side = "Right"
                 time.sleep(0.5)
