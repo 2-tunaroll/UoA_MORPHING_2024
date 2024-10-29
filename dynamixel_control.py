@@ -550,26 +550,6 @@ class DynamixelController:
         # Re-enable torque
         self.torque_on_group(group_name)
 
-        # Verify the drive mode was correctly set
-        try:
-            logging.debug(f"Reading back drive mode for verification...")
-            motor_data = self.bulk_read_group(group_name, ['drive_mode'])
-            if motor_data is None:
-                logging.error(f"Failed to read drive mode for group '{group_name}'")
-                return
-
-            for motor_id, data in motor_data.items():
-                current_drive_mode = data.get('drive_mode', None)
-                logging.debug(f"Motor {motor_id} current drive mode read from bulk read: {current_drive_mode}")
-                expected_drive_mode = param_dict.get(motor_id, None)
-
-                if current_drive_mode != expected_drive_mode:
-                    logging.error(f"Motor {motor_id} drive mode is not correctly set to {'reverse' if expected_drive_mode == 1 else 'normal'}")
-                else:
-                    logging.info(f"Motor {motor_id} drive mode correctly set to {'reverse' if expected_drive_mode == 1 else 'normal'}")
-        except Exception as e:
-            logging.error(f"Failed to read drive mode for group {group_name}: {e}")
-
     def increment_group_position(self, group_name, increment_degrees):
         """
         Increment the motor positions for a group of motors by a specified number of degrees.
